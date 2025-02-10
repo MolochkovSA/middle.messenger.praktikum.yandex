@@ -1,7 +1,8 @@
-import './style.scss'
+import { App } from './App'
 
-document.querySelector<HTMLDivElement>('#app')!.innerHTML = `
-  <h1>
-   Test
-  </h1>
-`
+import './styles/index.scss'
+
+document.addEventListener('DOMContentLoaded', () => {
+  const app = new App()
+  app.render()
+})
