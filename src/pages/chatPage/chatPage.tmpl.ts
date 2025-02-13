@@ -10,10 +10,10 @@ type ChatPageProps = {}
 const chatPage = `
 <main class=${styles.chatPage}>
   <nav class=${styles.navbar}>
-    <a id="profileLink" href="#" class="${styles.link} {{className}}">
+    {{#> Link id="errorPageLink" path="#" className="${styles.link}" data-page="/error404"}}
       <span>Профиль</span> 
       <img src=${rightChevronIcon} class=${styles.icon} alt="chevronRight">
-    </a>
+    {{/ Link}}
 
     {{> SearchInput id="searchInput" value=value className="${styles.search}"}}
     

@@ -15,7 +15,7 @@ export const Input = `
     id={{id}} 
     type={{type}} 
     name={{name}} 
-    class="{{className}} {{#if error}}${styles.error} {{/if}}" 
+    class="{{className}} {{#if error}}${styles.error}{{/if}}" 
     placeholder={{placeholder}} 
     value={{value}}>
 `

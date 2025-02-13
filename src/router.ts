@@ -1,17 +1,17 @@
-import { ErrorPage, AuthPage, ChatPage, Profile } from './pages'
+import { NotFoundPage, ServerErrorPage, AuthPage, ChatPage } from './pages'
 
 export enum AppRoutes {
-  LOGIN = 'login',
-  REGISTER = 'register',
-  ERORR404 = 'error404',
-  ERROR500 = 'error500',
-  CHAT = 'chat',
-  PROFILE = 'profile',
+  LOGIN = '/login',
+  REGISTER = '/register',
+  NOTFOUND = '/not-found',
+  SERVERERROR = '/server-error',
+  CHAT = '/chat',
+  // PROFILE = 'profile',
 }
 
 export const router: Record<AppRoutes, string> = {
-  [AppRoutes.ERORR404]: ErrorPage({ code: 404, description: 'Страница не найдена' }),
-  [AppRoutes.ERROR500]: ErrorPage({ code: 500, description: 'Мы уже фиксим' }),
+  [AppRoutes.NOTFOUND]: NotFoundPage(),
+  [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: AuthPage({
     title: 'Вход',
     button: { id: 'authButton', text: 'Авторизоваться' },
@@ -50,5 +50,5 @@ export const router: Record<AppRoutes, string> = {
     ],
   }),
   [AppRoutes.CHAT]: ChatPage({ title: 'Чат' }),
-  [AppRoutes.PROFILE]: Profile({ name: 'John', email: 'pochta@yandex.ru' }),
+  // [AppRoutes.PROFILE]: Profile({ name: 'John', email: 'pochta@yandex.ru' }),
 }

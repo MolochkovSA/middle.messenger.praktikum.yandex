@@ -1,22 +1,20 @@
-import Handlebars from 'handlebars'
-
 import styles from './errorPage.module.scss'
 
-type ErrorPageProps = {
+export type ErrorPageProps = {
   code: number
   description: string
 }
 
-const errorPage = `
+export const errorPage = `
 <main class=${styles.errorPage}>
   <div class=${styles.container}>
     <h1 class=${styles.code}>{{code}}</h1>
 
     <p class=${styles.description}>{{description}}</p>
     
-    {{> Link id="errorPageLink" path="#" text="Назад к чатам" className="${styles.link}"}}
+    {{#> Link className="${styles.link}" data-page="/chat"}}
+      Назад к чатам
+    {{/ Link}}
   </div>
 </main>
 `
-
-export const ErrorPage = Handlebars.compile<ErrorPageProps>(errorPage)
