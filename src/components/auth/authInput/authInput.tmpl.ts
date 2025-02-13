@@ -1,4 +1,4 @@
-import { InputProps } from '../input'
+import { InputProps } from '../../common/input'
 
 import styles from './authInput.module.scss'
 

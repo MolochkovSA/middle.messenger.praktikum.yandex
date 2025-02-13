@@ -2,7 +2,6 @@ import styles from './button.module.scss'
 
 export type ButtonProps = {
   id: string
-  text: string
   type: 'button' | 'submit'
   disabled?: boolean
   className?: string

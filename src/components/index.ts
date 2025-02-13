@@ -1,11 +1,11 @@
 import Handlebars from 'handlebars'
 
-import { Button } from './button/'
-import { Link } from './link/'
-import { Input } from './input/'
-import { AuthInput } from './authInput/'
-import { Label } from './label/'
-import { ErrorMessage } from './errorMessage/'
+import { Button } from './common/button'
+import { Link } from './common/link'
+import { Input } from './common/input'
+import { AuthInput } from './auth/authInput'
+import { Label } from './common/label'
+import { ErrorMessage } from './common/errorMessage'
 
 Handlebars.registerPartial('Button', Button)
 Handlebars.registerPartial('Link', Link)

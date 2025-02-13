@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars'
 
-import { AuthInputProps } from '../../components/authInput'
+import { AuthInputProps } from '../../components/auth/authInput'
 
 import styles from './authPage.module.scss'
 
