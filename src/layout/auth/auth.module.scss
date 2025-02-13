@@ -1,16 +1,16 @@
-.authPage {
-  height: 100vh;
+.authLayout {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
 
-.authLayout {
+.authCard {
+  margin: 30px;
   padding: 50px 30px 30px;
   border-radius: 12px;
   width: 340px;
-  min-height: 450px;
+  min-height: 460px;
   background-color: var(--color-white);
   display: flex;
   flex-direction: column;

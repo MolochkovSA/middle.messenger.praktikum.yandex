@@ -5,7 +5,7 @@ export type ErrorPageProps = {
   description: string
 }
 
-export const errorPage = `
+export const ErrorPage = `
 <main class=${styles.errorPage}>
   <div class=${styles.container}>
     <h1 class=${styles.code}>{{code}}</h1>

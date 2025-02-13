@@ -1,4 +1,5 @@
 import './components'
+import './layout'
 import { AppRoutes, router } from './router'
 
 type State = { currentPage: AppRoutes }
