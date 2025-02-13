@@ -1,4 +1,12 @@
-import { NotFoundPage, ServerErrorPage, RegisterPage, ChatPage, LoginPage, ProfileInfoPage } from './pages'
+import {
+  NotFoundPage,
+  ServerErrorPage,
+  RegisterPage,
+  ChatPage,
+  LoginPage,
+  ProfileInfoPage,
+  ProfileEditPage,
+} from './pages'
 
 export enum AppRoutes {
   LOGIN = '/login',
@@ -7,6 +15,7 @@ export enum AppRoutes {
   SERVERERROR = '/server-error',
   CHAT = '/chat',
   PROFILE = '/profile',
+  PROFILE_EDIT = '/profile/edit',
 }
 
 export const router: Record<AppRoutes, string> = {
@@ -16,4 +25,5 @@ export const router: Record<AppRoutes, string> = {
   [AppRoutes.REGISTER]: RegisterPage(),
   [AppRoutes.CHAT]: ChatPage({ title: 'Чат' }),
   [AppRoutes.PROFILE]: ProfileInfoPage(),
+  [AppRoutes.PROFILE_EDIT]: ProfileEditPage(),
 }

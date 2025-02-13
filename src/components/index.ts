@@ -16,4 +16,4 @@ Handlebars.registerPartial('ProfileInput', ProfileInput)
 Handlebars.registerPartial('Label', Label)
 Handlebars.registerPartial('ErrorMessage', ErrorMessage)
 
-export type { ButtonProps, LinkProps, InputProps, AuthInputProps, LabelProps, ErrorMessageProps }
+export type { ButtonProps, LinkProps, InputProps, AuthInputProps, LabelProps, ErrorMessageProps, ProfileInputProps }
