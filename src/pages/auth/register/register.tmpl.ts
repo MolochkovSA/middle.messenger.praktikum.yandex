@@ -1,5 +1,7 @@
 import { AuthInputProps } from '../../../components'
 
+import styles from './register.module.scss'
+
 type InputProps = Pick<AuthInputProps, 'value' | 'isError' | 'errorMessage'>
 
 export type RegisterProps = {
@@ -21,5 +23,15 @@ export const Register = `
     {{> AuthInput id="phoneInput" type="tel" name="phone" label="Телефон" isError=phone.isError errorMessage=phone.errorMessage value=phone.value}}
     {{> AuthInput id="passwordInput" type="password" name="password" label="Пароль" isError=password.isError errorMessage=password.errorMessage value=password.value}}
     {{> AuthInput id="passwordRepeatInput" type="password" name="password_repeat" label="Повтор пароля" isError=password_repeat.isError errorMessage=password_repeat.errorMessage value=password_repeat.value}}
-  {{/ AuthLayout}}
+  
+  
+      {{#> Button id=buttonId type="submit" className="${styles.button}"}}
+    {{buttonLabel}}
+    {{/ Button}}
+
+    {{#> Link className="${styles.link}" data-page=linkTo}}
+    {{linkLabel}}
+    {{/ Link}}
+  
+    {{/ AuthLayout}}
 `
