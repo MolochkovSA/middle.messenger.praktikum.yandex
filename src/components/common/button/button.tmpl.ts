@@ -11,7 +11,7 @@ export const Button = `
 <button 
   id="{{id}}"
   class="${styles.button} {{className}}" 
-  type={{type}}
+  type="{{type}}"
   {{#if disabled}}
     disabled
   {{/if}}>

@@ -8,14 +8,19 @@ export type InputProps = {
   value: string
   className?: string
   isError?: boolean
+  disabled?: boolean
 }
 
 export const Input = `
   <input 
-    id={{id}} 
-    type={{type}} 
-    name={{name}} 
+    id="{{id}}" 
+    type="{{type}}" 
+    name="{{name}}" 
     class="{{className}} {{#if isError}}${styles.error}{{/if}}" 
-    placeholder={{placeholder}} 
-    value={{value}}>
+    placeholder="{{placeholder}}" 
+    value="{{value}}" 
+    {{#if disabled}}
+      disabled
+    {{/if}}
+  />
 `

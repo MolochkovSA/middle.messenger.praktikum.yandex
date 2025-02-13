@@ -5,5 +5,5 @@ export type LabelProps = {
 }
 
 export const Label = `
-  <label for={{htmlFor}} class={{className}}>{{text}}</label>
+  <label for="{{htmlFor}}" class="{{className}}">{{text}}</label>
 `

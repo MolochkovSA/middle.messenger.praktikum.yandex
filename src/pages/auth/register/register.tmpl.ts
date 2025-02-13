@@ -25,12 +25,12 @@ export const Register = `
     {{> AuthInput id="passwordRepeatInput" type="password" name="password_repeat" label="Повтор пароля" isError=password_repeat.isError errorMessage=password_repeat.errorMessage value=password_repeat.value}}
   
   
-      {{#> Button id=buttonId type="submit" className="${styles.button}"}}
-    {{buttonLabel}}
+    {{#> Button id=buttonId type="submit" className="${styles.button}"}}
+      {{buttonLabel}}
     {{/ Button}}
 
     {{#> Link className="${styles.link}" data-page=linkTo}}
-    {{linkLabel}}
+      {{linkLabel}}
     {{/ Link}}
   
     {{/ AuthLayout}}

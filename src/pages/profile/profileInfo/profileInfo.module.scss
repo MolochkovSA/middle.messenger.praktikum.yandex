@@ -1,0 +1,23 @@
+.title {
+  padding-top: 21px;
+  margin-bottom: 50px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.info {
+  align-self: stretch;
+  min-width: max-content;
+  margin-bottom: 50px;
+}
+
+.link {
+  width: 100%;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-chat-border);
+
+  &:last-child {
+    border-bottom: none;
+    color: var(--color-red);
+  }
+}

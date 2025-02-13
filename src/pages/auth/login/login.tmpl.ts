@@ -15,11 +15,11 @@ export const Login = `
     {{> AuthInput id="passwordInput" type="password" name="password" label="Пароль" errorMessage=password.errorMessage value=password.value}}
      
     {{#> Button id=buttonId type="submit" className="${styles.button}"}}
-    {{buttonLabel}}
+      {{buttonLabel}}
     {{/ Button}}
 
     {{#> Link className="${styles.link}" data-page=linkTo}}
-    {{linkLabel}}
+      {{linkLabel}}
     {{/ Link}}
   {{/ AuthLayout}}
 `

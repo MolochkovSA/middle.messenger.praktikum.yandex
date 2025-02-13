@@ -32,11 +32,7 @@ export class App implements IApp {
     console.log(this.state.currentPage)
 
     document.querySelectorAll('[data-page]').forEach((link) => {
-      console.log(link)
-
       link.addEventListener('click', (e) => {
-        console.log('events')
-
         e.preventDefault()
 
         // @ts-ignore
