@@ -27,9 +27,41 @@
   .title {
     display: none;
   }
-  .avatar {
-    width: 130px;
-    height: 130px;
+
+  .button {
+    display: block;
+    position: relative;
+    padding: 0;
+    background-color: transparent;
     border-radius: 50%;
+
+    .avatar {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+    }
+
+    .mask {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.4s linear;
+
+      &:hover {
+        opacity: 1;
+      }
+
+      span {
+        max-width: 64px;
+      }
+    }
   }
 }

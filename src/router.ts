@@ -6,6 +6,7 @@ import {
   LoginPage,
   ProfileInfoPage,
   ProfileEditPage,
+  ProfilePasswordPage,
 } from './pages'
 
 export enum AppRoutes {
@@ -16,6 +17,7 @@ export enum AppRoutes {
   CHAT = '/chat',
   PROFILE = '/profile',
   PROFILE_EDIT = '/profile/edit',
+  PROFILE_PASSWORD = '/profile/password',
 }
 
 export const router: Record<AppRoutes, string> = {
@@ -26,4 +28,5 @@ export const router: Record<AppRoutes, string> = {
   [AppRoutes.CHAT]: ChatPage({ title: 'Чат' }),
   [AppRoutes.PROFILE]: ProfileInfoPage(),
   [AppRoutes.PROFILE_EDIT]: ProfileEditPage(),
+  [AppRoutes.PROFILE_PASSWORD]: ProfilePasswordPage(),
 }
