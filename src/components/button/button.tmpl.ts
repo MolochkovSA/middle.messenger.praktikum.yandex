@@ -16,6 +16,6 @@ export const Button = `
   {{#if disabled}}
     disabled
   {{/if}}>
-    {{text}}
+    {{> @partial-block}}
 </button>
 `

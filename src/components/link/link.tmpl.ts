@@ -8,7 +8,10 @@ export type LinkProps = {
 }
 
 export const Link = `
-<a id={{id}} href={{path}} class="${styles.link} {{className}}">
- {{text}}
+<a href="#" data-page="{{data-page}}" class="${styles.link} {{className}}">
+  {{text}}
+  {{#if @partial-block}}
+    {{> @partial-block}}
+  {{/if}}
 </a>
 `

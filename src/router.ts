@@ -1,10 +1,12 @@
-import { ErrorPage, AuthPage } from './pages'
+import { ErrorPage, AuthPage, ChatPage, Profile } from './pages'
 
 export enum AppRoutes {
+  LOGIN = 'login',
+  REGISTER = 'register',
   ERORR404 = 'error404',
   ERROR500 = 'error500',
-  LOGIN = 'login',
-  SIGNIN = 'signin',
+  CHAT = 'chat',
+  PROFILE = 'profile',
 }
 
 export const router: Record<AppRoutes, string> = {
@@ -19,7 +21,7 @@ export const router: Record<AppRoutes, string> = {
       { id: 'authPassword', name: 'password', type: 'password', label: 'Пароль' },
     ],
   }),
-  [AppRoutes.SIGNIN]: AuthPage({
+  [AppRoutes.REGISTER]: AuthPage({
     title: 'Регистрация',
     button: { id: 'registerButton', text: 'Зарегистрироваться' },
     link: { id: 'authLink', text: 'Войти' },
@@ -47,4 +49,6 @@ export const router: Record<AppRoutes, string> = {
       },
     ],
   }),
+  [AppRoutes.CHAT]: ChatPage({ title: 'Чат' }),
+  [AppRoutes.PROFILE]: Profile({ name: 'John', email: 'pochta@yandex.ru' }),
 }

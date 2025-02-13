@@ -1,0 +1,37 @@
+.chatPage {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.navbar {
+  font-size: 12px;
+  width: 300px;
+  min-width: 230px;
+  height: 100%;
+  padding: 20px 10px 0 10px;
+  background-color: var(--color-chat-sidebar);
+  border-right: 1px solid var(--color-chat-border);
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 8px;
+  text-decoration: none;
+  color: var(--color-gray-text);
+  margin-bottom: 23px;
+}
+
+.search {
+  margin-bottom: 14px;
+}
+
+.content {
+  flex-grow: 1;
+  height: 100%;
+  padding: 10px 20px;
+}

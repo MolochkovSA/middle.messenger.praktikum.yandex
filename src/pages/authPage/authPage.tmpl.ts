@@ -31,7 +31,9 @@ const authPage = `
         {{/each}}
       </form>
 
-      {{> Button id=button.id text=button.text type="submit" className="${styles.button}"}}
+      {{#> Button id=button.id type="submit" className="${styles.button}"}}
+        {{button.text}}
+      {{/ Button}}
 
       {{> Link id=link.id path="#" text=link.text className="${styles.link}"}}
     </div>

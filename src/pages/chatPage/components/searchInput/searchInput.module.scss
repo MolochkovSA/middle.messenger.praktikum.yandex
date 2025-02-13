@@ -1,0 +1,18 @@
+.searchInput {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 10px 0;
+  border-radius: 5px;
+  background-color: var(--color-chat-search);
+  text-align: center;
+}
+
+.icon {
+  position: absolute;
+  top: 50%;
+  right: 59%;
+  transform: translateY(-50%);
+}

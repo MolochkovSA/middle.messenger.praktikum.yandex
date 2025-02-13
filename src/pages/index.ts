@@ -1,2 +1,4 @@
 export { AuthPage } from './authPage'
-export { ErrorPage } from './errorPage/'
+export { ChatPage } from './chatPage'
+export { ErrorPage } from './errorPage'
+export { Profile } from './profile'
