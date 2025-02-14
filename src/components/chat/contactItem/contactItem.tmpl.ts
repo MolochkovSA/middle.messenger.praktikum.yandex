@@ -1,12 +1,6 @@
-import Handlebars from 'handlebars'
-
 import defaultAvatar from '@/assets/avatar.png'
-import { ContactItem, MessageType } from '@/pages/chat/types'
+import { ContactItem } from '@/pages/chat/types'
 import styles from './contactItem.module.scss'
-
-Handlebars.registerHelper('isOutgoingMessage', function (value) {
-  return value === MessageType.Outgoing
-})
 
 export type ContactItemProps = { contact: ContactItem }
 

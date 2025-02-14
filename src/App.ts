@@ -28,17 +28,23 @@ export class App implements IApp {
 
   render() {
     this.appElement.innerHTML = router[this.state.currentPage]
-    console.log(this.state.currentPage)
+    this.attachEventListeners()
+  }
 
+  attachEventListeners() {
     document.querySelectorAll('[data-page]').forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault()
 
         // @ts-ignore
         const page = e?.currentTarget?.dataset.page
-        this.state.currentPage = page as AppRoutes
-        this.render()
+        this.changePage(page as AppRoutes)
       })
     })
+  }
+
+  changePage(page: AppRoutes) {
+    this.state.currentPage = page
+    this.render()
   }
 }

@@ -16,6 +16,9 @@ import { ProfileInput, ProfileInputProps } from './profile/profileInput'
 // Chat
 import { ContactListItem, ContactItemProps } from './chat/contactItem'
 import { SearchInput, SearchInputProps } from './chat/searchInput'
+import { ContactChat, ContactChatProps } from './chat/contactChat'
+import { MessagesGroup, MessagesGroupProps } from './chat/messagesGroup'
+import { Message } from './chat/message'
 
 Handlebars.registerPartial('Button', Button)
 Handlebars.registerPartial('Link', Link)
@@ -26,6 +29,9 @@ Handlebars.registerPartial('Label', Label)
 Handlebars.registerPartial('ErrorMessage', ErrorMessage)
 Handlebars.registerPartial('ContactListItem', ContactListItem)
 Handlebars.registerPartial('SearchInput', SearchInput)
+Handlebars.registerPartial('ContactChat', ContactChat)
+Handlebars.registerPartial('MessagesGroup', MessagesGroup)
+Handlebars.registerPartial('Message', Message)
 
 export type {
   ButtonProps,
@@ -37,4 +43,6 @@ export type {
   ProfileInputProps,
   ContactItemProps,
   SearchInputProps,
+  ContactChatProps,
+  MessagesGroupProps,
 }

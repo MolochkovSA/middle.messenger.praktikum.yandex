@@ -1,11 +1,13 @@
 import rightChevronIcon from '../../../static/chevronRight.svg'
 
 import styles from './chat.module.scss'
-import { ContactItem } from './types'
+import { Contact, ContactItem } from './types'
 
 export type ChatProps = {
   searchValue?: string
-  contacts: ContactItem[]
+  contactsList: ContactItem[]
+  selectedContact?: Contact
+  isChatMenuOpen?: boolean
 }
 
 export const Chat = `
@@ -19,10 +21,9 @@ export const Chat = `
 
         {{> SearchInput id="searchInput" value=searchValue}}
       </div>
-
       
       <ul>
-        {{#each contacts as |contact|}}
+        {{#each contactsList as |contact|}}
           {{> ContactListItem contact=contact}}
         {{else}}
           <p class=${styles.empty}>No contacts</p>
@@ -30,10 +31,13 @@ export const Chat = `
       </ul>
     </nav>
 
-
+    <div class=${styles.content}>
+     {{#if selectedContact}}
+      {{> ContactChat contact=selectedContact isChatMenuOpen=isChatMenuOpen}}
+     {{else}}
+      <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2> 
+     {{/if}}
+      
+    </div>
   </main>
   `
-
-// <div class=${styles.content}>
-// {{> ContactChat}}
-// </div>

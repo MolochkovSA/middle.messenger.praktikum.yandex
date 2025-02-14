@@ -1,7 +1,7 @@
 export type Contact = {
   id: string
   name: string
-  messages: Message[]
+  messagesGroup: { date: string; messages: Message[] }[]
 }
 
 export enum MessageType {
@@ -18,7 +18,7 @@ export enum OutgoingMessageStatus {
 export type Message = {
   id: string
   text: string
-  date: number
+  date: string
 } & (
   | {
       type: MessageType.Incoming

@@ -10,6 +10,7 @@ import {
 } from './pages'
 
 export enum AppRoutes {
+  NAVIGATION = '/',
   LOGIN = '/login',
   REGISTER = '/register',
   NOTFOUND = '/not-found',
@@ -21,6 +22,7 @@ export enum AppRoutes {
 }
 
 export const router: Record<AppRoutes, string> = {
+  [AppRoutes.NAVIGATION]: LoginPage(),
   [AppRoutes.NOTFOUND]: NotFoundPage(),
   [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: LoginPage(),
