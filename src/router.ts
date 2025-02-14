@@ -7,6 +7,7 @@ import {
   ProfileInfoPage,
   ProfileEditPage,
   ProfilePasswordPage,
+  NavigationPage,
 } from './pages'
 
 export enum AppRoutes {
@@ -22,7 +23,7 @@ export enum AppRoutes {
 }
 
 export const router: Record<AppRoutes, string> = {
-  [AppRoutes.NAVIGATION]: LoginPage(),
+  [AppRoutes.NAVIGATION]: NavigationPage(),
   [AppRoutes.NOTFOUND]: NotFoundPage(),
   [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: LoginPage(),
