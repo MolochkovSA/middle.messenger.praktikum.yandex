@@ -1,7 +1,7 @@
 import styles from './navigation.module.scss'
 
 export const Navigation = `
-  <main class=${styles.main}>
+  <main>
     <h1 class=${styles.title}>Навигация по проекту:</h1>
     
     <ul>
