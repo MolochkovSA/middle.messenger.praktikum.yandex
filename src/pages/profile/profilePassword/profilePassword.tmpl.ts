@@ -1,4 +1,4 @@
-import styles from './ProfilePassword.module.scss'
+import styles from './profilePassword.module.scss'
 
 export type ProfilePasswordProps = {
   oldPassword: string
