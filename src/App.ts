@@ -10,21 +10,20 @@ interface IApp {
   render(): void
 }
 
-const defaultState: State = { currentPage: AppRoutes.NOTFOUND }
-
 export class App implements IApp {
   appElement: HTMLDivElement
   state: State
 
   constructor() {
     this.appElement = document.querySelector<HTMLDivElement>('#app')!
-    this.state = defaultState
 
     const currentPath = window.location.pathname
 
-    this.state.currentPage = Object.values<string>(AppRoutes).includes(currentPath)
-      ? (currentPath as AppRoutes)
-      : AppRoutes.NOTFOUND
+    this.state = {
+      currentPage: Object.values<string>(AppRoutes).includes(currentPath)
+        ? (currentPath as AppRoutes)
+        : AppRoutes.NOTFOUND,
+    }
   }
 
   render() {

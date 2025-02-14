@@ -25,7 +25,7 @@ export const router: Record<AppRoutes, string> = {
   [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: LoginPage(),
   [AppRoutes.REGISTER]: RegisterPage(),
-  [AppRoutes.CHAT]: ChatPage({ title: 'Чат' }),
+  [AppRoutes.CHAT]: ChatPage(),
   [AppRoutes.PROFILE]: ProfileInfoPage(),
   [AppRoutes.PROFILE_EDIT]: ProfileEditPage(),
   [AppRoutes.PROFILE_PASSWORD]: ProfilePasswordPage(),

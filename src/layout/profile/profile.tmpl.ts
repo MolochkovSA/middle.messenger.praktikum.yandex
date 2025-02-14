@@ -12,7 +12,7 @@ export const ProfileLayout = `
     <div class=${styles.content}>
       <h1 class=${styles.title}>Profile</h1>
 
-      {{#> Button id="editAvatarButton" className="${styles.button}" type="button"}}
+      {{#> Button id="editAvatarButton" className="${styles.button}"}}
         <img src=${defaultAvatar} class=${styles.avatar} alt="avatar">
         
         <div class=${styles.mask}>

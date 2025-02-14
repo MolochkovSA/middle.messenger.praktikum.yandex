@@ -1,0 +1,37 @@
+export type Contact = {
+  id: string
+  name: string
+  messages: Message[]
+}
+
+export enum MessageType {
+  Incoming,
+  Outgoing,
+}
+
+export enum OutgoingMessageStatus {
+  Sent,
+  Delivered,
+  Read,
+}
+
+export type Message = {
+  id: string
+  text: string
+  date: number
+} & (
+  | {
+      type: MessageType.Incoming
+      read: boolean
+    }
+  | {
+      type: MessageType.Outgoing
+      status: OutgoingMessageStatus
+    }
+)
+
+export type ContactItem = Pick<Contact, 'id' | 'name'> & {
+  lastMessage: Pick<Message, 'type' | 'text'> & {
+    date: string
+  }
+} & { newMessageCount?: number }

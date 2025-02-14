@@ -2,7 +2,7 @@ import styles from './button.module.scss'
 
 export type ButtonProps = {
   id: string
-  type: 'button' | 'submit'
+  type?: 'submit'
   disabled?: boolean
   className?: string
 }
@@ -10,8 +10,14 @@ export type ButtonProps = {
 export const Button = `
 <button 
   id="{{id}}"
-  class="${styles.button} {{className}}" 
-  type="{{type}}"
+  class="${styles.button} {{className}}"
+  
+  {{#if type}}
+    type="{{type}}"
+  {{else}}
+    type="button"
+  {{/if}}
+
   {{#if disabled}}
     disabled
   {{/if}}>
