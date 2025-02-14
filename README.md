@@ -2,6 +2,8 @@
 
 Vanilla Chat - это сервис, предназначенный для обмена текстовыми сообщениями и мультимедиа между зарегистрированными пользователями.
 
+Проект выполнен по [макету Figma](https://www.figma.com/design/jF5fFFzgGOxQeB4CmKWTiE/)
+
 ## PR Sprint 1
 
 [[https://github.com/MolochkovSA/middle.messenger.praktikum.yandex/pull/3](https://github.com/MolochkovSA/middle.messenger.praktikum.yandex/pull/3)]
