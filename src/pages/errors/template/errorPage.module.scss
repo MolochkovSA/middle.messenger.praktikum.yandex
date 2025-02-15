@@ -1,0 +1,28 @@
+.errorPage {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.container {
+  min-width: 200px;
+  text-align: center;
+}
+
+.code {
+  font-weight: 500;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+
+.description {
+  font-weight: 500;
+  font-size: 20px;
+  margin-bottom: 69px;
+}
+
+.link {
+  font-size: 11px;
+}

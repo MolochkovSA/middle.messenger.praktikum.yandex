@@ -1,0 +1,22 @@
+.authInput {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 25px;
+}
+
+.label {
+  position: absolute;
+  top: -8px;
+  font-weight: 500;
+  font-size: 9px;
+  line-height: 100%;
+  color: var(--color-gray-text);
+}
+
+.input {
+  border-bottom: 1px solid var(--color-primary);
+  padding: 7px 0;
+  margin-bottom: 7px;
+}

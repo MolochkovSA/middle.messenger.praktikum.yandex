@@ -1,0 +1,123 @@
+@mixin dote-div($color) {
+  width: 3px;
+  height: 3px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: $color;
+}
+
+@mixin three-dote-button($color) {
+  div {
+    @include dote-div($color);
+    position: relative;
+
+    &::before {
+      content: '';
+      @include dote-div($color);
+      display: block;
+      position: absolute;
+      top: -6px;
+    }
+
+    &::after {
+      content: '';
+      @include dote-div($color);
+      display: block;
+      position: absolute;
+      top: 6px;
+    }
+  }
+}
+
+.chat {
+  flex-grow: 1;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.header {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-chat-border);
+
+  .avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+
+  .openChatMenuBtn {
+    padding: 0;
+    margin-left: auto;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: inherit;
+
+    @include three-dote-button(var(--color-black));
+
+    &:hover {
+      background-color: var(--color-chat-gray);
+      @include three-dote-button(var(--color-primary));
+    }
+  }
+
+  .chatMenu {
+    display: none;
+    position: absolute;
+    top: 65px;
+    right: 0;
+    padding: 7px 15px;
+    border-radius: 12px;
+    box-shadow: 0 0 6px 0 rgba(0, 0, 0, 0.14);
+    background-color: var(--color-white);
+
+    .chatMenuBtn {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      padding: 8px 0;
+      background-color: inherit;
+      color: var(--color-black);
+
+      .removeUserIcon {
+        transform: rotate(45deg);
+      }
+    }
+
+    &.open {
+      display: block;
+    }
+  }
+}
+
+.messages {
+  flex-grow: 1;
+  padding: 10px 0;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-chat-border);
+
+  .button {
+    padding: 0;
+    background-color: inherit;
+  }
+
+  .input {
+    flex-grow: 1;
+    padding: 10px 20px;
+    border-radius: 20px;
+    background-color: var(--color-chat-gray);
+    font-size: 12px;
+    line-height: 1;
+  }
+}
