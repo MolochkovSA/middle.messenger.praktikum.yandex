@@ -1,0 +1,11 @@
+.messagesSection {
+  display: flex;
+  flex-direction: column;
+
+  .date {
+    text-align: center;
+    font-size: 12px;
+    color: var(--color-gray-text);
+    padding: 30px 0;
+  }
+}
