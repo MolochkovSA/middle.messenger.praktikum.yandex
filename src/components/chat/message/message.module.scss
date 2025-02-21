@@ -16,7 +16,7 @@
 
   &.incoming {
     align-self: flex-start;
-    border-radius: 0 12px 12px 12px;
+    border-radius: 0 12px 12px;
     background-color: var(--color-chat-gray);
 
     time {
@@ -26,7 +26,7 @@
 
   &.outgoing {
     align-self: flex-end;
-    border-radius: 12px 12px 0 12px;
+    border-radius: 12px 12px 0;
     background-color: var(--color-chat-sky);
 
     time {

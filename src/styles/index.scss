@@ -1,6 +1,6 @@
-@use './reset.scss';
-@use './font.scss';
-@use './variables.scss';
+@use './reset';
+@use './font';
+@use './variables';
 
 body {
   background-color: var(--color-background);
