@@ -36,9 +36,12 @@ export class App implements IApp {
       link.addEventListener('click', (e) => {
         e.preventDefault()
 
-        // @ts-ignore
-        const page = e?.currentTarget?.dataset.page
-        this.changePage(page as AppRoutes)
+        const element = e.currentTarget
+
+        if (element instanceof HTMLAnchorElement) {
+          const page = element.dataset.page
+          this.changePage(page as AppRoutes)
+        }
       })
     })
   }

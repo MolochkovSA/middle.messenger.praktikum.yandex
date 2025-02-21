@@ -18,7 +18,16 @@ export const ProfileInfo = `
       {{> ProfileInput id="login" type="text" name="login" label="Логин" value=login disabled=true}}
       {{> ProfileInput id="first_name" type="text" name="first_name" label="Имя" value=first_name disabled=true}}
       {{> ProfileInput id="second_name" type="text" name="second_name" label="Фамилия" value=second_name disabled=true}}
-      {{> ProfileInput id="display_name" type="text" name="display_name" label="Имя в чате" value=display_name disabled=true}}
+
+      {{> ProfileInput 
+       id="display_name" 
+       type="text" 
+       name="display_name" 
+       label="Имя в чате" 
+       value=display_name 
+       disabled=true
+      }}
+
       {{> ProfileInput id="phone" type="text" name="phone" label="Телефон" value=phone disabled=true}}
     </form>
 

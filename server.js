@@ -1,5 +1,5 @@
 import express from 'express'
-import * as path from 'node:path'
+import * as path from 'path'
 
 const __dirname = path.resolve()
 
