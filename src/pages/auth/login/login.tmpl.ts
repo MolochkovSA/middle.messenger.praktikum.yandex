@@ -1,13 +1,4 @@
-import { AuthInputProps } from '../../../components'
-
 import styles from './login.module.scss'
-
-type InputProps = Pick<AuthInputProps, 'value' | 'errorMessage'>
-
-export type LoginProps = {
-  login: InputProps
-  password: InputProps
-}
 
 export const Login = `
   {{#> AuthLayout title="Вход" buttonLabel="Авторизоваться" linkLabel="Нет аккаунта?" linkTo="/register"}}
@@ -28,6 +19,8 @@ export const Login = `
      errorMessage=password.errorMessage 
      value=password.value
     }}
+
+    {{{ TestInput }}}
      
     {{#> Button id=buttonId type="submit" className="${styles.button}"}}
       {{buttonLabel}}
@@ -36,5 +29,7 @@ export const Login = `
     {{#> Link className="${styles.link}" data-page=linkTo}}
       {{linkLabel}}
     {{/ Link}}
+
+
   {{/ AuthLayout}}
 `

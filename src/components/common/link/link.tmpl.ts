@@ -10,5 +10,6 @@ export const Link = `
   {{#if @partial-block}}
     {{> @partial-block}}
   {{/if}}
+  {{{ test}}}
 </a>
 `

@@ -27,8 +27,16 @@ export class App implements IApp {
   }
 
   render() {
-    this.appElement.innerHTML = router[this.state.currentPage]
-    this.attachEventListeners()
+    const route = router[this.state.currentPage]
+
+    if (typeof route === 'function') {
+      this.appElement.replaceChildren(new route().getContent())
+
+      return
+    } else {
+      this.appElement.innerHTML = route
+      this.attachEventListeners()
+    }
   }
 
   attachEventListeners() {

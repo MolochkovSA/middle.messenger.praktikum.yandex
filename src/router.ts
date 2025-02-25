@@ -1,3 +1,4 @@
+import { Block } from './core'
 import {
   NotFoundPage,
   ServerErrorPage,
@@ -22,11 +23,11 @@ export enum AppRoutes {
   PROFILE_PASSWORD = '/profile/password',
 }
 
-export const router: Record<AppRoutes, string> = {
+export const router: Record<AppRoutes, string | (new () => Block)> = {
   [AppRoutes.NAVIGATION]: NavigationPage(),
   [AppRoutes.NOTFOUND]: NotFoundPage(),
   [AppRoutes.SERVERERROR]: ServerErrorPage(),
-  [AppRoutes.LOGIN]: LoginPage(),
+  [AppRoutes.LOGIN]: LoginPage,
   [AppRoutes.REGISTER]: RegisterPage(),
   [AppRoutes.CHAT]: ChatPage(),
   [AppRoutes.PROFILE]: ProfileInfoPage(),
