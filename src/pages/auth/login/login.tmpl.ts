@@ -1,4 +1,4 @@
-export const Login = `
+export const loginPageTemplate = `
   {{#> AuthLayout title="Вход" linkLabel="Нет аккаунта?" linkTo="/register"}}
     {{{ LoginInput }}}
 

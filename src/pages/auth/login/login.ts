@@ -1,7 +1,7 @@
 import { Block } from '@/core'
 import { Button, AuthInput, Link } from '@/components'
 
-import { Login } from './login.tmpl'
+import { loginPageTemplate } from './login.tmpl'
 
 import styles from './login.module.scss'
 
@@ -79,6 +79,6 @@ export class LoginPage extends Block {
   }
 
   render(): string {
-    return Login
+    return loginPageTemplate
   }
 }

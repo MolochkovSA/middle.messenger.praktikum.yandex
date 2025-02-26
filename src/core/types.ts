@@ -11,11 +11,11 @@ export enum BlockEvents {
 
 export type Attributes = Record<string, string | number | boolean>
 export type Props = Record<string, unknown>
-export type Children = Record<string, Block>
+export type Children = Record<string, Block | Block[]>
 export type EventsListeners = { [key in keyof HTMLElementEventMap]?: ((e: Event) => void) | undefined }
 
 export type Meta = {
-  tagName: string
+  tagName?: string
   props?: Props
   className?: string
   attrs?: Attributes

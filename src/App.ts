@@ -31,12 +31,11 @@ export class App implements IApp {
 
     if (typeof route === 'function') {
       this.appElement.replaceChildren(new route().getContent())
-
-      return
     } else {
       this.appElement.innerHTML = route
-      this.attachEventListeners()
     }
+
+    this.attachEventListeners()
   }
 
   attachEventListeners() {

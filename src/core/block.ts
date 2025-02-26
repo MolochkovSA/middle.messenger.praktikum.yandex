@@ -16,7 +16,7 @@ export abstract class Block {
   private _attrs: Attributes
   private _events: EventsListeners
 
-  constructor({ tagName, props = {}, className = '', attrs = {}, events = {}, children = {} }: Meta) {
+  constructor({ tagName = 'div', props = {}, className = '', attrs = {}, events = {}, children = {} }: Meta = {}) {
     this._id = crypto.randomUUID()
     this._eventBus = new EventBus()
     this._element = null
@@ -125,7 +125,7 @@ export abstract class Block {
 
     Object.entries(this._children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<div data-id="${component._id}"></div>`)
+        propsAndStubs[key] = child.map((component) => `<li><div data-id="${component._id}"></div></li>`)
       } else {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
       }

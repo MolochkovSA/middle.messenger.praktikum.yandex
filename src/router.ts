@@ -24,7 +24,7 @@ export enum AppRoutes {
 }
 
 export const router: Record<AppRoutes, string | (new () => Block)> = {
-  [AppRoutes.NAVIGATION]: NavigationPage(),
+  [AppRoutes.NAVIGATION]: NavigationPage,
   // [AppRoutes.NOTFOUND]: NotFoundPage(),
   // [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: LoginPage,
