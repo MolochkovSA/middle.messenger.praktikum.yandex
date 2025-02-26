@@ -2,8 +2,6 @@ import { Block } from '@/core'
 
 import { buttonTemplate } from './button.tmpl'
 
-import styles from './button.module.scss'
-
 type ButtonProps = {
   type: HTMLButtonElement['type']
   label: string | HTMLElement
@@ -13,14 +11,9 @@ type ButtonProps = {
 }
 
 export class Button extends Block {
-  constructor({ className, label, onClick, ...attrs }: ButtonProps) {
+  constructor({ onClick, ...props }: ButtonProps) {
     super({
-      tagName: 'button',
-      className: `${styles.button} ${className ?? ''}`.trim(),
-      props: {
-        label,
-      },
-      attrs,
+      props,
       events: {
         click: onClick,
       },

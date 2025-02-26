@@ -3,28 +3,22 @@ import Handlebars from 'handlebars'
 import { compareObjects } from '@/utils'
 
 import { EventBus } from './event-bus'
-import { Attributes, BlockEvents, Children, EventsListeners, Meta, Props } from './types'
+import { BlockEvents, Children, EventListeners, Meta, Props } from './types'
 
 export abstract class Block {
   private _id: string
   private _eventBus: EventBus
   private _element: HTMLElement | null
-  private _tagName: string
   private _children: Children
   private _props: Props
-  private _className: string
-  private _attrs: Attributes
-  private _events: EventsListeners
+  private _events: EventListeners
 
-  constructor({ tagName = 'div', props = {}, className = '', attrs = {}, events = {}, children = {} }: Meta = {}) {
+  constructor({ props = {}, events = {}, children = {} }: Meta = {}) {
     this._id = crypto.randomUUID()
     this._eventBus = new EventBus()
     this._element = null
-    this._tagName = tagName
     this._children = children
     this._props = this._makePropsProxy(props)
-    this._className = className
-    this._attrs = attrs
     this._events = events
 
     this._registerEvents()
@@ -39,12 +33,27 @@ export abstract class Block {
   }
 
   init(): void {
-    this._createResources()
     this._eventBus.emit(BlockEvents.FLOW_RENDER)
+
+    Object.values(this._children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.init())
+      } else {
+        child.init()
+      }
+    })
   }
 
   private _componentDidMount(): void {
     this.componentDidMount()
+
+    Object.values(this._children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentDidMount())
+      } else {
+        child.dispatchComponentDidMount()
+      }
+    })
   }
 
   protected componentDidMount(): void {}
@@ -71,42 +80,13 @@ export abstract class Block {
     return compareObjects(oldProps, newProps)
   }
 
-  private _createResources(): void {
-    this._element = this._createDocumentElement(this._tagName)
-
-    if (this._className) {
-      const classes = this._className.split(' ')
-      this._element.classList.add(...classes)
-    }
-
-    if (this._attrs) {
-      Object.entries(this._attrs).forEach(([attrName, attrValue]) => {
-        switch (typeof attrValue) {
-          case 'string':
-            this._element?.setAttribute(attrName, attrValue)
-            break
-          case 'number':
-            this._element?.setAttribute(attrName, String(attrValue))
-            break
-          case 'boolean':
-            if (attrValue) {
-              this._element?.setAttribute(attrName, '')
-            }
-            break
-          default:
-            break
-        }
-      })
-    }
-  }
-
   private _createDocumentElement(tagName: string): HTMLElement {
     return document.createElement(tagName)
   }
 
   private _addEvents(): void {
     Object.entries(this._events).forEach(([eventName, callback]) => {
-      if (this._element && callback) {
+      if (this._element) {
         this._element.addEventListener(eventName, callback)
       }
     })
@@ -114,18 +94,20 @@ export abstract class Block {
 
   private _removeEvents(): void {
     Object.entries(this._events).forEach(([eventName, callback]) => {
-      if (this._element && callback) {
+      if (this._element) {
         this._element.removeEventListener(eventName, callback)
       }
     })
   }
 
-  protected _compile(): DocumentFragment {
+  private _render(): void {
+    this._removeEvents()
+
     const propsAndStubs: Props = { ...this._props }
 
     Object.entries(this._children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<li><div data-id="${component._id}"></div></li>`)
+        propsAndStubs[key] = child.map((component) => `<div data-id="${component._id}"></div>`)
       } else {
         propsAndStubs[key] = `<div data-id="${child._id}"></div>`
       }
@@ -148,19 +130,7 @@ export abstract class Block {
       }
     })
 
-    return fragment.content
-  }
-
-  private _render(): void {
-    this._removeEvents()
-
-    const block = this._compile()
-
-    if (this._element?.children.length === 0) {
-      this._element?.appendChild(block)
-    } else {
-      this._element?.replaceChildren(block)
-    }
+    this._element = fragment.content.firstElementChild as HTMLElement
 
     this._addEvents()
   }

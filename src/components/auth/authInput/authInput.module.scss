@@ -30,8 +30,12 @@ input:not(:placeholder-shown) + .label {
   display: block;
 }
 
-.error {
+.errorMessage {
   color: var(--color-error);
   font-weight: 400;
   font-size: 8px;
+}
+
+.error {
+  color: var(--color-error);
 }

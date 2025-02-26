@@ -1,5 +1,7 @@
 import { Block } from '@/core'
 
+import { inputTemplate } from './input.tmpl'
+
 export type InputProps = {
   id: string
   type: HTMLInputElement['type']
@@ -15,11 +17,9 @@ export type InputProps = {
 }
 
 export class Input extends Block {
-  constructor({ className, onInput, onChange, onBlur, onFocus, ...attrs }: InputProps) {
+  constructor({ onInput, onChange, onBlur, onFocus, ...props }: InputProps) {
     super({
-      tagName: 'input',
-      className,
-      attrs,
+      props,
       events: {
         input: onInput,
         change: onChange,
@@ -27,5 +27,9 @@ export class Input extends Block {
         blur: onBlur,
       },
     })
+  }
+
+  render() {
+    return inputTemplate
   }
 }

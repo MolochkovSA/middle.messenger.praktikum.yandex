@@ -1,3 +1,7 @@
+import styles from './link.module.scss'
+
 export const linkTemplate = `
-  {{{ label }}}
+  <a href="#" data-page="{{data-page}}" class="${styles.link} {{className}}">
+    {{{ label }}}
+  </a>
   `

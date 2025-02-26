@@ -1,5 +1,5 @@
 import { Block } from '@/core'
-import { Link } from '@/components'
+import {  Link } from '@/components'
 
 import { navigationTemplate } from './navigation.tmpl'
 
@@ -8,9 +8,9 @@ import styles from './navigation.module.scss'
 export class NavigationPage extends Block {
   constructor() {
     super({
-      tagName: 'main',
       children: {
         Links: links.map(({ to, label }) => new Link({ to, label, className: styles.link })),
+       
       },
     })
   }

@@ -12,14 +12,12 @@ type AuthInputProps = Omit<InputProps, 'id'> & {
 }
 
 export class AuthInput extends Block {
-  constructor({ className, label, isError, errorMessage, ...inputProps }: AuthInputProps) {
+  constructor({ label, isError, errorMessage, ...inputProps }: AuthInputProps) {
     const id = crypto.randomUUID()
     super({
-      tagName: 'div',
-      className: `${styles.authInput} ${isError ? styles.isError : ''} ${className ?? ''}`.trim(),
-      props: { id, label, errorMessage },
+      props: { id, label, isError, errorMessage },
       children: {
-        Input: new Input({ ...inputProps, id, className: `${styles.input} ${isError ? styles.isError : ''}`.trim() }),
+        Input: new Input({ ...inputProps, id, className: styles.input }),
       },
     })
   }

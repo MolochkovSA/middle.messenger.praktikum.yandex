@@ -9,16 +9,12 @@ export enum BlockEvents {
   FLOW_RENDER = 'flow:render',
 }
 
-export type Attributes = Record<string, string | number | boolean>
 export type Props = Record<string, unknown>
 export type Children = Record<string, Block | Block[]>
-export type EventsListeners = { [key in keyof HTMLElementEventMap]?: ((e: Event) => void) | undefined }
+export type EventListeners = { [key in keyof HTMLElementEventMap]?: (e: Event) => void }
 
 export type Meta = {
-  tagName?: string
   props?: Props
-  className?: string
-  attrs?: Attributes
-  events?: EventsListeners
+  events?: EventListeners
   children?: Children
 }

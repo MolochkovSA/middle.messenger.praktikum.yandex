@@ -22,7 +22,6 @@ export class LoginPage extends Block {
     }
 
     super({
-      tagName: 'div',
       props: {
         state,
       },
