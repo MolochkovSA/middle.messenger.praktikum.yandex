@@ -1,27 +1,13 @@
-import { InputProps } from '../../common/input'
-
 import styles from './authInput.module.scss'
 
-export type AuthInputProps = {
-  id: string
-  type: InputProps['type']
-  name: string
-  label: string
-  isError?: boolean
-  errorMessage?: string
-  value?: string
-}
-
-export const AuthInput = `
-<div class="${styles.authInput}">
-  {{#if value}}
-    {{> Label htmlFor=id text=label className="${styles.label}"}}
-  {{/if}}    
+export const AuthInputTemplate = `
+  {{{ Input }}}
   
-  {{> Input id=id type=type name=name placeholder=label className="${styles.input}" value=value error=isError}}
+  {{#if label}}
+    <label for={{id}} class="${styles.label}">{{label}}</label>
+  {{/if}} 
 
   {{#if errorMessage}}
-    {{> ErrorMessage message=errorMessage}}
-  {{/if}}    
-</div>
-`
+    <p class="${styles.error}">{{errorMessage}}</p>
+  {{/if}}  
+  `

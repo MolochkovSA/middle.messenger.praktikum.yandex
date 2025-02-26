@@ -1,7 +1,8 @@
 import { Block } from '@/core'
 
 export type InputProps = {
-  type: 'text' | 'password' | 'email' | 'number' | 'tel'
+  id: string
+  type: HTMLInputElement['type']
   name: string
   placeholder: string
   value: string

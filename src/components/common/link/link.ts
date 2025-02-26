@@ -1,17 +1,30 @@
 import { Block } from '@/core'
-import { Link as LinkTemplate } from './link.tmpl'
+import { linkTemplate } from './link.tmpl'
+
+import styles from './link.module.scss'
 
 type LinkProps = {
-  'data-page': string
+  to: string
+  label: string | HTMLElement
   className?: string
 }
 
-export class LinkBlock extends Block {
-  constructor(props: LinkProps) {
-    super({ tagName: 'a', props })
+export class Link extends Block {
+  constructor({ to, label, className }: LinkProps) {
+    super({
+      tagName: 'a',
+      className: `${styles.link} ${className ?? ''}`.trim(),
+      props: {
+        label,
+      },
+      attrs: {
+        href: '#',
+        'data-page': to,
+      },
+    })
   }
 
   render(): string {
-    return LinkTemplate
+    return linkTemplate
   }
 }

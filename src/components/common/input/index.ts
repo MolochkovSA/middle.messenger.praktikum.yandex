@@ -1,2 +1,2 @@
-export { Input } from './input.tmpl'
-export type { InputProps } from './input.tmpl'
+export { Input } from './input'
+export type { InputProps } from './input'

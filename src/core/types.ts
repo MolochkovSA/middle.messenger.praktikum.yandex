@@ -1,7 +1,6 @@
 import { Block } from './block'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type EventCallback = (...args: any[]) => void
+export type EventCallback = (...args: unknown[]) => void
 
 export enum BlockEvents {
   INIT = 'init',

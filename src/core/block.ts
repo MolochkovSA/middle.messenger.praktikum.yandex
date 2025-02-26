@@ -53,10 +53,16 @@ export abstract class Block {
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _componentDidUpdate(oldProps: Props, newProps: Props): void {
+  private _isProps(obj: unknown): obj is Props {
+    return obj !== null && typeof obj === 'object'
+  }
+
+  private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
+    if (!this._isProps(oldProps) || !this._isProps(newProps)) return
+
     const response: boolean = this.componentDidUpdate(oldProps, newProps)
 
-    if (response) {
+    if (!response) {
       this._eventBus.emit(BlockEvents.FLOW_RENDER)
     }
   }
@@ -195,6 +201,18 @@ export abstract class Block {
 
   getProps(): Props {
     return this._props
+  }
+
+  setProps(nextProps: Partial<Props>): void {
+    if (!nextProps) {
+      return
+    }
+
+    Object.assign(this._props, nextProps)
+  }
+
+  getChildren(): Children {
+    return this._children
   }
 
   hide(): void {
