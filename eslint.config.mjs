@@ -24,6 +24,7 @@ export default [
       airbnb: pluginAirbnb,
     },
     rules: {
+      '@typescript-eslint/no-empty-object-type': 'off',
       '@typescript-eslint/no-unused-vars': 'warn',
       indent: ['error', 2, { SwitchCase: 1 }],
       'max-len': ['error', { code: 120, ignoreComments: true }],

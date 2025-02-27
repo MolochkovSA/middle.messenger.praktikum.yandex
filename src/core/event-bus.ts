@@ -1,9 +1,9 @@
 import { EventCallback } from './types'
 
-export class EventBus {
-  private _listeners: Record<string, EventCallback[]> = {}
+export class EventBus<T = unknown> {
+  private _listeners: Record<string, EventCallback<T>[]> = {}
 
-  on(event: string, callback: EventCallback) {
+  on(event: string, callback: EventCallback<T>) {
     if (!this._listeners[event]) {
       this._listeners[event] = []
     }
@@ -11,7 +11,7 @@ export class EventBus {
     this._listeners[event].push(callback)
   }
 
-  off(event: string, callback: EventCallback) {
+  off(event: string, callback: EventCallback<T>) {
     if (!this._listeners[event]) {
       throw new Error(`Нет события: ${event}`)
     }
@@ -19,7 +19,7 @@ export class EventBus {
     this._listeners[event] = this._listeners[event].filter((listener) => listener !== callback)
   }
 
-  emit(event: string, ...args: unknown[]) {
+  emit(event: string, ...args: T[]) {
     if (!this._listeners[event]) {
       throw new Error(`Нет события: ${event}`)
     }

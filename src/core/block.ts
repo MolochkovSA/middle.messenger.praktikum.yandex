@@ -5,15 +5,19 @@ import { compareObjects } from '@/utils'
 import { EventBus } from './event-bus'
 import { BlockEvents, Children, EventListeners, Meta, Props } from './types'
 
-export abstract class Block {
+export abstract class Block<
+  P extends Props = Props,
+  E extends EventListeners = EventListeners,
+  C extends Children = Children
+> {
   private _id: string
   private _eventBus: EventBus
   private _element: HTMLElement | null
-  private _children: Children
-  private _props: Props
-  private _events: EventListeners
+  private _children: C
+  private _props: P
+  private _events: E
 
-  constructor({ props = {}, events = {}, children = {} }: Meta = {}) {
+  constructor({ props = {} as P, events = {} as E, children = {} as C }: Meta<P, E, C> = {}) {
     this._id = crypto.randomUUID()
     this._eventBus = new EventBus()
     this._element = null
@@ -54,21 +58,21 @@ export abstract class Block {
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _isProps(obj: unknown): obj is Props {
+  private _isProps(obj: unknown): obj is P {
     return obj !== null && typeof obj === 'object'
   }
 
   private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
     if (!this._isProps(oldProps) || !this._isProps(newProps)) return
 
-    const response: boolean = this.componentDidUpdate(oldProps, newProps)
+    const isEqual: boolean = this.componentDidUpdate(oldProps, newProps)
 
-    if (!response) {
+    if (!isEqual) {
       this._eventBus.emit(BlockEvents.FLOW_RENDER)
     }
   }
 
-  protected componentDidUpdate(oldProps: Props, newProps: Props): boolean {
+  protected componentDidUpdate(oldProps: P, newProps: P): boolean {
     return compareObjects(oldProps, newProps)
   }
 
@@ -95,18 +99,18 @@ export abstract class Block {
   private _render(): void {
     this._removeEvents()
 
-    const propsAndStubs: Props = { ...this._props }
+    const childrens: Record<string, string | string[]> = {}
 
     Object.entries(this._children).forEach(([key, child]) => {
       if (Array.isArray(child)) {
-        propsAndStubs[key] = child.map((component) => `<div data-id="${component._id}"></div>`)
+        childrens[key] = child.map((component) => `<div data-id="${component._id}"></div>`)
       } else {
-        propsAndStubs[key] = `<div data-id="${child._id}"></div>`
+        childrens[key] = `<div data-id="${child._id}"></div>`
       }
     })
 
     const fragment = this._createDocumentElement('template') as HTMLTemplateElement
-    fragment.innerHTML = Handlebars.compile(this.render())(propsAndStubs)
+    fragment.innerHTML = Handlebars.compile(this.render())({ ...this._props, ...childrens })
 
     Object.values(this._children).forEach((child) => {
       if (Array.isArray(child)) {
@@ -136,21 +140,19 @@ export abstract class Block {
     return ''
   }
 
-  private _makePropsProxy(props: Props): Props {
+  private _makePropsProxy(props: P): P {
     const emitBind = this._eventBus.emit.bind(this._eventBus)
 
     return new Proxy(props, {
-      get(target: Props, prop: string) {
+      get(target: P, prop: string) {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
 
-      set(target: Props, prop: string, value: unknown) {
-        // const oldTarget: Props = structuredClone(target)
-        const oldTarget: Props = { ...target }
-        target[prop] = value
+      set(target: P, prop: string, value: unknown) {
+        const oldTarget = { ...target }
 
-        emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
+        emitBind(BlockEvents.FLOW_CDU, oldTarget, { ...target, [prop]: value })
         return true
       },
 
@@ -167,11 +169,11 @@ export abstract class Block {
     return this._element
   }
 
-  getProps(): Props {
+  getProps(): P {
     return this._props
   }
 
-  setProps(nextProps: Partial<Props>): void {
+  setProps(nextProps: Partial<P>): void {
     if (!nextProps) {
       return
     }
@@ -179,7 +181,7 @@ export abstract class Block {
     Object.assign(this._props, nextProps)
   }
 
-  getChildren(): Children {
+  getChildren(): C {
     return this._children
   }
 

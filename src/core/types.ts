@@ -1,6 +1,6 @@
 import { Block } from './block'
 
-export type EventCallback = (...args: unknown[]) => void
+export type EventCallback<T = unknown> = (...args: T[]) => void
 
 export enum BlockEvents {
   INIT = 'init',
@@ -13,8 +13,8 @@ export type Props = Record<string, unknown>
 export type Children = Record<string, Block | Block[]>
 export type EventListeners = { [key in keyof HTMLElementEventMap]?: (e: Event) => void }
 
-export type Meta = {
-  props?: Props
-  events?: EventListeners
-  children?: Children
+export type Meta<P extends Props, E extends EventListeners, C extends Children> = {
+  props?: P
+  events?: E
+  children?: C
 }

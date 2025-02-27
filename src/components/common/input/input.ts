@@ -10,21 +10,24 @@ export type InputProps = {
   value?: string
   disabled?: boolean
   className?: string
-  onInput?: (e: Event) => void
-  onChange?: (e: Event) => void
-  onFocus?: (e: Event) => void
-  onBlur?: (e: Event) => void
 }
 
-export class Input extends Block {
-  constructor({ onInput, onChange, onBlur, onFocus, ...props }: InputProps) {
+export type InputEvents = {
+  input?: (e: Event) => void
+  change?: (e: Event) => void
+  focus?: (e: Event) => void
+  blur?: (e: Event) => void
+}
+
+export class Input extends Block<InputProps, InputEvents> {
+  constructor({ input, change, focus, blur, ...props }: InputProps & InputEvents) {
     super({
       props,
       events: {
-        input: onInput,
-        change: onChange,
-        focus: onFocus,
-        blur: onBlur,
+        input,
+        change,
+        focus,
+        blur,
       },
     })
   }

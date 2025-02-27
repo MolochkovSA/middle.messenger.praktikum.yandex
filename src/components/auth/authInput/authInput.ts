@@ -1,19 +1,27 @@
 import { Block } from '@/core'
-import { Input, InputProps } from '@/components/common/input'
+import { Input, InputProps, InputEvents } from '@/components/common/input'
 
 import { AuthInputTemplate } from './authInput.tmpl'
 
 import styles from './authInput.module.scss'
 
-type AuthInputProps = Omit<InputProps, 'id'> & {
+type AuthInputProps = {
   label?: string
   isError?: boolean
   errorMessage?: string
   errorEmitter?: (event: string, listener: (errorMessage: string) => void) => void
 }
 
-export class AuthInput extends Block {
-  constructor({ label, isError, errorMessage, errorEmitter, ...inputProps }: AuthInputProps) {
+type AuthInputChildren = { Input: Input }
+
+export class AuthInput extends Block<AuthInputProps & Pick<InputProps, 'id'>, InputEvents, AuthInputChildren> {
+  constructor({
+    label,
+    isError,
+    errorMessage,
+    errorEmitter,
+    ...inputProps
+  }: Omit<InputProps, 'id'> & AuthInputProps & InputEvents) {
     const id = crypto.randomUUID()
     super({
       props: { id, label, isError, errorMessage, errorEmitter },

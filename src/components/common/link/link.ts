@@ -11,7 +11,7 @@ export class Link extends Block {
   constructor({ to, label, className }: LinkProps) {
     super({
       props: {
-        'data-page': to,
+        to,
         className,
         label,
       },

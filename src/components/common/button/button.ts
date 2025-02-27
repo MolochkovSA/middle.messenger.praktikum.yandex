@@ -3,28 +3,30 @@ import { Block } from '@/core'
 import { buttonTemplate } from './button.tmpl'
 
 type ButtonProps = {
-  type: HTMLButtonElement['type']
+  type?: HTMLButtonElement['type']
   label: string | HTMLElement
   disabled?: boolean
   className?: string
-  onClick?: (e: Event) => void
 }
 
-export class Button extends Block {
-  constructor({ onClick, ...props }: ButtonProps) {
+type ButtonEvents = {
+  click?: (e: Event) => void
+}
+
+export class Button extends Block<ButtonProps, ButtonEvents> {
+  constructor({ click, type = 'button', ...props }: ButtonProps & ButtonEvents) {
     super({
-      props,
+      props: {
+        ...props,
+        type,
+      },
       events: {
-        click: onClick,
+        click,
       },
     })
   }
 
   render() {
     return buttonTemplate
-  }
-
-  logTest() {
-    console.log('test')
   }
 }

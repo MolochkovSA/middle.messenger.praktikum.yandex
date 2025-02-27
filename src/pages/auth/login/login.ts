@@ -14,7 +14,18 @@ type LoginPageState = {
     password?: string
   }
 }
-export class LoginPage extends Block {
+
+type LoginPageProps = {
+  state: LoginPageState
+}
+
+type LoginPageChildren = {
+  LoginInput: AuthInput
+  PasswordInput: AuthInput
+  SubmitButton: Button
+  RegisterLink: Link
+}
+export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   private formValidationService: FormValidationService
 
   constructor() {
@@ -36,7 +47,7 @@ export class LoginPage extends Block {
           placeholder: 'Логин',
           label: 'Логин',
           disabled: false,
-          errorEmitter: formValidationService.errorEventOn.bind(formValidationService),
+          errorEmitter: formValidationService.errorEventOn,
         }),
 
         PasswordInput: new AuthInput({
@@ -47,7 +58,7 @@ export class LoginPage extends Block {
           placeholder: 'Пароль',
           label: 'Пароль',
           disabled: false,
-          onChange: (e: Event) => {
+          change: (e: Event) => {
             if (e.target instanceof HTMLInputElement) {
               const prevState = this.getProps().state as LoginPageState
               this.setProps({ state: { ...prevState, password: e.target.value } })

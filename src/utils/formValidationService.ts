@@ -1,8 +1,11 @@
+import { EventBus } from '@/core/event-bus'
+
 export class FormValidationService {
-  listeners: Record<string, (errorMessage: string) => void>
+  private _eventBus: EventBus<string>
 
   constructor() {
-    this.listeners = {}
+    this._eventBus = new EventBus<string>()
+    this.errorEventOn = this.errorEventOn.bind(this)
   }
 
   isName(name: string): boolean {
@@ -43,7 +46,7 @@ export class FormValidationService {
 
       inputs.forEach((input) => {
         input.addEventListener('blur', () => {
-          this.listeners[input.id](input.value)
+          this._eventBus.emit(input.id, input.value)
         })
       })
 
@@ -55,6 +58,6 @@ export class FormValidationService {
   }
 
   errorEventOn(event: string, listener: (errorMessage: string) => void) {
-    this.listeners[event] = listener
+    this._eventBus.on(event, listener)
   }
 }
