@@ -4,4 +4,12 @@
   color: var(--color-white);
   background-color: var(--color-primary);
   font-size: 13px;
+
+  &:hover {
+    filter: brightness(85%);
+  }
+
+  &:disabled {
+    background-color: var(--color-gray);
+  }
 }

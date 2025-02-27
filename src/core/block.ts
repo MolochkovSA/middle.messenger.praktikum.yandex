@@ -34,14 +34,6 @@ export abstract class Block {
 
   init(): void {
     this._eventBus.emit(BlockEvents.FLOW_RENDER)
-
-    Object.values(this._children).forEach((child) => {
-      if (Array.isArray(child)) {
-        child.forEach((component) => component.init())
-      } else {
-        child.init()
-      }
-    })
   }
 
   private _componentDidMount(): void {
@@ -130,8 +122,13 @@ export abstract class Block {
       }
     })
 
-    this._element = fragment.content.firstElementChild as HTMLElement
+    const newElement = fragment.content.firstElementChild as HTMLElement
 
+    if (this._element) {
+      this._element.replaceWith(newElement)
+    }
+
+    this._element = newElement
     this._addEvents()
   }
 
@@ -149,7 +146,8 @@ export abstract class Block {
       },
 
       set(target: Props, prop: string, value: unknown) {
-        const oldTarget: Props = structuredClone(target)
+        // const oldTarget: Props = structuredClone(target)
+        const oldTarget: Props = { ...target }
         target[prop] = value
 
         emitBind(BlockEvents.FLOW_CDU, oldTarget, target)

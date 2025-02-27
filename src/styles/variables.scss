@@ -6,10 +6,11 @@
   --color-white: #fff;
   --color-black: #1e1e1e;
   --color-red: #f00;
+  --color-gray: #999;
   --color-primary: #3369f3;
   --color-background: var(--color-white);
   --color-error: #ff2f2f;
-  --color-gray-text: #999;
+  --color-gray-text: var(--color-gray);
   --color-shadow: rgba(0 0 0 / 14%);
   --color-avatar-background: rgba(0 0 0 / 50%);
   --color-chat-sidebar: #fbfbfb;

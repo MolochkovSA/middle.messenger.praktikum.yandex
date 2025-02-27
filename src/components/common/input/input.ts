@@ -7,7 +7,7 @@ export type InputProps = {
   type: HTMLInputElement['type']
   name: string
   placeholder: string
-  value: string
+  value?: string
   disabled?: boolean
   className?: string
   onInput?: (e: Event) => void

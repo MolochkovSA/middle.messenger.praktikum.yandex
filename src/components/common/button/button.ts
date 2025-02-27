@@ -23,4 +23,8 @@ export class Button extends Block {
   render() {
     return buttonTemplate
   }
+
+  logTest() {
+    console.log('test')
+  }
 }

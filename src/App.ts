@@ -30,7 +30,9 @@ export class App implements IApp {
     const route = router[this.state.currentPage]
 
     if (typeof route === 'function') {
-      this.appElement.replaceChildren(new route().getContent())
+      const page = new route()
+      this.appElement.replaceChildren(page.getContent())
+      page.dispatchComponentDidMount()
     } else {
       this.appElement.innerHTML = route
     }

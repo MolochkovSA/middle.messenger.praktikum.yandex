@@ -1,5 +1,6 @@
 import { Block } from '@/core'
 import { Button, AuthInput, Link } from '@/components'
+import { FormValidationService } from '@/utils'
 
 import { loginPageTemplate } from './login.tmpl'
 
@@ -14,7 +15,10 @@ type LoginPageState = {
   }
 }
 export class LoginPage extends Block {
+  private formValidationService: FormValidationService
+
   constructor() {
+    const formValidationService = new FormValidationService()
     const state: LoginPageState = {
       login: '',
       password: '',
@@ -27,19 +31,12 @@ export class LoginPage extends Block {
       },
       children: {
         LoginInput: new AuthInput({
-          value: state.login,
-          errorMessage: state.errors.login,
           type: 'text',
           name: 'login',
           placeholder: 'Логин',
           label: 'Логин',
           disabled: false,
-          onChange: (e: Event) => {
-            if (e.target instanceof HTMLInputElement) {
-              const prevState = this.getProps().state as LoginPageState
-              this.setProps({ state: { ...prevState, login: e.target.value } })
-            }
-          },
+          errorEmitter: formValidationService.errorEventOn.bind(formValidationService),
         }),
 
         PasswordInput: new AuthInput({
@@ -62,10 +59,6 @@ export class LoginPage extends Block {
           type: 'submit',
           label: 'Авторизоваться',
           className: styles.button,
-          onClick: (e: Event) => {
-            e.preventDefault()
-            console.log(this.getProps().state)
-          },
         }),
 
         RegisterLink: new Link({
@@ -75,9 +68,15 @@ export class LoginPage extends Block {
         }),
       },
     })
+
+    this.formValidationService = formValidationService
   }
 
   render(): string {
     return loginPageTemplate
+  }
+
+  componentDidMount(): void {
+    this.formValidationService.log(this.getContent())
   }
 }
