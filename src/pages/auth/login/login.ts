@@ -42,6 +42,9 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
       },
       children: {
         LoginInput: new AuthInput({
+          value: state.login,
+          errorMessage: state.errors.login,
+          isError: true,
           type: 'text',
           name: 'login',
           placeholder: 'Логин',
@@ -58,12 +61,7 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
           placeholder: 'Пароль',
           label: 'Пароль',
           disabled: false,
-          change: (e: Event) => {
-            if (e.target instanceof HTMLInputElement) {
-              const prevState = this.getProps().state as LoginPageState
-              this.setProps({ state: { ...prevState, password: e.target.value } })
-            }
-          },
+          errorEmitter: formValidationService.errorEventOn,
         }),
 
         SubmitButton: new Button({

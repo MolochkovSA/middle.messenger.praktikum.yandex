@@ -152,7 +152,9 @@ export abstract class Block<
       set(target: P, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
-        emitBind(BlockEvents.FLOW_CDU, oldTarget, { ...target, [prop]: value })
+        ;(target as Props)[prop] = value
+
+        emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
         return true
       },
 

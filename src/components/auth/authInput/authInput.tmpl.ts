@@ -1,11 +1,11 @@
 import styles from './authInput.module.scss'
 
 export const AuthInputTemplate = `
-  <div class="${styles.authInput}">
+  <div class="${styles.authInput} {{#if isError}}${styles.isError}{{/if}}">
     {{{ Input }}}
     
     {{#if label}}
-      <label for={{id}} class="${styles.label} {{#if isError}}${styles.isError}{{/if}}">{{label}}</label>
+      <label for={{id}} class="${styles.label}">{{label}}</label>
     {{/if}} 
 
     {{#if errorMessage}}

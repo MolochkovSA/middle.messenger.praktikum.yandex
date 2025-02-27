@@ -38,14 +38,12 @@ export class AuthInput extends Block<AuthInputProps & Pick<InputProps, 'id'>, In
   componentDidMount(): void {
     const { errorEmitter } = this.getProps()
 
-    if (!errorEmitter) return
-    ;(errorEmitter as (event: string, listener: (errorMessage: string) => void) => void)(
-      this.getProps().id as string,
-      (errorMessage: string) => {
-        console.log(errorMessage)
+    if (errorEmitter) {
+      const eventKey: string = this.getProps().id
 
+      errorEmitter(eventKey, (errorMessage: string) => {
         this.setProps({ errorMessage })
-      }
-    )
+      })
+    }
   }
 }
