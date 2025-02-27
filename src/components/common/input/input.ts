@@ -2,10 +2,12 @@ import { Block } from '@/core'
 
 import { inputTemplate } from './input.tmpl'
 
+export type InputName = 'first_name' | 'second_name' | 'login' | 'email' | 'password' | 'phone' | 'message'
+
 export type InputProps = {
   id: string
   type: HTMLInputElement['type']
-  name: string
+  name: InputName
   placeholder: string
   value?: string
   disabled?: boolean

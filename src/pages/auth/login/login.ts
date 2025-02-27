@@ -1,6 +1,6 @@
 import { Block } from '@/core'
 import { Button, AuthInput, Link } from '@/components'
-import { FormValidationService } from '@/utils'
+import { FormControlService } from '@/services'
 
 import { loginPageTemplate } from './login.tmpl'
 
@@ -26,10 +26,10 @@ type LoginPageChildren = {
   RegisterLink: Link
 }
 export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
-  private formValidationService: FormValidationService
+  private formControlService: FormControlService
 
   constructor() {
-    const formValidationService = new FormValidationService()
+    const formValidationService = new FormControlService()
     const state: LoginPageState = {
       login: '',
       password: '',
@@ -50,7 +50,7 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
           placeholder: 'Логин',
           label: 'Логин',
           disabled: false,
-          errorEmitter: formValidationService.errorEventOn,
+          errorListener: formValidationService.attachErrorListener,
         }),
 
         PasswordInput: new AuthInput({
@@ -61,7 +61,7 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
           placeholder: 'Пароль',
           label: 'Пароль',
           disabled: false,
-          errorEmitter: formValidationService.errorEventOn,
+          errorListener: formValidationService.attachErrorListener,
         }),
 
         SubmitButton: new Button({
@@ -78,7 +78,7 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
       },
     })
 
-    this.formValidationService = formValidationService
+    this.formControlService = formValidationService
   }
 
   render(): string {
@@ -86,6 +86,6 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   }
 
   componentDidMount(): void {
-    this.formValidationService.log(this.getContent())
+    this.formControlService.init(this.getContent())
   }
 }

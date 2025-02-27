@@ -9,7 +9,7 @@ type AuthInputProps = {
   label?: string
   isError?: boolean
   errorMessage?: string
-  errorEmitter?: (event: string, listener: (errorMessage: string) => void) => void
+  errorListener?: (event: string, listener: (errorMessage: string) => void) => void
 }
 
 type AuthInputChildren = { Input: Input }
@@ -19,12 +19,12 @@ export class AuthInput extends Block<AuthInputProps & Pick<InputProps, 'id'>, In
     label,
     isError,
     errorMessage,
-    errorEmitter,
+    errorListener,
     ...inputProps
   }: Omit<InputProps, 'id'> & AuthInputProps & InputEvents) {
     const id = crypto.randomUUID()
     super({
-      props: { id, label, isError, errorMessage, errorEmitter },
+      props: { id, label, isError, errorMessage, errorListener },
       children: {
         Input: new Input({ ...inputProps, id, className: styles.input }),
       },
@@ -36,7 +36,7 @@ export class AuthInput extends Block<AuthInputProps & Pick<InputProps, 'id'>, In
   }
 
   componentDidMount(): void {
-    const { errorEmitter } = this.getProps()
+    const { errorListener: errorEmitter } = this.getProps()
 
     if (errorEmitter) {
       const eventKey: string = this.getProps().id
