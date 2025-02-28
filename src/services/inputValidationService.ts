@@ -1,11 +1,14 @@
-import { InputName } from '@/components/common/input'
+export type ValidationSchemaName = 'name' | 'login' | 'email' | 'password' | 'phone' | 'message'
 
 type ValidationTest = (args: { value: string; minLength?: number; maxLength?: number }) => string
 
-type ValidationSchemas = Record<InputName, { minLength?: number; maxLength?: number; tests: ValidationTest[] }>
+type ValidationSchemas = Record<
+  ValidationSchemaName,
+  { minLength?: number; maxLength?: number; tests: ValidationTest[] }
+>
 
 export class InputValidationService {
-  static checkValue(schemaName: InputName, value: string): string {
+  static checkValue(schemaName: ValidationSchemaName, value: string): string {
     const { tests, minLength, maxLength } = this.schemas[schemaName]
 
     let result = ''
@@ -21,6 +24,10 @@ export class InputValidationService {
     })
 
     return result
+  }
+
+  static isValidationSchemaName(name?: string): name is ValidationSchemaName {
+    return !!name && Object.hasOwn(this.schemas, name)
   }
 
   private static requireValueTest: ValidationTest = ({ value }): string => {
@@ -62,8 +69,7 @@ export class InputValidationService {
   }
 
   private static schemas: ValidationSchemas = {
-    first_name: { tests: [this.requireValueTest, this.isNameTest] },
-    second_name: { tests: [this.requireValueTest, this.isNameTest] },
+    name: { tests: [this.requireValueTest, this.isNameTest] },
     login: {
       minLength: 3,
       maxLength: 20,

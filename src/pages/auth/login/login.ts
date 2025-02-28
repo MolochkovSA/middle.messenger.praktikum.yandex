@@ -6,62 +6,36 @@ import { loginPageTemplate } from './login.tmpl'
 
 import styles from './login.module.scss'
 
-type LoginPageState = {
-  login: string
-  password: string
-  errors: {
-    login?: string
-    password?: string
-  }
-}
-
-type LoginPageProps = {
-  state: LoginPageState
-}
-
 type LoginPageChildren = {
   LoginInput: AuthInput
   PasswordInput: AuthInput
   SubmitButton: Button
   RegisterLink: Link
 }
-export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
+export class LoginPage extends Block<{}, {}, LoginPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
-    const state: LoginPageState = {
-      login: '',
-      password: '',
-      errors: {},
-    }
 
     super({
-      props: {
-        state,
-      },
       children: {
         LoginInput: new AuthInput({
-          value: state.login,
-          errorMessage: state.errors.login,
-          isError: true,
           type: 'text',
           name: 'login',
           placeholder: 'Логин',
           label: 'Логин',
-          disabled: false,
-          errorListener: formValidationService.attachErrorListener,
+          validator: 'login',
+          errorListener: formValidationService.attachErrorHandler,
         }),
 
         PasswordInput: new AuthInput({
-          value: state.password,
-          errorMessage: state.errors.password,
           type: 'password',
           name: 'password',
           placeholder: 'Пароль',
           label: 'Пароль',
-          disabled: false,
-          errorListener: formValidationService.attachErrorListener,
+          validator: 'password',
+          errorListener: formValidationService.attachErrorHandler,
         }),
 
         SubmitButton: new Button({

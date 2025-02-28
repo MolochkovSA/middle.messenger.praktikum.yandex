@@ -1,17 +1,17 @@
 import { Block } from '@/core'
+import { ValidationSchemaName } from '@/services'
 
 import { inputTemplate } from './input.tmpl'
-
-export type InputName = 'first_name' | 'second_name' | 'login' | 'email' | 'password' | 'phone' | 'message'
 
 export type InputProps = {
   id: string
   type: HTMLInputElement['type']
-  name: InputName
+  name: string
   placeholder: string
   value?: string
   disabled?: boolean
   className?: string
+  validator?: ValidationSchemaName
 }
 
 export type InputEvents = {

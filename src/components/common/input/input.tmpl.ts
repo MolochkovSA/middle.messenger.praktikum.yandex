@@ -6,7 +6,11 @@ export const inputTemplate = `
     class="{{className}}" 
     placeholder="{{placeholder}}" 
     value="{{value}}"
-     
+
+    {{#if validator}}
+      data-validator="{{validator}}"
+    {{/if}}
+
     {{#if disabled}}
       disabled
     {{/if}}
