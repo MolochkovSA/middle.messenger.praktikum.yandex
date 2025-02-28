@@ -4,22 +4,16 @@ import { AppRoutes, router } from './router'
 
 type State = { currentPage: AppRoutes }
 
-interface IApp {
-  readonly state: State
-  readonly appElement: HTMLDivElement
-  render(): void
-}
-
-export class App implements IApp {
-  appElement: HTMLDivElement
-  state: State
+export class App {
+  private _appElement: HTMLDivElement
+  private _state: State
 
   constructor() {
-    this.appElement = document.querySelector<HTMLDivElement>('#app')!
+    this._appElement = document.querySelector<HTMLDivElement>('#app')!
 
     const currentPath = window.location.pathname
 
-    this.state = {
+    this._state = {
       currentPage: Object.values<string>(AppRoutes).includes(currentPath)
         ? (currentPath as AppRoutes)
         : AppRoutes.NOTFOUND,
@@ -27,20 +21,20 @@ export class App implements IApp {
   }
 
   render() {
-    const route = router[this.state.currentPage]
+    const route = router[this._state.currentPage]
 
     if (typeof route === 'function') {
       const page = new route()
-      this.appElement.replaceChildren(page.getContent())
+      this._appElement.replaceChildren(page.getContent())
       page.dispatchComponentDidMount()
     } else {
-      this.appElement.innerHTML = route
+      this._appElement.innerHTML = route
     }
 
-    this.attachEventListeners()
+    this._attachEventListeners()
   }
 
-  attachEventListeners() {
+  private _attachEventListeners() {
     document.querySelectorAll('[data-page]').forEach((link) => {
       link.addEventListener('click', (e) => {
         e.preventDefault()
@@ -49,14 +43,14 @@ export class App implements IApp {
 
         if (element instanceof HTMLAnchorElement) {
           const page = element.dataset.page
-          this.changePage(page as AppRoutes)
+          this._changePage(page as AppRoutes)
         }
       })
     })
   }
 
-  changePage(page: AppRoutes) {
-    this.state.currentPage = page
+  private _changePage(page: AppRoutes) {
+    this._state.currentPage = page
     this.render()
   }
 }
