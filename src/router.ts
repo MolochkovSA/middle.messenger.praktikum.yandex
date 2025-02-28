@@ -14,7 +14,7 @@ import {
 export enum AppRoutes {
   NAVIGATION = '/',
   LOGIN = '/login',
-  // REGISTER = '/register',
+  REGISTER = '/register',
   // NOTFOUND = '/not-found',
   // SERVERERROR = '/server-error',
   // CHAT = '/chat',
@@ -28,7 +28,7 @@ export const router: Record<AppRoutes, string | (new () => Block)> = {
   // [AppRoutes.NOTFOUND]: NotFoundPage(),
   // [AppRoutes.SERVERERROR]: ServerErrorPage(),
   [AppRoutes.LOGIN]: LoginPage,
-  // [AppRoutes.REGISTER]: RegisterPage(),
+  [AppRoutes.REGISTER]: RegisterPage,
   // [AppRoutes.CHAT]: ChatPage(),
   // [AppRoutes.PROFILE]: ProfileInfoPage(),
   // [AppRoutes.PROFILE_EDIT]: ProfileEditPage(),
