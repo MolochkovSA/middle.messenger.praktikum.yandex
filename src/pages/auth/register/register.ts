@@ -6,26 +6,6 @@ import { registerPageTemplate } from './register.tmpl'
 
 import styles from './register.module.scss'
 
-// type RegisterProps = {
-//   email: InputProps
-//   login: InputProps
-//   first_name: InputProps
-//   second_name: InputProps
-//   phone: InputProps
-//   password: InputProps
-//   password_repeat: InputProps
-// }
-
-// const state: RegisterProps = {
-//     email: { value: 'pochta@yandex.ru' },
-//     login: { value: 'ivanivanov' },
-//     first_name: { value: 'Иван' },
-//     second_name: { value: 'Иванов' },
-//     phone: { value: '+7(909)967-30-30' },
-//     password: { value: '1234567', isError: true },
-//     password_repeat: { value: '1234568', isError: true, errorMessage: 'Пароли не совпадают' },
-//   }
-
 type RegisterPageChildren = {
   EmailInput: AuthInput
   LoginInput: AuthInput
