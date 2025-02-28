@@ -1,5 +1,5 @@
 import { Block } from '@/core'
-import { Button, AuthInput, Link } from '@/components'
+import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
 
 import { registerPageTemplate } from './register.tmpl'
@@ -7,13 +7,13 @@ import { registerPageTemplate } from './register.tmpl'
 import styles from './register.module.scss'
 
 type RegisterPageChildren = {
-  EmailInput: AuthInput
-  LoginInput: AuthInput
-  FirstNameInput: AuthInput
-  SecondNameInput: AuthInput
-  PhoneInput: AuthInput
-  PasswordInput: AuthInput
-  PasswordRepeatInput: AuthInput
+  EmailInput: AuthInputField
+  LoginInput: AuthInputField
+  FirstNameInput: AuthInputField
+  SecondNameInput: AuthInputField
+  PhoneInput: AuthInputField
+  PasswordInput: AuthInputField
+  PasswordRepeatInput: AuthInputField
   SubmitButton: Button
   LoginLink: Link
 }
@@ -25,7 +25,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
 
     super({
       children: {
-        EmailInput: new AuthInput({
+        EmailInput: new AuthInputField({
           type: 'email',
           name: 'email',
           placeholder: 'Почта',
@@ -34,7 +34,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        LoginInput: new AuthInput({
+        LoginInput: new AuthInputField({
           type: 'text',
           name: 'login',
           placeholder: 'Логин',
@@ -43,7 +43,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        FirstNameInput: new AuthInput({
+        FirstNameInput: new AuthInputField({
           type: 'text',
           name: 'first_name',
           placeholder: 'Имя',
@@ -52,7 +52,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        SecondNameInput: new AuthInput({
+        SecondNameInput: new AuthInputField({
           type: 'text',
           name: 'second_name',
           placeholder: 'Фамилия',
@@ -61,7 +61,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        PhoneInput: new AuthInput({
+        PhoneInput: new AuthInputField({
           type: 'tel',
           name: 'phone',
           placeholder: 'Телефон',
@@ -70,7 +70,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        PasswordInput: new AuthInput({
+        PasswordInput: new AuthInputField({
           type: 'password',
           name: 'password',
           placeholder: 'Пароль',
@@ -79,7 +79,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        PasswordRepeatInput: new AuthInput({
+        PasswordRepeatInput: new AuthInputField({
           type: 'password',
           name: 'password_repeat',
           placeholder: 'Пароль (ещё раз)',

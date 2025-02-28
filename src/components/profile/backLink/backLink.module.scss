@@ -1,0 +1,11 @@
+.link {
+  height: 100vh;
+  background-color: var(--color-chat-sidebar);
+  display: flex;
+  align-items: center;
+
+  img {
+    transform: rotate(180deg);
+    padding: 0 18px;
+  }
+}

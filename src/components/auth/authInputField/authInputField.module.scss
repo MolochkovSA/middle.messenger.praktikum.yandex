@@ -1,0 +1,33 @@
+.input {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 25px;
+
+  label {
+    display: none;
+    position: absolute;
+    top: -8px;
+    font-weight: 500;
+    font-size: 9px;
+    line-height: 100%;
+    color: var(--color-gray-text);
+  }
+
+  input {
+    border-bottom: 1px solid var(--color-primary);
+    padding: 7px 0;
+    margin-bottom: 7px;
+  }
+
+  input:not(:placeholder-shown) + label {
+    display: block;
+  }
+
+  p {
+    color: var(--color-error);
+    font-weight: 400;
+    font-size: 8px;
+  }
+}

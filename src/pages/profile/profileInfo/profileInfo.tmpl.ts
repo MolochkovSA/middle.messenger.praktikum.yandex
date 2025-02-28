@@ -1,47 +1,27 @@
 import styles from './profileInfo.module.scss'
 
-export type ProfileInfoProps = {
-  email: string
-  login: string
-  first_name: string
-  second_name: string
-  display_name: string
-  phone: string
-}
-
-export const ProfileInfo = `
+export const profileInfoPageTemplate = `
   {{#> ProfileLayout}}
-    <h2 class=${styles.title}>{{display_name}}</h2>
+    <h2 class=${styles.title}>{{ title }}</h2>
 
     <form class=${styles.form}>
-      {{> ProfileInput id="email" type="email" name="email" label="Почта" value=email disabled=true}}
-      {{> ProfileInput id="login" type="text" name="login" label="Логин" value=login disabled=true}}
-      {{> ProfileInput id="first_name" type="text" name="first_name" label="Имя" value=first_name disabled=true}}
-      {{> ProfileInput id="second_name" type="text" name="second_name" label="Фамилия" value=second_name disabled=true}}
+      {{{ EmailInput }}}
 
-      {{> ProfileInput 
-       id="display_name" 
-       type="text" 
-       name="display_name" 
-       label="Имя в чате" 
-       value=display_name 
-       disabled=true
-      }}
+      {{{ LoginInput }}}
 
-      {{> ProfileInput id="phone" type="text" name="phone" label="Телефон" value=phone disabled=true}}
+      {{{ FirstNameInput }}}
+
+      {{{ SecondNameInput }}}
+
+      {{{ DisplayNameInput }}}
+
+      {{{ PhoneInput }}}
     </form>
 
-    {{#> Link className="${styles.link}" data-page="/profile/edit"}} 
-      <span>Изменить данные</span>
-    {{/ Link}}
+    {{{ ProfileChangeLink }}}
 
-    {{#> Link className="${styles.link}" data-page="/profile/password"}} 
-      <span>Изменить пароль</span>
-    {{/ Link}}
+    {{{ PasswordChangeLink }}}
 
-    {{#> Link className="${styles.link}" data-page="/login"}} 
-      <span>Выйти</span>
-    {{/ Link}}
-    
+    {{{ LogoutLink }}}
   {{/ ProfileLayout}}
 `

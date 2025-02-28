@@ -1,5 +1,5 @@
 import { Block } from '@/core'
-import { Button, AuthInput, Link } from '@/components'
+import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
 
 import { loginPageTemplate } from './login.tmpl'
@@ -7,8 +7,8 @@ import { loginPageTemplate } from './login.tmpl'
 import styles from './login.module.scss'
 
 type LoginPageChildren = {
-  LoginInput: AuthInput
-  PasswordInput: AuthInput
+  LoginInput: AuthInputField
+  PasswordInput: AuthInputField
   SubmitButton: Button
   RegisterLink: Link
 }
@@ -20,7 +20,7 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
 
     super({
       children: {
-        LoginInput: new AuthInput({
+        LoginInput: new AuthInputField({
           type: 'text',
           name: 'login',
           placeholder: 'Логин',
@@ -29,7 +29,7 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
           errorListener: formValidationService.attachErrorHandler,
         }),
 
-        PasswordInput: new AuthInput({
+        PasswordInput: new AuthInputField({
           type: 'password',
           name: 'password',
           placeholder: 'Пароль',

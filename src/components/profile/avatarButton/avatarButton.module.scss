@@ -1,0 +1,33 @@
+.button {
+  display: block;
+  position: relative;
+  padding: 0;
+  background-color: transparent;
+  border-radius: 50%;
+
+  .avatar {
+    width: 130px;
+    height: 130px;
+    border-radius: 50%;
+  }
+
+  .mask {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    inset: 0;
+    background: var(--color-avatar-background);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.4s linear;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    span {
+      max-width: 64px;
+    }
+  }
+}

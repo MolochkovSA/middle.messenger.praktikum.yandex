@@ -6,8 +6,8 @@ import { inputTemplate } from './input.tmpl'
 export type InputProps = {
   id: string
   type: HTMLInputElement['type']
-  name: string
-  placeholder: string
+  name?: string
+  placeholder?: string
   value?: string
   disabled?: boolean
   className?: string
