@@ -3,7 +3,7 @@
   align-self: stretch;
   min-width: max-content;
 
-  button {
+  & > button {
     display: block;
     margin: 50px auto;
     padding: 12px 110px;

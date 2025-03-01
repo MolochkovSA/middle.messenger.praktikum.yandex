@@ -5,10 +5,6 @@ import { FormControlService } from '@/services'
 import { profileEditPageTemplate } from './profileEdit.tmpl'
 import { user } from '../mockData'
 
-type ProfileEditProps = {
-  title: string
-}
-
 type ProfileEditPageChildren = {
   BackLink: BackLink
   AvataButton: AvataButton
@@ -21,16 +17,13 @@ type ProfileEditPageChildren = {
   SubmitButton: Button
 }
 
-export class ProfileEditPage extends Block<ProfileEditProps, {}, ProfileEditPageChildren> {
+export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
 
     super({
-      props: {
-        title: user.display_name,
-      },
       children: {
         BackLink: new BackLink(),
         AvataButton: new AvataButton({ disabled: true }),

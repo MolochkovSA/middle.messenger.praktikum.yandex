@@ -20,7 +20,7 @@ export enum AppRoutes {
   // CHAT = '/chat',
   PROFILE = '/profile',
   PROFILE_EDIT = '/profile/edit',
-  // PROFILE_PASSWORD = '/profile/password',
+  PROFILE_PASSWORD = '/profile/password',
 }
 
 export const router: Record<AppRoutes, string | (new () => Block)> = {
@@ -32,5 +32,5 @@ export const router: Record<AppRoutes, string | (new () => Block)> = {
   // [AppRoutes.CHAT]: ChatPage(),
   [AppRoutes.PROFILE]: ProfileInfoPage,
   [AppRoutes.PROFILE_EDIT]: ProfileEditPage,
-  // [AppRoutes.PROFILE_PASSWORD]: ProfilePasswordPage(),
+  [AppRoutes.PROFILE_PASSWORD]: ProfilePasswordPage,
 }
