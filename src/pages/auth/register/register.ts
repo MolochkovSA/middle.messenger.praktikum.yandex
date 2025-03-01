@@ -75,7 +75,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'password',
           placeholder: 'Пароль',
           label: 'Пароль',
-          validator: 'password',
+          validator: 'equalPassword',
           errorListener: formValidationService.attachErrorHandler,
         }),
 
@@ -84,7 +84,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'password_repeat',
           placeholder: 'Пароль (ещё раз)',
           label: 'Пароль (ещё раз)',
-          validator: 'password',
+          validator: 'equalPassword',
           errorListener: formValidationService.attachErrorHandler,
         }),
 

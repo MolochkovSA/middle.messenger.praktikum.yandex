@@ -1,4 +1,4 @@
-export type ValidationSchemaName = 'name' | 'login' | 'email' | 'password' | 'phone' | 'message'
+export type ValidationSchemaName = 'name' | 'login' | 'email' | 'password' | 'equalPassword' | 'phone' | 'message'
 
 type ValidationTest = (args: { value: string; minLength?: number; maxLength?: number }) => string
 
@@ -24,6 +24,10 @@ export class InputValidationService {
     })
 
     return result
+  }
+
+  static checkEqualPasswords(passwordValues: string[]): string {
+    return new Set(passwordValues).size === 1 ? '' : 'Пароли должны совпадать'
   }
 
   static isValidationSchemaName(name?: string): name is ValidationSchemaName {
@@ -77,6 +81,11 @@ export class InputValidationService {
     },
     email: { tests: [this.requireValueTest, this.isEmailTest] },
     password: {
+      minLength: 8,
+      maxLength: 40,
+      tests: [this.requireValueTest, this.minLengthTest, this.maxLengthTest, this.isPasswordTest],
+    },
+    equalPassword: {
       minLength: 8,
       maxLength: 40,
       tests: [this.requireValueTest, this.minLengthTest, this.maxLengthTest, this.isPasswordTest],

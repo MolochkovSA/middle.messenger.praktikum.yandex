@@ -1,5 +1,5 @@
 import { EventBus } from '@/core/event-bus'
-import { InputValidationService } from './inputValidationService'
+import { InputValidationService, ValidationSchemaName } from './inputValidationService'
 
 type FormInput = { element: HTMLInputElement; errorMessage?: string }
 type FormInputs = Record<string, FormInput>
@@ -43,14 +43,20 @@ export class FormControlService {
   }
 
   private _attachBlurHandlers(form: Form): void {
-    Object.values(form.inputs).forEach(({ element }) => {
+    const inputs: FormInput[] = Object.values(form.inputs)
+    const passwordInputs = inputs.filter(({ element }) => element.dataset.validator === 'equalPassword')
+
+    inputs.forEach(({ element }) => {
       const valitionSchemaName = element.dataset.validator
 
       if (InputValidationService.isValidationSchemaName(valitionSchemaName)) {
         element.onblur = () => {
-          const errorMeasage = InputValidationService.checkValue(valitionSchemaName, element.value)
-          form.inputs[element.id].errorMessage = errorMeasage
-          this._eventBus.emit(element.id, errorMeasage)
+          if (valitionSchemaName === 'equalPassword') {
+            this._checkEqualPasswords(passwordInputs, form.inputs[element.id], element, valitionSchemaName)
+            return
+          }
+
+          this._checkInputValue(form.inputs[element.id], element, valitionSchemaName)
         }
       }
     })
@@ -77,5 +83,35 @@ export class FormControlService {
     const inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
 
     return new Form(form, inputs, submitButton)
+  }
+
+  private _checkInputValue(
+    input: FormInput,
+    element: HTMLInputElement,
+    valitionSchemaName: ValidationSchemaName
+  ): boolean {
+    const errorMeasage = InputValidationService.checkValue(valitionSchemaName, element.value)
+    input.errorMessage = errorMeasage
+    this._eventBus.emit(element.id, errorMeasage)
+
+    return !errorMeasage
+  }
+
+  private _checkEqualPasswords(
+    passwordInputs: FormInput[],
+    targetInput: FormInput,
+    targetElement: HTMLInputElement,
+    valitionSchemaName: ValidationSchemaName
+  ): void {
+    const isError = this._checkInputValue(targetInput, targetElement, valitionSchemaName)
+
+    if (!isError) return
+
+    const errorMeasage = InputValidationService.checkEqualPasswords(passwordInputs.map((input) => input.element.value))
+
+    passwordInputs.forEach((input) => {
+      input.errorMessage = errorMeasage
+      this._eventBus.emit(input.element.id, errorMeasage)
+    })
   }
 }

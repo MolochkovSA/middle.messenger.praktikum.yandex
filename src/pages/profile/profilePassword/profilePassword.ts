@@ -27,16 +27,22 @@ export class ProfilePasswordPage extends Block<{}, {}, ProfilePasswordPageChildr
           type: 'password',
           name: 'oldPassword',
           label: 'Старый пароль',
+          validator: 'password',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         NewPasswordInput: new ProfileInputField({
           type: 'password',
           name: 'newPassword',
           label: 'Новый пароль',
+          validator: 'equalPassword',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         NewPasswordRepeatInput: new ProfileInputField({
           type: 'password',
           name: 'newPasswordRepeat',
           label: 'Повторите новый пароль',
+          validator: 'equalPassword',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         SubmitButton: new Button({
           type: 'submit',
