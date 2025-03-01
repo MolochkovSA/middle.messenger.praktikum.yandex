@@ -1,14 +1,15 @@
 import { Block } from '@/core'
-import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
+import { AvataButton, BackLink, Button, ProfileInputField } from '@/components'
+import { FormControlService } from '@/services'
 
-import { profileInfoPageTemplate } from './profileInfo.tmpl'
+import { profileEditPageTemplate } from './profileEdit.tmpl'
 import { user } from '../mockData'
 
-type ProfileInfoProps = {
+type ProfileEditProps = {
   title: string
 }
 
-type ProfileInfoPageChildren = {
+type ProfileEditPageChildren = {
   BackLink: BackLink
   AvataButton: AvataButton
   EmailInput: ProfileInputField
@@ -17,79 +18,73 @@ type ProfileInfoPageChildren = {
   SecondNameInput: ProfileInputField
   DisplayNameInput: ProfileInputField
   PhoneInput: ProfileInputField
-  ProfileChangeLink: Link
-  PasswordChangeLink: Link
-  LogoutLink: Link
+  SubmitButton: Button
 }
 
-export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
+export class ProfileEditPage extends Block<ProfileEditProps, {}, ProfileEditPageChildren> {
+  private formControlService: FormControlService
+
   constructor() {
+    const formValidationService = new FormControlService()
+
     super({
       props: {
         title: user.display_name,
       },
       children: {
         BackLink: new BackLink(),
-        AvataButton: new AvataButton(),
+        AvataButton: new AvataButton({ disabled: true }),
         EmailInput: new ProfileInputField({
           type: 'email',
           name: 'email',
           label: 'Почта',
           value: user.email,
-          disabled: true,
         }),
         LoginInput: new ProfileInputField({
           type: 'text',
           name: 'login',
           label: 'Логин',
           value: user.login,
-          disabled: true,
         }),
         FirstNameInput: new ProfileInputField({
           type: 'text',
           name: 'first_name',
           label: 'Имя',
           value: user.first_name,
-          disabled: true,
         }),
         SecondNameInput: new ProfileInputField({
           type: 'text',
           name: 'second_name',
           label: 'Фамилия',
           value: user.second_name,
-          disabled: true,
         }),
         DisplayNameInput: new ProfileInputField({
           type: 'text',
           name: 'display_name',
           label: 'Имя в чате',
           value: user.display_name,
-          disabled: true,
         }),
         PhoneInput: new ProfileInputField({
           type: 'text',
           name: 'phone',
           label: 'Телефон',
           value: user.phone,
-          disabled: true,
         }),
-        ProfileChangeLink: new Link({
-          label: 'Изменить данные',
-          to: '/profile/edit',
-        }),
-        PasswordChangeLink: new Link({
-          label: 'Изменить пароль',
-          to: '/profile/password',
-        }),
-        LogoutLink: new Link({
-          label: 'Выйти',
-          to: '/login',
+        SubmitButton: new Button({
+          type: 'submit',
+          label: 'Сохранить',
         }),
       },
     })
+
+    this.formControlService = formValidationService
   }
 
   render(): string {
-    return profileInfoPageTemplate
+    return profileEditPageTemplate
+  }
+
+  componentDidMount(): void {
+    this.formControlService.init(this.getContent())
   }
 }

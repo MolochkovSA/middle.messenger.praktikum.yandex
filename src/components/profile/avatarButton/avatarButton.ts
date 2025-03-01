@@ -16,15 +16,16 @@ type AvatarButtonChildren = {
 }
 
 export class AvataButton extends Block<AvatarButtonProps, {}, AvatarButtonChildren> {
-  constructor() {
+  constructor({ disabled }: { disabled?: boolean } = {}) {
     super({
       props: {
         avatar: defaultAvatar,
       },
       children: {
         Button: new Button({
-          label: getButtonLabel(defaultAvatar),
+          label: getButtonLabel(defaultAvatar, disabled),
           className: styles.button,
+          disabled,
         }),
       },
     })

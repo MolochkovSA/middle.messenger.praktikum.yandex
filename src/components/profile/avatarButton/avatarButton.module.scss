@@ -11,6 +11,10 @@
     border-radius: 50%;
   }
 
+  &:disabled {
+    cursor: default;
+  }
+
   .mask {
     display: flex;
     align-items: center;
