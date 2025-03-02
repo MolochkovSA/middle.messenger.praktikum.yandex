@@ -5,13 +5,6 @@ import circlePlusIcon from '@/assets/circlePlus.svg'
 
 import styles from './contactChat.module.scss'
 
-import { Contact } from '@/pages/chat/types'
-
-export type ContactChatProps = {
-  contact: Contact
-  isChatMenuOpen?: boolean
-}
-
 export const ContactChat = `
   <div class=${styles.chat}>
     <header class=${styles.header}>

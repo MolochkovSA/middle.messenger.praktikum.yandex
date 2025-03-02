@@ -1,4 +1,4 @@
-import { EventBus } from '@/core/event-bus'
+import { EventBus } from '@/core'
 import { InputValidationService, ValidationSchemaName } from './inputValidationService'
 
 type FormInput = { element: HTMLInputElement; errorMessage?: string }

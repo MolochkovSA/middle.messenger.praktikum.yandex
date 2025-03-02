@@ -1,6 +1,7 @@
 export type Contact = {
   id: string
   name: string
+  avatar?: string
   messagesGroup: { date: string; messages: Message[] }[]
 }
 
@@ -30,7 +31,7 @@ export type Message = {
     }
 )
 
-export type ContactItem = Pick<Contact, 'id' | 'name'> & {
+export type ContactItem = Pick<Contact, 'id' | 'name' | 'avatar'> & {
   lastMessage: Pick<Message, 'type' | 'text'> & {
     date: string
   }

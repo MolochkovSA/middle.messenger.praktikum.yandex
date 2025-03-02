@@ -15,16 +15,14 @@ export { BackLink } from './profile/backLink'
 export { AvataButton } from './profile/avatarButton'
 
 // Chat
-import { ContactListItem, ContactItemProps } from './chat/contactItem'
-import { SearchInput, SearchInputProps } from './chat/searchInput'
+export { Navbar } from './chat/navbar'
+export { ContactListItem } from './chat/contactListItem'
 import { ContactChat, ContactChatProps } from './chat/contactChat'
 import { MessagesGroup, MessagesGroupProps } from './chat/messagesGroup'
 import { Message } from './chat/message'
 
-Handlebars.registerPartial('ContactListItem', ContactListItem)
-Handlebars.registerPartial('SearchInput', SearchInput)
 Handlebars.registerPartial('ContactChat', ContactChat)
 Handlebars.registerPartial('MessagesGroup', MessagesGroup)
 Handlebars.registerPartial('Message', Message)
 
-export type { ContactItemProps, SearchInputProps, ContactChatProps, MessagesGroupProps }
+export type { ContactChatProps, MessagesGroupProps }

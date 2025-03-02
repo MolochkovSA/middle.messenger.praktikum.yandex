@@ -1,13 +1,18 @@
 import defaultAvatar from '@/assets/avatar.png'
-import { ContactItem } from '@/pages/chat/types'
-import styles from './contactItem.module.scss'
 
-export type ContactItemProps = { contact: ContactItem }
+import styles from './contactListItem.module.scss'
 
-export const ContactListItem = `
+export const contactListItemTemplate = `
   <li id={{contact.id}} class=${styles.contactItem}>
-    <button id="contact-{{contact.id}}" >
-      <img src=${defaultAvatar} class=${styles.avatar} alt="avatar">
+    <button>
+      <img 
+      src=
+      "{{#if contact.avatar}}
+        {{contact.avatar}}
+      {{else}}
+        ${defaultAvatar}
+      {{/if}}" 
+      class=${styles.avatar} alt="avatar">
 
       <div class=${styles.info}>
         <div class=${styles.row}>

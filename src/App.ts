@@ -22,15 +22,10 @@ export class App {
 
   render() {
     const route = router[this._state.currentPage]
+    const page = new route()
 
-    if (typeof route === 'function') {
-      const page = new route()
-      this._appElement.replaceChildren(page.getContent())
-      page.dispatchComponentDidMount()
-    } else {
-      this._appElement.innerHTML = route
-    }
-
+    this._appElement.replaceChildren(page.getContent())
+    page.dispatchComponentDidMount()
     this._attachEventListeners()
   }
 

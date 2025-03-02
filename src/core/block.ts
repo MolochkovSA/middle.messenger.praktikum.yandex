@@ -21,8 +21,8 @@ export abstract class Block<
     this._id = crypto.randomUUID()
     this._eventBus = new EventBus()
     this._element = null
-    this._children = children
-    this._props = this._makePropsProxy(props)
+    this._children = this._makeObjProxy(children)
+    this._props = this._makeObjProxy(props)
     this._events = events
 
     this._registerEvents()
@@ -140,16 +140,16 @@ export abstract class Block<
     return ''
   }
 
-  private _makePropsProxy(props: P): P {
+  private _makeObjProxy<T extends Record<string, unknown>>(obj: T): T {
     const emitBind = this._eventBus.emit.bind(this._eventBus)
 
-    return new Proxy(props, {
-      get(target: P, prop: string) {
+    return new Proxy(obj, {
+      get(target: T, prop: string) {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
 
-      set(target: P, prop: string, value: unknown) {
+      set(target: T, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
         ;(target as Props)[prop] = value
@@ -185,6 +185,14 @@ export abstract class Block<
 
   getChildren(): C {
     return this._children
+  }
+
+  setChildren(nextChildren: Partial<C>): void {
+    if (!nextChildren) {
+      return
+    }
+
+    Object.assign(this._children, nextChildren)
   }
 
   hide(): void {
