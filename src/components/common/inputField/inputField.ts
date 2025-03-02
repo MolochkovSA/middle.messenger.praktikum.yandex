@@ -13,30 +13,29 @@ type InputFieldProps = {
 type InputFieldChildren = { Input: Input }
 export type InputFieldInitProps = Omit<InputProps, 'id'> & InputFieldProps & InputEvents
 
-export class InputField extends Block<InputFieldProps & Pick<InputProps, 'id'>, InputEvents, InputFieldChildren> {
+export class InputField extends Block<
+  Omit<InputFieldProps, 'errorListener'> & Pick<InputProps, 'id'>,
+  {},
+  InputFieldChildren
+> {
   constructor({ label, className, isError, errorMessage, errorListener, ...inputProps }: InputFieldInitProps) {
     const id = crypto.randomUUID()
     super({
-      props: { id, label, className, isError, errorMessage, errorListener },
+      props: { id, label, className, isError, errorMessage },
       children: {
         Input: new Input({ ...inputProps, id }),
       },
     })
-  }
 
-  render(): string {
-    return inputFieldTemplate
-  }
-
-  componentDidMount(): void {
-    const { errorListener: errorEmitter } = this.getProps()
-
-    if (errorEmitter) {
-      const eventKey: string = this.getProps().id
-
-      errorEmitter(eventKey, (errorMessage: string) => {
+    if (errorListener) {
+      errorListener(id, (errorMessage: string) => {
         this.setProps({ errorMessage })
       })
     }
+  }
+
+  render(): string {
+    this.getProps()
+    return inputFieldTemplate
   }
 }
