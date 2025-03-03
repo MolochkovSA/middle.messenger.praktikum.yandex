@@ -1,7 +1,6 @@
 import globals from 'globals'
 import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
-import pluginAirbnb from 'eslint-config-airbnb'
 import pluginImport from 'eslint-plugin-import'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 
@@ -21,7 +20,6 @@ export default [
       'jsx-a11y': pluginJsxA11y,
       import: pluginImport,
       'ts-eslint': tseslint,
-      airbnb: pluginAirbnb,
     },
     rules: {
       '@typescript-eslint/no-empty-object-type': 'off',
