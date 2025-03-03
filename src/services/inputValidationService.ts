@@ -30,10 +30,6 @@ export class InputValidationService {
     return new Set(passwordValues).size === 1 ? '' : 'Пароли должны совпадать'
   }
 
-  static isValidationSchemaName(name?: string): name is ValidationSchemaName {
-    return !!name && Object.hasOwn(this.schemas, name)
-  }
-
   private static requireValueTest: ValidationTest = ({ value }): string => {
     return value.length ? '' : 'Не должно быть пустым'
   }

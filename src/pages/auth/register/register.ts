@@ -28,8 +28,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'email',
           placeholder: 'Почта',
           label: 'Почта',
-          validator: 'email',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('email'),
         }),
 
         LoginInput: new AuthInputField({
@@ -37,8 +36,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'login',
           placeholder: 'Логин',
           label: 'Логин',
-          validator: 'login',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('login'),
         }),
 
         FirstNameInput: new AuthInputField({
@@ -46,8 +44,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'first_name',
           placeholder: 'Имя',
           label: 'Имя',
-          validator: 'name',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('name'),
         }),
 
         SecondNameInput: new AuthInputField({
@@ -55,8 +52,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'second_name',
           placeholder: 'Фамилия',
           label: 'Фамилия',
-          validator: 'name',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('name'),
         }),
 
         PhoneInput: new AuthInputField({
@@ -64,8 +60,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'phone',
           placeholder: 'Телефон',
           label: 'Телефон',
-          validator: 'phone',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('phone'),
         }),
 
         PasswordInput: new AuthInputField({
@@ -73,8 +68,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'password',
           placeholder: 'Пароль',
           label: 'Пароль',
-          validator: 'equalPassword',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('equalPassword'),
         }),
 
         PasswordRepeatInput: new AuthInputField({
@@ -82,8 +76,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
           name: 'password_repeat',
           placeholder: 'Пароль (ещё раз)',
           label: 'Пароль (ещё раз)',
-          validator: 'equalPassword',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('equalPassword'),
         }),
 
         SubmitButton: new Button({

@@ -49,8 +49,7 @@ export class ContactChat extends Block<ContactChatProps, {}, ContactChatChildren
           name: 'message',
           placeholder: 'Сообщение',
           className: styles.meassageInput,
-          validator: 'message',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('message'),
         }),
         MessagesGroup: props.contact.messagesGroup.map(
           (group) => new MessagesGroup({ date: group.date, messages: group.messages })

@@ -1,5 +1,4 @@
 import { Block } from '@/core'
-import { ValidationSchemaName } from '@/services'
 
 export type InputProps = {
   id: string
@@ -9,7 +8,6 @@ export type InputProps = {
   value?: string
   disabled?: boolean
   className?: string
-  validator?: ValidationSchemaName
 }
 
 export type InputEvents = {

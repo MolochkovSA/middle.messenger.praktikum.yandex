@@ -23,8 +23,7 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
           name: 'login',
           placeholder: 'Логин',
           label: 'Логин',
-          validator: 'login',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('login'),
         }),
 
         PasswordInput: new AuthInputField({
@@ -32,8 +31,7 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
           name: 'password',
           placeholder: 'Пароль',
           label: 'Пароль',
-          validator: 'password',
-          errorListener: formValidationService.attachErrorHandler,
+          errorListener: formValidationService.validate('password'),
         }),
 
         SubmitButton: new Button({

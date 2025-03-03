@@ -20,11 +20,12 @@ class Form {
 export class FormControlService {
   private _eventBus: EventBus<string>
   private _forms: Form[]
+  private _inputsValidationRules: Record<string, ValidationSchemaName | undefined>
 
   constructor() {
     this._eventBus = new EventBus<string>()
     this._forms = []
-    this.attachErrorHandler = this.attachErrorHandler.bind(this)
+    this._inputsValidationRules = {}
   }
 
   init(element: HTMLElement): void {
@@ -38,18 +39,21 @@ export class FormControlService {
     })
   }
 
-  attachErrorHandler(event: string, listener: (errorMessage: string) => void) {
-    this._eventBus.on(event, listener)
+  validate(validationSchema: ValidationSchemaName) {
+    return (event: string, listener: (errorMessage: string) => void) => {
+      this._inputsValidationRules[event] = validationSchema
+      this._eventBus.on(event, listener)
+    }
   }
 
   private _attachBlurHandlers(form: Form): void {
     const inputs: FormInput[] = Object.values(form.inputs)
-    const passwordInputs = inputs.filter(({ element }) => element.dataset.validator === 'equalPassword')
+    const passwordInputs = inputs.filter(({ element }) => this._inputsValidationRules[element.id] === 'equalPassword')
 
     inputs.forEach(({ element }) => {
-      const valitionSchemaName = element.dataset.validator
+      const valitionSchemaName = this._inputsValidationRules[element.id]
 
-      if (InputValidationService.isValidationSchemaName(valitionSchemaName)) {
+      if (valitionSchemaName) {
         element.onblur = () => {
           if (valitionSchemaName === 'equalPassword') {
             this._checkEqualPasswords(passwordInputs, form.inputs[element.id], element, valitionSchemaName)
