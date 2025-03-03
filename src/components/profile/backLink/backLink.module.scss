@@ -5,7 +5,7 @@
   align-items: center;
 
   &::after {
-    content: url('src/assets/arrowBtn.svg');
+    content: url('@/assets/arrowBtn.svg');
     transform: rotate(180deg);
     padding: 0 18px;
   }

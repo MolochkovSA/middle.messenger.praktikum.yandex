@@ -23,7 +23,7 @@ export const mockContact: Contact = {
         },
         {
           id: '1',
-          image: 'src/assets/usersImages/1.jpg',
+          image: '/images/1.jpg',
           date: new Date(Date.now() - 60 * 1000).toLocaleTimeString().slice(0, 5),
           type: MessageType.Incoming,
           read: true,
