@@ -1,1 +1,1 @@
-export { Message } from './message.tmpl'
+export { MessageItem } from './message'

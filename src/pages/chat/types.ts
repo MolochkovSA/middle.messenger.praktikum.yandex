@@ -18,7 +18,8 @@ export enum OutgoingMessageStatus {
 
 export type Message = {
   id: string
-  text: string
+  text?: string
+  image?: string
   date: string
 } & (
   | {
@@ -32,7 +33,7 @@ export type Message = {
 )
 
 export type ContactItem = Pick<Contact, 'id' | 'name' | 'avatar'> & {
-  lastMessage: Pick<Message, 'type' | 'text'> & {
+  lastMessage: Pick<Message, 'type' | 'text' | 'image'> & {
     date: string
   }
 } & { newMessageCount?: number }

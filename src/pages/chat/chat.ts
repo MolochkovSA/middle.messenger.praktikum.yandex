@@ -1,33 +1,32 @@
 import { Block } from '@/core'
-import { Navbar } from '@/components'
+import { ContactChat, Navbar } from '@/components'
 
 import { chatPageTemplate } from './chat.tmpl'
+import { mockContact, mockContactsList } from './mockData'
 import { Contact } from './types'
-import { mockContactsList } from './mockData'
 
-type ChatState = {
+type ChatProps = {
   selectedContact?: Contact
   isChatMenuOpen: boolean
 }
 
-type ChatProps = {
-  state: ChatState
-}
-
 type ChatChildren = {
   Navbar: Navbar
+  ContactChat: ContactChat
 }
 
 export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   constructor() {
     super({
       props: {
-        state: {
-          isChatMenuOpen: false,
-        },
+        selectedContact: mockContact,
+        isChatMenuOpen: false,
       },
       children: {
-        Navbar: new Navbar(mockContactsList),
+        Navbar: new Navbar(mockContactsList, (id: string) => {
+          console.log(id)
+        }),
+        ContactChat: new ContactChat({ contact: mockContact }),
       },
     })
   }

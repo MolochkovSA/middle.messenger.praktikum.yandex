@@ -6,7 +6,7 @@ export const chatPageTemplate = `
 
     <div class=${styles.content}>
       {{#if selectedContact}}
-        {{> ContactChat contact=selectedContact isChatMenuOpen=isChatMenuOpen}}
+        {{{ ContactChat }}}
       {{else}}
         <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2>
       {{/if}}

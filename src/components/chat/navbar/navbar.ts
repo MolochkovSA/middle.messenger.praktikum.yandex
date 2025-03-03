@@ -4,15 +4,23 @@ import { ContactItem } from '@/pages/chat'
 
 import { navbarTemplate } from './navbar.tmpl'
 
+type NavbarProps = {
+  searchValue: string
+  activeContactId?: string
+}
+
 type NavbarChildren = {
   ProfileLink: Link
   SearchInput: Input
   ContactList: ContactListItem[]
 }
 
-export class Navbar extends Block<{}, {}, NavbarChildren> {
-  constructor(contactList: ContactItem[]) {
+export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
+  constructor(contactList: ContactItem[], setActiveContactId: (id: string) => void) {
     super({
+      props: {
+        searchValue: '',
+      },
       children: {
         ProfileLink: new Link({ to: '/profile', label: 'Профиль' }),
         SearchInput: new Input({
@@ -21,21 +29,39 @@ export class Navbar extends Block<{}, {}, NavbarChildren> {
           name: 'search',
           placeholder: 'Поиск',
           blur: (e) => {
-            this.setChildren({
-              ContactList: contactList
-                .filter((contact) =>
-                  contact.name.toLowerCase().includes((e.target as HTMLInputElement).value.toLowerCase())
-                )
-                .map((contact) => new ContactListItem(contact)),
+            this.setProps({
+              searchValue: (e.target as HTMLInputElement).value,
             })
           },
         }),
-        ContactList: contactList.map((contact) => new ContactListItem(contact)),
+        ContactList: contactList.map(
+          (contact) =>
+            new ContactListItem({
+              contact,
+              isActive: false,
+              click: (id: string) => {
+                this.setProps({ activeContactId: id })
+                setActiveContactId(id)
+              },
+            })
+        ),
       },
     })
   }
 
   render(): string {
+    const { searchValue, activeContactId } = this.getProps()
+
+    const filteredContacts = this.getChildren().ContactList.filter((ContactListItem) =>
+      ContactListItem.getProps().contact.name.toLowerCase().includes(searchValue.toLowerCase())
+    )
+
+    filteredContacts.forEach((contact) =>
+      contact.setProps({ isActive: contact.getProps().contact.id === activeContactId })
+    )
+
+    this.setChildren({ ContactList: filteredContacts })
+
     return navbarTemplate
   }
 }

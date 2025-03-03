@@ -1,36 +1,63 @@
+time {
+  float: right;
+  padding-top: 5px;
+  padding-left: 10px;
+  font-size: 8px;
+  line-height: 1;
+}
+
 .message {
-  display: flex;
-  gap: 6px;
   max-width: 60%;
+  margin-bottom: 10px;
+}
+
+.incoming {
+  align-self: flex-start;
+  border-radius: 0 12px 12px;
+  background-color: var(--color-chat-gray);
+
+  time {
+    color: var(--color-gray-text);
+  }
+}
+
+.outgoing {
+  align-self: flex-end;
+  border-radius: 12px 12px 0;
+  background-color: var(--color-chat-sky);
+
+  time {
+    color: var(--color-primary);
+
+    &::before {
+      content: url('@/assets/checked.svg');
+      padding-right: 4px;
+    }
+  }
+}
+
+.imageMessage {
+  .imageWrapper {
+    max-width: max-content;
+    position: relative;
+
+    image {
+      display: block;
+      max-width: 100%;
+      border-radius: 12px;
+    }
+
+    time {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+    }
+  }
+}
+
+.textMessage {
+  display: block;
   padding: 11px;
   font-size: 12px;
   line-height: 125%;
-  margin-bottom: 10px;
-
-  time {
-    align-self: flex-end;
-    display: block;
-    font-size: 8px;
-    line-height: 1;
-  }
-
-  &.incoming {
-    align-self: flex-start;
-    border-radius: 0 12px 12px;
-    background-color: var(--color-chat-gray);
-
-    time {
-      color: var(--color-gray-text);
-    }
-  }
-
-  &.outgoing {
-    align-self: flex-end;
-    border-radius: 12px 12px 0;
-    background-color: var(--color-chat-sky);
-
-    time {
-      color: var(--color-primary);
-    }
-  }
 }

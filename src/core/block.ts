@@ -21,7 +21,7 @@ export abstract class Block<
     this._id = crypto.randomUUID()
     this._eventBus = new EventBus()
     this._element = null
-    this._children = this._makeObjProxy(children)
+    this._children = children
     this._props = this._makeObjProxy(props)
     this._events = events
 
@@ -99,6 +99,8 @@ export abstract class Block<
   private _render(): void {
     this._removeEvents()
 
+    const template: string = this.render()
+
     const childrens: Record<string, string | string[]> = {}
 
     Object.entries(this._children).forEach(([key, child]) => {
@@ -110,7 +112,7 @@ export abstract class Block<
     })
 
     const fragment = this._createDocumentElement('template') as HTMLTemplateElement
-    fragment.innerHTML = Handlebars.compile(this.render())({ ...this._props, ...childrens })
+    fragment.innerHTML = Handlebars.compile(template)({ ...this._props, ...childrens })
 
     Object.values(this._children).forEach((child) => {
       if (Array.isArray(child)) {

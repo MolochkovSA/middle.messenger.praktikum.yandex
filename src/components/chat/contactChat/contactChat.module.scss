@@ -118,12 +118,24 @@
     background-color: inherit;
   }
 
-  .input {
+  .addAttachmentBtn::after {
+    content: url('@/assets/paperclip.svg');
+  }
+
+  .sendMessageBtn::after {
+    content: url('@/assets/arrowBtn.svg');
+  }
+
+  .meassageInput {
     flex-grow: 1;
     padding: 10px 20px;
     border-radius: 20px;
     background-color: var(--color-chat-gray);
     font-size: 12px;
     line-height: 1;
+
+    & > input {
+      width: 100%;
+    }
   }
 }

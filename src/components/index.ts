@@ -1,5 +1,3 @@
-import Handlebars from 'handlebars'
-
 // Common
 export { Button } from './common/button'
 export { Link } from './common/link'
@@ -17,12 +15,6 @@ export { AvataButton } from './profile/avatarButton'
 // Chat
 export { Navbar } from './chat/navbar'
 export { ContactListItem } from './chat/contactListItem'
-import { ContactChat, ContactChatProps } from './chat/contactChat'
-import { MessagesGroup, MessagesGroupProps } from './chat/messagesGroup'
-import { Message } from './chat/message'
-
-Handlebars.registerPartial('ContactChat', ContactChat)
-Handlebars.registerPartial('MessagesGroup', MessagesGroup)
-Handlebars.registerPartial('Message', Message)
-
-export type { ContactChatProps, MessagesGroupProps }
+export { ContactChat } from './chat/contactChat'
+export { MessagesGroup } from './chat/messagesGroup'
+export { MessageItem } from './chat/message'

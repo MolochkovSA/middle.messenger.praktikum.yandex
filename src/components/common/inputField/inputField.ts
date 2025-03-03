@@ -35,7 +35,6 @@ export class InputField extends Block<
   }
 
   render(): string {
-    this.getProps()
     return inputFieldTemplate
   }
 }

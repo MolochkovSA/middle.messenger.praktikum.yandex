@@ -8,7 +8,7 @@ export type MessagesGroupProps = {
   messages: Message[]
 }
 
-export const MessagesGroup = `
+export const messagesGroupTemplate = `
     <section id="messages-group-{{id}}" class=${styles.messagesSection}>
       <h3 class=${styles.date}>{{date}}</h3>
       

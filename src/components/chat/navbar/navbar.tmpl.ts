@@ -13,7 +13,7 @@ export const navbarTemplate = `
 
     <ul>
       {{#each ContactList as |contact|}}
-        {{{ contact }}}
+        <li>{{{ contact }}}<li/>
       {{else}}
         <p class=${styles.empty}>No contacts</p>
       {{/each}}

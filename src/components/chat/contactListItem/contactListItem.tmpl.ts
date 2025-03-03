@@ -3,16 +3,12 @@ import defaultAvatar from '@/assets/avatar.png'
 import styles from './contactListItem.module.scss'
 
 export const contactListItemTemplate = `
-  <li id={{contact.id}} class=${styles.contactItem}>
-    <button>
+  <button class="${styles.contactItem} {{#if isActive}}${styles.active}{{/if}}">
+    <div class=${styles.container}>
       <img 
-      src=
-      "{{#if contact.avatar}}
-        {{contact.avatar}}
-      {{else}}
-        ${defaultAvatar}
-      {{/if}}" 
-      class=${styles.avatar} alt="avatar">
+        src="{{#if contact.avatar}} {{contact.avatar}} {{else}} ${defaultAvatar} {{/if}}" 
+        class=${styles.avatar} 
+        alt="avatar">
 
       <div class=${styles.info}>
         <div class=${styles.row}>
@@ -32,6 +28,6 @@ export const contactListItemTemplate = `
           {{/if}}
         </div>
       </div>  
-    </button>      
-  </li> 
+    </div>
+  </button> 
 `
