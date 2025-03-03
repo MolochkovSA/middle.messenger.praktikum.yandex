@@ -1,5 +1,6 @@
 import { Block } from '@/core'
-import { linkTemplate } from './link.tmpl'
+
+import styles from './link.module.scss'
 
 type LinkProps = {
   to: string
@@ -19,6 +20,10 @@ export class Link extends Block {
   }
 
   render(): string {
-    return linkTemplate
+    return `
+      <a href="#" data-page="{{to}}" class="${styles.link} {{className}}">
+        {{{ label }}}
+      </a>
+    `
   }
 }

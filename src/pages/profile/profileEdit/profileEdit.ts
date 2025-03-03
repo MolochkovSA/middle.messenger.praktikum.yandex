@@ -2,8 +2,9 @@ import { Block } from '@/core'
 import { AvataButton, BackLink, Button, ProfileInputField } from '@/components'
 import { FormControlService } from '@/services'
 
-import { profileEditPageTemplate } from './profileEdit.tmpl'
 import { user } from '../mockData'
+
+import styles from './profileEdit.module.scss'
 
 type ProfileEditPageChildren = {
   BackLink: BackLink
@@ -32,36 +33,48 @@ export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
           name: 'email',
           label: 'Почта',
           value: user.email,
+          validator: 'email',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         LoginInput: new ProfileInputField({
           type: 'text',
           name: 'login',
           label: 'Логин',
           value: user.login,
+          validator: 'login',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         FirstNameInput: new ProfileInputField({
           type: 'text',
           name: 'first_name',
           label: 'Имя',
           value: user.first_name,
+          validator: 'name',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         SecondNameInput: new ProfileInputField({
           type: 'text',
           name: 'second_name',
           label: 'Фамилия',
           value: user.second_name,
+          validator: 'name',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         DisplayNameInput: new ProfileInputField({
           type: 'text',
           name: 'display_name',
           label: 'Имя в чате',
           value: user.display_name,
+          validator: 'name',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         PhoneInput: new ProfileInputField({
           type: 'text',
           name: 'phone',
           label: 'Телефон',
           value: user.phone,
+          validator: 'phone',
+          errorListener: formValidationService.attachErrorHandler,
         }),
         SubmitButton: new Button({
           type: 'submit',
@@ -73,11 +86,29 @@ export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
     this.formControlService = formValidationService
   }
 
-  render(): string {
-    return profileEditPageTemplate
-  }
-
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+  }
+
+  render(): string {
+    return `
+      {{#> ProfileLayout}}
+        <form class=${styles.form}>
+          {{{ EmailInput }}}
+
+          {{{ LoginInput }}}
+
+          {{{ FirstNameInput }}}
+
+          {{{ SecondNameInput }}}
+
+          {{{ DisplayNameInput }}}
+
+          {{{ PhoneInput }}}
+
+          {{{ SubmitButton }}} 
+        </form>   
+      {{/ ProfileLayout}}
+    `
   }
 }

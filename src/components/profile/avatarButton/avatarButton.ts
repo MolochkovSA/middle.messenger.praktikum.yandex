@@ -3,8 +3,6 @@ import defaultAvatar from '@/assets/avatar.png'
 import { Block } from '@/core'
 import { Button } from '@/components'
 
-import { avatarButtonTemplate, getButtonLabel } from './avatarButton.tmpl'
-
 import styles from './avatarButton.module.scss'
 
 type AvatarButtonProps = {
@@ -32,6 +30,11 @@ export class AvataButton extends Block<AvatarButtonProps, {}, AvatarButtonChildr
   }
 
   render(): string {
-    return avatarButtonTemplate
+    return `{{{ Button }}}`
   }
 }
+
+const getButtonLabel = (avatarSrc: string, disabled?: boolean) => `
+  <img src=${avatarSrc} class=${styles.avatar} alt="avatar">
+  ${disabled ? '' : `<div class=${styles.mask}><span>Поменять аватар</span></div>`}
+`

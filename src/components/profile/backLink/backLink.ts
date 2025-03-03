@@ -1,8 +1,6 @@
 import { Link } from '@/components'
 import { Block } from '@/core'
 
-import { backLinkLabelTemplate, backLinkTemplate } from './backLink.tmpl'
-
 import styles from './backLink.module.scss'
 
 type BackLinkChildren = {
@@ -16,13 +14,13 @@ export class BackLink extends Block<{}, {}, BackLinkChildren> {
         Link: new Link({
           to: '/chat',
           className: styles.link,
-          label: backLinkLabelTemplate,
+          label: '',
         }),
       },
     })
   }
 
   render(): string {
-    return backLinkTemplate
+    return `{{{ Link }}}`
   }
 }

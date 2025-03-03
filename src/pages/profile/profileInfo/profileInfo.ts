@@ -1,8 +1,9 @@
 import { Block } from '@/core'
 import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
 
-import { profileInfoPageTemplate } from './profileInfo.tmpl'
 import { user } from '../mockData'
+
+import styles from './profileInfo.module.scss'
 
 type ProfileInfoProps = {
   title: string
@@ -90,6 +91,30 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
   }
 
   render(): string {
-    return profileInfoPageTemplate
+    return `
+      {{#> ProfileLayout}}
+        <h2 class=${styles.title}>{{ title }}</h2>
+
+        <form class=${styles.form}>
+          {{{ EmailInput }}}
+
+          {{{ LoginInput }}}
+
+          {{{ FirstNameInput }}}
+
+          {{{ SecondNameInput }}}
+
+          {{{ DisplayNameInput }}}
+
+          {{{ PhoneInput }}}
+        </form>
+
+        {{{ ProfileChangeLink }}}
+
+        {{{ PasswordChangeLink }}}
+
+        {{{ LogoutLink }}}
+      {{/ ProfileLayout}}
+    `
   }
 }

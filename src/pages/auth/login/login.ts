@@ -2,8 +2,6 @@ import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
 
-import { loginPageTemplate } from './login.tmpl'
-
 import styles from './login.module.scss'
 
 type LoginPageChildren = {
@@ -55,11 +53,21 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
     this.formControlService = formValidationService
   }
 
-  render(): string {
-    return loginPageTemplate
-  }
-
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+  }
+
+  render(): string {
+    return `
+      {{#> AuthLayout title="Вход"}}
+        {{{ LoginInput }}}
+
+        {{{ PasswordInput }}}
+
+        {{{ SubmitButton }}}
+
+        {{{ RegisterLink }}}
+      {{/ AuthLayout}}
+    `
   }
 }

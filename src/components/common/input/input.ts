@@ -1,8 +1,6 @@
 import { Block } from '@/core'
 import { ValidationSchemaName } from '@/services'
 
-import { inputTemplate } from './input.tmpl'
-
 export type InputProps = {
   id: string
   type: HTMLInputElement['type']
@@ -35,6 +33,23 @@ export class Input extends Block<InputProps, InputEvents> {
   }
 
   render() {
-    return inputTemplate
+    return `
+      <input 
+        id="{{id}}" 
+        type="{{type}}" 
+        name="{{name}}" 
+        class="{{className}}" 
+        placeholder="{{placeholder}}" 
+        value="{{value}}"
+
+        {{#if validator}}
+          data-validator="{{validator}}"
+        {{/if}}
+
+        {{#if disabled}}
+          disabled
+        {{/if}}
+      />
+    `
   }
 }

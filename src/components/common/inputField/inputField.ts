@@ -1,8 +1,6 @@
 import { Block } from '@/core'
 import { Input, InputProps, InputEvents } from '@/components/common/input'
 
-import { inputFieldTemplate } from './inputField.tmpl'
-
 type InputFieldProps = {
   label?: string
   className?: string
@@ -35,6 +33,18 @@ export class InputField extends Block<
   }
 
   render(): string {
-    return inputFieldTemplate
+    return `
+      <div class="{{className}}">
+        {{{ Input }}}
+        
+        {{#if label}}
+          <label for={{id}}>{{label}}</label>
+        {{/if}} 
+
+        {{#if errorMessage}}
+          <p>{{errorMessage}}</p>
+        {{/if}}  
+      </div>
+    `
   }
 }

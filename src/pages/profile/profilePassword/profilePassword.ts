@@ -2,7 +2,7 @@ import { Block } from '@/core'
 import { AvataButton, BackLink, Button, ProfileInputField } from '@/components'
 import { FormControlService } from '@/services'
 
-import { profilePasswordPageTemplate } from './profilePassword.tmpl'
+import styles from './profilePassword.module.scss'
 
 type ProfilePasswordPageChildren = {
   BackLink: BackLink
@@ -54,11 +54,23 @@ export class ProfilePasswordPage extends Block<{}, {}, ProfilePasswordPageChildr
     this.formControlService = formValidationService
   }
 
-  render(): string {
-    return profilePasswordPageTemplate
-  }
-
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+  }
+
+  render(): string {
+    return `
+      {{#> ProfileLayout}}
+        <form class=${styles.form}>
+          {{{ OldPasswordInput }}}
+
+          {{{ NewPasswordInput }}}
+
+          {{{ NewPasswordRepeatInput }}}
+
+          {{{ SubmitButton }}} 
+        </form>   
+      {{/ ProfileLayout}}
+    `
   }
 }

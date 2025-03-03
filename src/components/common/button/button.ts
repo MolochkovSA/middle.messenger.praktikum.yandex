@@ -1,6 +1,6 @@
 import { Block } from '@/core'
 
-import { buttonTemplate } from './button.tmpl'
+import styles from './button.module.scss'
 
 type ButtonProps = {
   type?: HTMLButtonElement['type']
@@ -27,6 +27,23 @@ export class Button extends Block<ButtonProps, ButtonEvents> {
   }
 
   render() {
-    return buttonTemplate
+    return `
+      <button 
+        class="${styles.button} {{className}}"
+        
+        {{#if type}}
+          type="{{type}}"
+        {{else}}
+          type="button"
+        {{/if}}
+
+        {{#if disabled}}
+          disabled
+        {{/if}}>
+
+          {{{ label }}}
+          
+      </button>
+      `
   }
 }

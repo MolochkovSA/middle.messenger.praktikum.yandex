@@ -1,8 +1,6 @@
 import { Block } from '@/core'
 import { Link } from '@/components'
 
-import { navigationTemplate } from './navigation.tmpl'
-
 import styles from './navigation.module.scss'
 
 export class NavigationPage extends Block {
@@ -15,7 +13,19 @@ export class NavigationPage extends Block {
   }
 
   render() {
-    return navigationTemplate
+    return `
+      <main>
+        <h1 class=${styles.title}>Навигация по проекту:</h1>
+        
+        <nav>
+          <ul>
+            {{#each Links as |link|}}
+              <li>{{{ link }}}</li>
+            {{/each}}  
+          </ul>    
+        </nav>
+      </main>
+    `
   }
 }
 

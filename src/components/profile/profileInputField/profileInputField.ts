@@ -2,8 +2,6 @@ import { InputField } from '@/components'
 import { InputFieldInitProps } from '@/components/common/inputField'
 import { Block } from '@/core'
 
-import { profileInputFieldTemplate } from './profileInputField.tmpl'
-
 import styles from './profileInputField.module.scss'
 
 type ProfileInputFieldChildren = {
@@ -20,6 +18,6 @@ export class ProfileInputField extends Block<InputFieldInitProps, {}, ProfileInp
   }
 
   render(): string {
-    return profileInputFieldTemplate
+    return `{{{ InputField }}}`
   }
 }

@@ -2,8 +2,6 @@ import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
 
-import { registerPageTemplate } from './register.tmpl'
-
 import styles from './register.module.scss'
 
 type RegisterPageChildren = {
@@ -105,11 +103,32 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
     this.formControlService = formValidationService
   }
 
-  render(): string {
-    return registerPageTemplate
-  }
-
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+  }
+
+  render(): string {
+    return `
+      {{#> AuthLayout title="Регистрация"}}
+        {{{ EmailInput }}}
+
+        {{{ LoginInput }}}
+
+        {{{ FirstNameInput }}}
+
+        {{{ SecondNameInput }}}
+
+        {{{ PhoneInput }}}
+
+        {{{ PasswordInput }}}
+
+        {{{ PasswordRepeatInput }}}
+      
+        {{{ SubmitButton }}}
+
+        {{{ LoginLink }}}
+      
+      {{/ AuthLayout}}
+    `
   }
 }

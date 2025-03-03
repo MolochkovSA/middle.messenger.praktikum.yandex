@@ -13,5 +13,5 @@ export const user: UserInfo = {
   first_name: 'Иван',
   second_name: 'Иванов',
   display_name: 'Иван',
-  phone: '+7(909)967-30-30',
+  phone: '+79099673030',
 }

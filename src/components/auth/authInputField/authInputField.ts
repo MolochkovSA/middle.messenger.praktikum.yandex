@@ -2,8 +2,6 @@ import { InputField } from '@/components'
 import { InputFieldInitProps } from '@/components/common/inputField'
 import { Block } from '@/core'
 
-import { authInputFieldTemplate } from './authInputField.tmpl'
-
 import styles from './authInputField.module.scss'
 
 type AuthInputFieldChildren = {
@@ -20,6 +18,6 @@ export class AuthInputField extends Block<InputFieldInitProps, {}, AuthInputFiel
   }
 
   render(): string {
-    return authInputFieldTemplate
+    return `{{{ InputField }}}`
   }
 }

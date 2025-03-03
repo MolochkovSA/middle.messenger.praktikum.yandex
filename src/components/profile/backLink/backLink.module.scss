@@ -4,7 +4,8 @@
   display: flex;
   align-items: center;
 
-  img {
+  &::after {
+    content: url('src/assets/arrowBtn.svg');
     transform: rotate(180deg);
     padding: 0 18px;
   }
