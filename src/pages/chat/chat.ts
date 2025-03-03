@@ -1,9 +1,10 @@
 import { Block } from '@/core'
 import { ContactChat, Navbar } from '@/components'
 
-import { chatPageTemplate } from './chat.tmpl'
 import { mockContact, mockContactsList } from './mockData'
 import { Contact } from './types'
+
+import styles from './chat.module.scss'
 
 type ChatProps = {
   selectedContact?: Contact
@@ -30,7 +31,20 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
       },
     })
   }
+
   render() {
-    return chatPageTemplate
+    return `
+      <main class=${styles.chatPage}>
+        {{{ Navbar }}}
+
+        <div class=${styles.content}>
+          {{#if selectedContact}}
+            {{{ ContactChat }}}
+          {{else}}
+            <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2>
+          {{/if}}
+        </div>
+      </main>
+    `
   }
 }

@@ -106,7 +106,7 @@
   padding: 10px 0;
 }
 
-.footer {
+.form {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -127,6 +127,7 @@
   }
 
   .meassageInput {
+    position: relative;
     flex-grow: 1;
     padding: 10px 20px;
     border-radius: 20px;
@@ -136,6 +137,13 @@
 
     & > input {
       width: 100%;
+    }
+
+    & > p {
+      position: absolute;
+      right: 10px;
+      bottom: 12px;
+      color: var(--color-error);
     }
   }
 }

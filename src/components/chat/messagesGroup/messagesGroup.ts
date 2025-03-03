@@ -1,8 +1,9 @@
 import { Block } from '@/core'
 import { Message } from '@/pages/chat/types'
 
-import styles from './messagesGroup.module.scss'
 import { MessageItem } from '../message/message'
+
+import styles from './messagesGroup.module.scss'
 
 type MessagesGroupProps = {
   date: string
@@ -25,13 +26,13 @@ export class MessagesGroup extends Block<MessagesGroupProps, {}, MessagesGroupCh
 
   render(): string {
     return `
-        <article class=${styles.messagesSection}>
-            <h3 class=${styles.date}>{{date}}</h3>
-            
-            {{#each Messages as |message|}}
-                {{{ message }}}
-            {{/each}}   
-        </article>
+      <article class=${styles.messagesSection}>
+          <h3 class=${styles.date}>{{date}}</h3>
+          
+          {{#each Messages as |message|}}
+              {{{ message }}}
+          {{/each}}   
+      </article>
     `
   }
 }

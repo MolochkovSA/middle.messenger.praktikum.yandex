@@ -19,21 +19,22 @@ export class MessageItem extends Block<MessageItemProps> {
 
   render(): string {
     const isOutgoingMessage = this.getProps().type === MessageType.Outgoing
+
     return ` 
       <div class="${styles.message} ${isOutgoingMessage ? styles.outgoing : styles.incoming}">  
         {{#if image}}
-            <artcicle class=${styles.imageMessage}>
-              <div class=${styles.imageWrapper}>
-                <img src="{{image}}"/>
-                <time>{{date}}</time>
-              </div>          
-            </artcicle>    
+          <div class=${styles.imageMessage}>
+       
+              <img src="{{image}}" class=${styles.image}/>
+              <time>{{date}}</time>
+           
+          </div>    
         {{/if}}        
 
         {{#if text}}
-            <artcicle class=${styles.textMessage}>
-              <p>{{text}}<time>{{date}}</time></p>   
-            </artcicle>  
+          <artcicle class=${styles.textMessage}>
+            <p>{{text}}<time>{{date}}</time></p>   
+          </artcicle>  
         {{/if}}  
       </div>         
     `

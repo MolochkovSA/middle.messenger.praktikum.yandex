@@ -37,21 +37,19 @@ time {
 }
 
 .imageMessage {
-  .imageWrapper {
-    max-width: max-content;
-    position: relative;
+  display: block;
+  max-width: max-content;
+  position: relative;
 
-    image {
-      display: block;
-      max-width: 100%;
-      border-radius: 12px;
-    }
+  image {
+    display: block;
+    max-width: 100%;
+  }
 
-    time {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-    }
+  time {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
   }
 }
 

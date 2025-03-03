@@ -2,7 +2,7 @@ import { Block } from '@/core'
 import { Link, Input, ContactListItem } from '@/components'
 import { ContactItem } from '@/pages/chat'
 
-import { navbarTemplate } from './navbar.tmpl'
+import styles from './navbar.module.scss'
 
 type NavbarProps = {
   searchValue: string
@@ -50,18 +50,25 @@ export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
   }
 
   render(): string {
-    const { searchValue, activeContactId } = this.getProps()
+    return `
+      <nav class=${styles.navbar}>
+        <div class=${styles.topbar}>
+          {{{ ProfileLink }}}
 
-    const filteredContacts = this.getChildren().ContactList.filter((ContactListItem) =>
-      ContactListItem.getProps().contact.name.toLowerCase().includes(searchValue.toLowerCase())
-    )
+          <div class=${styles.searchInput}>
+            {{{ SearchInput }}}  
+            <span></span> 
+          </div>
+        </div>
 
-    filteredContacts.forEach((contact) =>
-      contact.setProps({ isActive: contact.getProps().contact.id === activeContactId })
-    )
-
-    this.setChildren({ ContactList: filteredContacts })
-
-    return navbarTemplate
+        <ul>
+          {{#each ContactList as |contact|}}
+            <li>{{{ contact }}}<li/>
+          {{else}}
+            <p class=${styles.empty}>No contacts</p>
+          {{/each}}
+        </ul>
+      </nav>
+    `
   }
 }
