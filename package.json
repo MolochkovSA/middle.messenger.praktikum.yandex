@@ -11,8 +11,9 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "lint": "tsc --noEmit && eslint \"**/*.ts\" && stylelint \"**/*.scss\"",
     "lint:ts": "eslint \"**/*.ts\"",
-    "lint:scss": "npx stylelint \"**/*.scss\""
+    "lint:scss": "stylelint \"**/*.scss\""
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
