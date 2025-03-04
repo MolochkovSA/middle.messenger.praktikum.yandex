@@ -24,21 +24,16 @@ export class Fetch {
     this._baseUrl = baseUrl
   }
 
-  get: HTTPMethod = (path, options = {}) => {
-    return this._request(path, { ...options, method: Methods.GET })
+  private _createHTTPMethod = (method: Methods): HTTPMethod => {
+    return (path, options = {}) => {
+      return this._request(path, { ...options, method })
+    }
   }
 
-  post: HTTPMethod = (path, options = {}) => {
-    return this._request(path, { ...options, method: Methods.POST })
-  }
-
-  put: HTTPMethod = (path, options = {}) => {
-    return this._request(path, { ...options, method: Methods.PUT })
-  }
-
-  delete: HTTPMethod = (path, options = {}) => {
-    return this._request(path, { ...options, method: Methods.DELETE })
-  }
+  get = this._createHTTPMethod(Methods.GET)
+  post = this._createHTTPMethod(Methods.POST)
+  put = this._createHTTPMethod(Methods.PUT)
+  delete = this._createHTTPMethod(Methods.DELETE)
 
   private _request = (path: string, options: RequestOptionsWithMethod): Promise<XMLHttpRequest> => {
     const { method = Methods.GET, data, headers, timeout = 5000 } = options
@@ -83,14 +78,16 @@ export class Fetch {
 
 function queryStringify(data: Record<string, unknown>) {
   return Object.entries(data).reduce((acc, [key, value]) => {
+    const encodedKey = encodeURIComponent(key)
+
     acc += acc.length ? '&' : '?'
 
     if (value instanceof Number || value instanceof String) {
-      return acc + `${key}=${value}`
+      return acc + `${encodedKey}=${encodeURIComponent(value.toString())}`
     }
 
     if (Array.isArray(value) && value.every((item) => typeof item === 'string' || typeof item === 'number')) {
-      return acc + `${key}=${value.join(',')}`
+      return acc + `${encodedKey}=${value.map((item) => encodeURIComponent(item.toString())).join(',')}`
     }
 
     return acc

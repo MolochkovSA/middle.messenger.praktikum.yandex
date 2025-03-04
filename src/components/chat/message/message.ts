@@ -23,11 +23,9 @@ export class MessageItem extends Block<MessageItemProps> {
     return ` 
       <div class="${styles.message} ${isOutgoingMessage ? styles.outgoing : styles.incoming}">  
         {{#if image}}
-          <div class=${styles.imageMessage}>
-       
-              <img src="{{image}}" class=${styles.image}/>
-              <time>{{date}}</time>
-           
+          <div class=${styles.imageMessage}>       
+            <img src="{{image}}" class=${styles.image} alt="message with image"/>
+            <time>{{date}}</time>           
           </div>    
         {{/if}}        
 
