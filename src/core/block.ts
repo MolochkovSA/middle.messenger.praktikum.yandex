@@ -154,7 +154,7 @@ export abstract class Block<
       set(target: T, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
-        ;(target as Props)[prop] = value
+        ;(target as Record<string, unknown>)[prop] = value
 
         emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
         return true

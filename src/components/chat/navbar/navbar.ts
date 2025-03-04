@@ -7,6 +7,8 @@ import styles from './navbar.module.scss'
 type NavbarProps = {
   searchValue: string
   activeContactId?: string
+  contactList: ContactItem[]
+  setActiveContactId: (id: string) => void
 }
 
 type NavbarChildren = {
@@ -16,10 +18,12 @@ type NavbarChildren = {
 }
 
 export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
-  constructor(contactList: ContactItem[], setActiveContactId: (id: string) => void) {
+  constructor({ contactList, setActiveContactId }: Pick<NavbarProps, 'contactList' | 'setActiveContactId'>) {
     super({
       props: {
         searchValue: '',
+        contactList,
+        setActiveContactId,
       },
       children: {
         ProfileLink: new Link({ to: '/profile', label: 'Профиль' }),
@@ -34,22 +38,32 @@ export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
             })
           },
         }),
-        ContactList: contactList.map(
-          (contact) =>
-            new ContactListItem({
-              contact,
-              isActive: false,
-              click: (id: string) => {
-                this.setProps({ activeContactId: id })
-                setActiveContactId(id)
-              },
-            })
-        ),
+        ContactList: [],
       },
     })
   }
 
   render(): string {
+    const { contactList, searchValue, activeContactId } = this.getProps()
+
+    const filteredContactList = contactList.filter((contact) =>
+      contact.name.toLowerCase().includes(searchValue.toLowerCase())
+    )
+
+    this.setChildren({
+      ContactList: filteredContactList.map(
+        (contact) =>
+          new ContactListItem({
+            contact,
+            isActive: contact.id === activeContactId,
+            click: (id: string) => {
+              this.setProps({ activeContactId: id })
+              this.getProps().setActiveContactId(id)
+            },
+          })
+      ),
+    })
+
     return `
       <nav class=${styles.navbar}>
         <div class=${styles.topbar}>
