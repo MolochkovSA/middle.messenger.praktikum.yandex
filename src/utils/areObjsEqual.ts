@@ -1,4 +1,4 @@
-export function compareObjects(first: object, second: object): boolean {
+export function areObjsEqual(first: object, second: object): boolean {
   if (first === second) return true
 
   if (first === null || second === null) return false
@@ -18,11 +18,9 @@ export function compareObjects(first: object, second: object): boolean {
     if (typeof first_value !== typeof second_value) return false
 
     if (typeof first_value === 'object') {
-      if (compareObjects(first_value, second_value) === false) {
-        return false
-      }
+      return areObjsEqual(first_value, second_value)
     } else {
-      if (first_value !== second_value) return false
+      return first_value === second_value
     }
   }
 

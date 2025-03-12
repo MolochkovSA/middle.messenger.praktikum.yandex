@@ -1,1 +1,2 @@
-export { compareObjects } from './compareObjects'
+export { areObjsEqual } from './areObjsEqual'
+export { arePrimitivesEqual } from './arePrimitivesEqual'

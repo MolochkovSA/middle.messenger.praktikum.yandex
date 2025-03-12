@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars'
 
-import { compareObjects } from '@/utils'
+import { areObjsEqual } from '@/utils'
 
 import { EventBus } from './event-bus'
 import { BlockEvents, Children, EventListeners, Meta, Props } from './types'
@@ -73,7 +73,7 @@ export abstract class Block<
   }
 
   protected componentDidUpdate(oldProps: P, newProps: P): boolean {
-    return compareObjects(oldProps, newProps)
+    return areObjsEqual(oldProps, newProps)
   }
 
   private _createDocumentElement(tagName: string): HTMLElement {
@@ -197,11 +197,7 @@ export abstract class Block<
     Object.assign(this._children, nextChildren)
   }
 
-  hide(): void {
-    this.getContent().style.display = 'none'
-  }
-
-  show(): void {
-    this.getContent().style.display = 'block'
+  remove(): void {
+    this.getContent().remove()
   }
 }

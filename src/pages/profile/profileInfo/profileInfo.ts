@@ -76,15 +76,15 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
         }),
         ProfileChangeLink: new Link({
           label: 'Изменить данные',
-          to: '/profile/edit',
+          to: '/settings',
         }),
         PasswordChangeLink: new Link({
           label: 'Изменить пароль',
-          to: '/profile/password',
+          to: '/reset-password',
         }),
         LogoutLink: new Link({
           label: 'Выйти',
-          to: '/login',
+          to: '/sign-in',
         }),
       },
     })

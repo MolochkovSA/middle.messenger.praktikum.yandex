@@ -2,6 +2,7 @@ import { Block } from '@/core'
 import { Link } from '@/components'
 
 import styles from './navigation.module.scss'
+import { RoutePath } from '@/config/routeConfig'
 
 export class NavigationPage extends Block {
   constructor() {
@@ -29,13 +30,13 @@ export class NavigationPage extends Block {
   }
 }
 
-const links: { to: string; label: string }[] = [
-  { to: '/login', label: 'Страница авторизации' },
-  { to: '/register', label: 'Страница регистрации' },
-  { to: '/chat', label: 'Страница чата' },
+const links: { to: `${RoutePath}`; label: string }[] = [
+  { to: '/sign-in', label: 'Страница авторизации' },
+  { to: '/sign-up', label: 'Страница регистрации' },
+  { to: '/messenger', label: 'Страница чата' },
   { to: '/profile', label: 'Страница просмотра профиля' },
-  { to: '/profile/edit', label: 'Страница редактирования профиля' },
-  { to: '/profile/password', label: 'Страница изменения пароля' },
-  { to: '/not-found', label: 'Страница ошибки 404' },
+  { to: '/settings', label: 'Страница редактирования профиля' },
+  { to: '/reset-password', label: 'Страница изменения пароля' },
+  { to: '*', label: 'Страница ошибки 404' },
   { to: '/server-error', label: 'Страница ошибки 500' },
 ]

@@ -22,7 +22,7 @@ export class NotFoundPage extends Block<NotFoundPageProps, {}, NotFoundPageChild
         BackLink: new Link({
           label: 'Назад к чатам',
           className: styles.link,
-          to: '/chat',
+          to: '/messenger',
         }),
       },
     })
