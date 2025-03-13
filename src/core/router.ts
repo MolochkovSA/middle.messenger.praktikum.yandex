@@ -53,6 +53,10 @@ export class Router {
     Router._history.forward()
   }
 
+  static getLoaderData<T>(): T | undefined {
+    return Router._currentRoute?.getLoaderData<T>()
+  }
+
   private static _use(container: HTMLElement, props: RouteProps) {
     const route = new Route(container, props)
     Router._routes.push(route)
