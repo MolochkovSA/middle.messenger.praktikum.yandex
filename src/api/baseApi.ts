@@ -1,27 +1,12 @@
-import { Fetch } from '@/services'
+import { BASE_URL } from '@/config/constants'
+import { HTTPTransport } from '@/core'
 
 export class BaseApi {
   protected baseUrl: string
-  protected fetch: Fetch
+  protected http: HTTPTransport
 
-  constructor({ url }: { url: string }) {
-    this.baseUrl = 'https://ya-praktikum.tech/api/v2' + url
-    this.fetch = new Fetch({ baseUrl: this.baseUrl })
-  }
-
-  create() {
-    throw new Error('Not implemented')
-  }
-
-  request() {
-    throw new Error('Not implemented')
-  }
-
-  update() {
-    throw new Error('Not implemented')
-  }
-
-  delete() {
-    throw new Error('Not implemented')
+  constructor({ apiPath }: { apiPath: string }) {
+    this.baseUrl = BASE_URL + apiPath
+    this.http = new HTTPTransport({ baseUrl: this.baseUrl })
   }
 }

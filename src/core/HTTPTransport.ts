@@ -1,4 +1,5 @@
-import { Indexed } from '@/types/types'
+import { APIError } from '@/errors'
+import { Indexed } from '@/types'
 
 enum Methods {
   GET = 'GET',
@@ -8,18 +9,15 @@ enum Methods {
 }
 
 type RequestOptions = {
+  method: Methods
   headers?: Record<string, string>
   data?: Indexed
   timeout?: number
 }
 
-type RequestOptionsWithMethod = {
-  method: Methods
-} & RequestOptions
+type HTTPMethod = (path: string, options?: Omit<RequestOptions, 'method'>) => Promise<XMLHttpRequest>
 
-type HTTPMethod = (path: string, options?: RequestOptions) => Promise<XMLHttpRequest>
-
-export class Fetch {
+export class HTTPTransport {
   private _baseUrl: string
 
   constructor({ baseUrl }: { baseUrl: string }) {
@@ -37,8 +35,8 @@ export class Fetch {
   put = this._createHTTPMethod(Methods.PUT)
   delete = this._createHTTPMethod(Methods.DELETE)
 
-  private _request = (path: string, options: RequestOptionsWithMethod): Promise<XMLHttpRequest> => {
-    const { method = Methods.GET, data, headers, timeout = 5000 } = options
+  private _request = (path: string, options: RequestOptions): Promise<XMLHttpRequest> => {
+    const { method, data, headers, timeout = 5000 } = options
 
     return new Promise((resolve, reject) => {
       const xhr = new XMLHttpRequest()
@@ -58,16 +56,20 @@ export class Fetch {
       xhr.timeout = timeout
 
       xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) {
-          resolve(xhr)
+        const status = xhr.status
+
+        if (status >= 400 && status < 599) {
+          reject(xhr.response as APIError)
         } else {
-          reject(xhr)
+          resolve(xhr)
         }
       }
 
-      xhr.onabort = reject
-      xhr.onerror = reject
-      xhr.ontimeout = reject
+      const errorHandler = (ev: ProgressEvent<EventTarget>) => reject(new APIError(ev.type))
+
+      xhr.onabort = errorHandler
+      xhr.onerror = errorHandler
+      xhr.ontimeout = errorHandler
 
       if (isGet || !data) {
         xhr.send()

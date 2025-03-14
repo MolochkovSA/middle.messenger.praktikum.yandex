@@ -1,5 +1,5 @@
 export { FormControlService } from '../services/formControlService'
 export { InputValidationService } from './inputValidationService'
-export { Fetch } from './fetch'
+export { NotificationService } from './notificationService'
 
 export type { ValidationSchemaName } from './inputValidationService'

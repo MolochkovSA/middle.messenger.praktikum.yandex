@@ -1,10 +1,9 @@
-import { Block, Router } from '@/core'
+import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
-import { AuthApi } from '@/api/authApi'
-import { RoutePath } from '@/config/routeConfig'
 
 import styles from './login.module.scss'
+import { authController } from '@/controllers'
 
 type LoginPageChildren = {
   LoginInput: AuthInputField
@@ -12,6 +11,7 @@ type LoginPageChildren = {
   SubmitButton: Button
   RegisterLink: Link
 }
+
 export class LoginPage extends Block<{}, {}, LoginPageChildren> {
   private formControlService: FormControlService
 
@@ -55,15 +55,7 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
 
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
-    this.formControlService.attachSubmitHandler(({ formData }) => {
-      const authApi = new AuthApi()
-      authApi
-        .signIn({
-          login: formData.get('login') as string,
-          password: formData.get('password') as string,
-        })
-        .then(() => Router.navigate(RoutePath.CHAT))
-    })
+    this.formControlService.attachSubmitHandler(authController.login)
   }
 
   render(): string {

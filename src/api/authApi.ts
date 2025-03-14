@@ -1,16 +1,21 @@
+import { APIError } from '@/errors'
 import { BaseApi } from './baseApi'
 
-export class AuthApi extends BaseApi {
+class AuthApi extends BaseApi {
   constructor() {
-    super({ url: '/auth' })
+    super({ apiPath: '/auth' })
   }
 
-  async signIn(data: SignInRequest): Promise<void> {
-    const response = await this.fetch.post('/signin', { data })
+  async signIn(data: { login: string; password: string }): Promise<void | APIError> {
+    try {
+      await this.http.post('/signin', { data })
+    } catch (error) {
+      if (APIError.isAPIError(error)) {
+        return error
+      }
+      console.log(error)
+    }
   }
 }
 
-type SignInRequest = {
-  login: string
-  password: string
-}
+export const authApi = new AuthApi()

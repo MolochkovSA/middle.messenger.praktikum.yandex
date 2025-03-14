@@ -1,6 +1,6 @@
 import { mergeObjects } from '@/utils'
 import { EventBus } from './event-bus'
-import { Indexed } from '@/types/types'
+import { Indexed } from '@/types'
 
 enum StoreEvents {
   UPDATE = 'update',
