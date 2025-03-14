@@ -1,3 +1,5 @@
+import { Indexed } from '@/types/types'
+
 enum Methods {
   GET = 'GET',
   POST = 'POST',
@@ -7,7 +9,7 @@ enum Methods {
 
 type RequestOptions = {
   headers?: Record<string, string>
-  data?: Record<string, unknown>
+  data?: Indexed
   timeout?: number
 }
 
@@ -79,7 +81,7 @@ export class Fetch {
   }
 }
 
-function queryStringify(data: Record<string, unknown>) {
+function queryStringify(data: Indexed): string {
   return Object.entries(data).reduce((acc, [key, value]) => {
     const encodedKey = encodeURIComponent(key)
 

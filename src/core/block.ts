@@ -1,6 +1,7 @@
 import Handlebars from 'handlebars'
 
-import { areObjsEqual } from '@/utils'
+import { areObjectsEqual } from '@/utils'
+import { Indexed } from '@/types/types'
 
 import { EventBus } from './event-bus'
 
@@ -11,18 +12,17 @@ enum BlockEvents {
   FLOW_RENDER = 'flow:render',
 }
 
-type Props = Record<string, unknown>
 type Children = Record<string, Block | Block[]>
 type EventListeners = { [key in keyof HTMLElementEventMap]?: (e: Event) => void }
 
-type Meta<P extends Props, E extends EventListeners, C extends Children> = {
+type Meta<P extends Indexed, E extends EventListeners, C extends Children> = {
   props?: P
   events?: E
   children?: C
 }
 
 export abstract class Block<
-  P extends Props = Props,
+  P extends Indexed = Indexed,
   E extends EventListeners = EventListeners,
   C extends Children = Children
 > {
@@ -89,7 +89,7 @@ export abstract class Block<
   }
 
   protected componentDidUpdate(oldProps: P, newProps: P): boolean {
-    return areObjsEqual(oldProps, newProps)
+    return areObjectsEqual(oldProps, newProps)
   }
 
   private _createDocumentElement(tagName: string): HTMLElement {
@@ -158,7 +158,7 @@ export abstract class Block<
     return ''
   }
 
-  private _makeObjProxy<T extends Record<string, unknown>>(obj: T): T {
+  private _makeObjProxy<T extends Indexed>(obj: T): T {
     const emitBind = this._eventBus.emit.bind(this._eventBus)
 
     return new Proxy(obj, {
@@ -170,7 +170,7 @@ export abstract class Block<
       set(target: T, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
-        ;(target as Record<string, unknown>)[prop] = value
+        ;(target as Indexed)[prop] = value
 
         emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
         return true
