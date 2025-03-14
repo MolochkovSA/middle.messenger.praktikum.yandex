@@ -3,6 +3,7 @@ export { Button } from './common/button'
 export { Link } from './common/link'
 export { Input } from './common/input'
 export { InputField } from './common/inputField'
+export { Loader } from './common/loader'
 
 // Auth
 export { AuthInputField } from './auth/authInputField'

@@ -3,7 +3,23 @@ import Handlebars from 'handlebars'
 import { areObjsEqual } from '@/utils'
 
 import { EventBus } from './event-bus'
-import { BlockEvents, Children, EventListeners, Meta, Props } from './types'
+
+enum BlockEvents {
+  INIT = 'init',
+  FLOW_CDM = 'flow:component-did-mount',
+  FLOW_CDU = 'flow:component-did-update',
+  FLOW_RENDER = 'flow:render',
+}
+
+type Props = Record<string, unknown>
+type Children = Record<string, Block | Block[]>
+type EventListeners = { [key in keyof HTMLElementEventMap]?: (e: Event) => void }
+
+type Meta<P extends Props, E extends EventListeners, C extends Children> = {
+  props?: P
+  events?: E
+  children?: C
+}
 
 export abstract class Block<
   P extends Props = Props,

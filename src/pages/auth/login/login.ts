@@ -1,6 +1,8 @@
-import { Block } from '@/core'
+import { Block, Router } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
+import { AuthApi } from '@/api/authApi'
+import { RoutePath } from '@/config/routeConfig'
 
 import styles from './login.module.scss'
 
@@ -53,6 +55,15 @@ export class LoginPage extends Block<{}, {}, LoginPageChildren> {
 
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+    this.formControlService.attachSubmitHandler(({ formData }) => {
+      const authApi = new AuthApi()
+      authApi
+        .signIn({
+          login: formData.get('login') as string,
+          password: formData.get('password') as string,
+        })
+        .then(() => Router.navigate(RoutePath.CHAT))
+    })
   }
 
   render(): string {

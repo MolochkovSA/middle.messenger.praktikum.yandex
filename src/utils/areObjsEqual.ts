@@ -18,9 +18,9 @@ export function areObjsEqual(first: object, second: object): boolean {
     if (typeof first_value !== typeof second_value) return false
 
     if (typeof first_value === 'object') {
-      return areObjsEqual(first_value, second_value)
+      if (areObjsEqual(first_value, second_value) === false) return false
     } else {
-      return first_value === second_value
+      if (first_value !== second_value) return false
     }
   }
 

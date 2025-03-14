@@ -4,7 +4,6 @@ import { Input, InputProps, InputEvents } from '@/components/common/input'
 type InputFieldProps = {
   label?: string
   className?: string
-  isError?: boolean
   errorMessage?: string
   errorListener?: (event: string, listener: (errorMessage: string) => void) => void
 }
@@ -16,10 +15,10 @@ export class InputField extends Block<
   {},
   InputFieldChildren
 > {
-  constructor({ label, className, isError, errorMessage, errorListener, ...inputProps }: InputFieldInitProps) {
+  constructor({ label, className, errorMessage, errorListener, ...inputProps }: InputFieldInitProps) {
     const id = crypto.randomUUID()
     super({
-      props: { id, label, className, isError, errorMessage },
+      props: { id, label, className, errorMessage },
       children: {
         Input: new Input({ ...inputProps, id }),
       },

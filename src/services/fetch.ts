@@ -67,9 +67,12 @@ export class Fetch {
       xhr.onerror = reject
       xhr.ontimeout = reject
 
-      if (!isGet || !data) {
+      if (isGet || !data) {
         xhr.send()
+      } else if (data instanceof FormData) {
+        xhr.send(data)
       } else {
+        xhr.setRequestHeader('Content-Type', 'application/json')
         xhr.send(JSON.stringify(data))
       }
     })

@@ -1,4 +1,4 @@
-import { EventCallback } from './types'
+type EventCallback<T = unknown> = (...args: T[]) => void
 
 export class EventBus<T = unknown> {
   private _listeners: Record<string, EventCallback<T>[]> = {}
