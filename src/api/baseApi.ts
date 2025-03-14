@@ -1,7 +1,7 @@
 import { BASE_URL } from '@/config/constants'
 import { HTTPTransport } from '@/core'
 
-export class BaseApi {
+export abstract class BaseApi {
   protected baseUrl: string
   protected http: HTTPTransport
 
