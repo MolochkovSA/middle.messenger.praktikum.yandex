@@ -1,4 +1,3 @@
-import { APIError } from '@/errors'
 import { BaseApi } from './baseApi'
 
 class AuthApi extends BaseApi {
@@ -6,15 +5,8 @@ class AuthApi extends BaseApi {
     super({ apiPath: '/auth' })
   }
 
-  async signIn(data: { login: string; password: string }): Promise<void | APIError> {
-    try {
-      await this.http.post('/signin', { data })
-    } catch (error) {
-      if (APIError.isAPIError(error)) {
-        return error
-      }
-      console.log(error)
-    }
+  async signIn(data: { login: string; password: string }): Promise<void> {
+    await this.http.post('/signin', { data })
   }
 }
 

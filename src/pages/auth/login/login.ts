@@ -4,6 +4,7 @@ import { FormControlService } from '@/services'
 import { authController } from '@/controllers'
 
 import styles from './login.module.scss'
+import { withAuthState } from '@/store/auth'
 
 type LoginPageProps = {
   isLoading: boolean
@@ -16,7 +17,7 @@ type LoginPageChildren = {
   RegisterLink: Link
 }
 
-export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
+class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
@@ -86,3 +87,5 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
     `
   }
 }
+
+export default withAuthState(LoginPage)
