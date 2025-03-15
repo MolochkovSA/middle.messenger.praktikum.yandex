@@ -23,6 +23,6 @@ export async function login({ formData }: { formData: FormData }): Promise<void>
 
     console.log(error)
   } finally {
-    // dispatch(authActions.setLoading(false))
+    dispatch(authActions.setLoading(false))
   }
 }

@@ -8,27 +8,28 @@ const slices = {
   user: userSlice,
 }
 
-const initialState = {
-  auth: authSlice.initialState,
-  user: userSlice.initialState,
+type State = {
+  [K in keyof typeof slices]: (typeof slices)[K] extends { initialState: infer R } ? R : never
 }
 
-type State = typeof initialState
+function createStore() {
+  const initialState: State = Object.fromEntries(
+    Object.entries(slices).map(([key, slice]) => [key, slice.initialState])
+  ) as State
 
-const createStore = () => {
   const store = new Store(initialState)
 
   function reducer(sate: State, action: Action): State {
-    const nextState = { ...sate }
-    const keys = Object.keys(sate)
+    return Object.keys(sate).reduce<State>(
+      (nextState, key) => {
+        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        nextState[key] = slices[key].reducer(sate[key], action)
 
-    keys.forEach((key) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      nextState[key] = slices[key].reducer(store.getState()[key], action)
-    })
-
-    return nextState
+        return nextState
+      },
+      { ...sate }
+    )
   }
 
   return {
