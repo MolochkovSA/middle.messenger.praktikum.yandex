@@ -1,5 +1,5 @@
-import { userGuard } from '@/services'
+import { authGuard } from '@/services'
 
 export async function chatLoader() {
-  userGuard()
+  authGuard()
 }

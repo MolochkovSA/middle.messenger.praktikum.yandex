@@ -59,7 +59,7 @@ export class Route {
       })
       .catch((err) => {
         if (err instanceof Error) {
-          console.error(err)
+          console.error(err.message)
         }
       })
       .finally(() => {
