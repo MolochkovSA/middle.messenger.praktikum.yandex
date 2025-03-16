@@ -60,3 +60,16 @@ export async function login({ formData }: { formData: FormData }): Promise<void>
     dispatch(authActions.setLoading(false))
   }
 }
+
+export async function logout(): Promise<void> {
+  try {
+    await authApi.logout()
+    Router.navigate(RoutePath.LOGIN)
+  } catch (error) {
+    if (APIError.isAPIError(error)) {
+      return NotificationService.notify(error.reason, 'error')
+    }
+
+    console.log(error)
+  }
+}
