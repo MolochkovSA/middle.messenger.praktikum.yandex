@@ -88,7 +88,7 @@ export class FormControlService {
 
       if (this._submitHandler) this._submitHandler({ event: e, formData })
 
-      // formElement.reset()
+      formElement.reset()
     }
   }
 

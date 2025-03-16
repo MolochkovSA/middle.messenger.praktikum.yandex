@@ -1,22 +1,17 @@
 import { Block } from '@/core'
 
-import { NotificationType } from './types'
+import { Notification, NotificationType } from '../types'
 
-import styles from './notification.module.scss'
+import styles from './notificationItem.module.scss'
 
-type NotificationProps = {
-  message: string
-  type: NotificationType
-}
-
-type NotificationEvents = {
+type NotificationItemEvents = {
   click: () => void
 }
 
-export class NotificationComponent extends Block<NotificationProps, NotificationEvents> {
+export class NotificationItem extends Block<Notification, NotificationItemEvents> {
   private _timeout?: NodeJS.Timeout
 
-  constructor({ message, type }: NotificationProps) {
+  constructor({ message, type }: Notification) {
     super({
       props: {
         message,
@@ -29,9 +24,8 @@ export class NotificationComponent extends Block<NotificationProps, Notification
   }
 
   hide() {
-    if (this._timeout) clearTimeout(this._timeout)
-    this.setProps({ message: '', type: 'error' })
-    this.componentWillUnmount()
+    clearTimeout(this._timeout)
+    this.dispatchComponentWillUnmount()
   }
 
   render(): string {
