@@ -2,9 +2,9 @@ import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
 import { authController } from '@/controllers'
+import { withAuthState } from '@/store/auth'
 
 import styles from './login.module.scss'
-import { withAuthState } from '@/store/auth'
 
 type LoginPageProps = {
   isLoading: boolean

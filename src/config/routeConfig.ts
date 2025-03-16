@@ -1,3 +1,4 @@
+import { Loader } from '@/components'
 import { RouteProps } from '@/core'
 import {
   NotFoundPage,
@@ -9,6 +10,7 @@ import {
   ProfileEditPage,
   ProfilePasswordPage,
   NavigationPage,
+  chatLoader,
 } from '@/pages'
 
 export enum RoutePath {
@@ -27,7 +29,7 @@ export const routeConfig: RouteProps[] = [
   { pathname: RoutePath.NAVIGATION, block: NavigationPage },
   { pathname: RoutePath.LOGIN, block: LoginPage },
   { pathname: RoutePath.REGISTER, block: RegisterPage },
-  { pathname: RoutePath.CHAT, block: ChatPage },
+  { pathname: RoutePath.CHAT, block: ChatPage, loader: chatLoader, hydrateFallbackElement: Loader },
   { pathname: RoutePath.PROFILE, block: ProfileInfoPage },
   { pathname: RoutePath.SETTINGS, block: ProfileEditPage },
   { pathname: RoutePath.RESET_PASSWORD, block: ProfilePasswordPage },

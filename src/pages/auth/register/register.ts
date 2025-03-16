@@ -1,8 +1,14 @@
 import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService } from '@/services'
+import { authController } from '@/controllers'
 
 import styles from './register.module.scss'
+import { withAuthState } from '@/store/auth'
+
+type LoginPageProps = {
+  isLoading: boolean
+}
 
 type RegisterPageChildren = {
   EmailInput: AuthInputField
@@ -15,13 +21,16 @@ type RegisterPageChildren = {
   SubmitButton: Button
   LoginLink: Link
 }
-export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
+class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
 
     super({
+      props: {
+        isLoading: false,
+      },
       children: {
         EmailInput: new AuthInputField({
           type: 'email',
@@ -98,9 +107,35 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
 
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+    this.formControlService.attachSubmitHandler(authController.register)
+  }
+
+  componentWillUnmount(): void {
+    this.formControlService.unmount()
   }
 
   render(): string {
+    const { isLoading } = this.getProps()
+    const {
+      EmailInput,
+      LoginInput,
+      FirstNameInput,
+      SecondNameInput,
+      PhoneInput,
+      PasswordInput,
+      PasswordRepeatInput,
+      SubmitButton,
+    } = this.getChildren()
+
+    EmailInput.setProps({ disabled: isLoading })
+    LoginInput.setProps({ disabled: isLoading })
+    FirstNameInput.setProps({ disabled: isLoading })
+    SecondNameInput.setProps({ disabled: isLoading })
+    PhoneInput.setProps({ disabled: isLoading })
+    PasswordInput.setProps({ disabled: isLoading })
+    PasswordRepeatInput.setProps({ disabled: isLoading })
+    SubmitButton.setProps({ disabled: isLoading })
+
     return `
       {{#> AuthLayout title="Регистрация"}}
         {{{ EmailInput }}}
@@ -125,3 +160,5 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
     `
   }
 }
+
+export default withAuthState(RegisterPage)

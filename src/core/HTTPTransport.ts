@@ -52,6 +52,7 @@ export class HTTPTransport {
         })
       }
 
+      xhr.withCredentials = true
       xhr.responseType = 'json'
       xhr.timeout = timeout
 

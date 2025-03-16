@@ -1,13 +1,13 @@
 import { arePrimitivesEqual } from '@/utils'
 import { Block } from './block'
 
-type Loader = () => unknown
+type Loader = () => Promise<unknown>
 
 export type RouteProps = {
   pathname: string
   block: new () => Block
   loader?: Loader
-  hydrateFallbackElement?: HTMLElement | string
+  hydrateFallbackElement?: (new () => Block) | HTMLElement | string
 }
 
 export class Route {
@@ -17,7 +17,7 @@ export class Route {
   private _block: Block | null
   private _loader: Loader | undefined
   private _loaderData: unknown
-  private _hydrateFallbackElement: HTMLElement | string
+  private _hydrateFallbackElement: (new () => Block) | HTMLElement | string
   private _isLoading = false
 
   constructor(container: HTMLElement, { pathname, block, loader, hydrateFallbackElement = '' }: RouteProps) {
@@ -45,25 +45,28 @@ export class Route {
   }
 
   render(): void {
-    const loader = this._loader
+    if (!this._loader) {
+      return this._render()
+    }
 
-    if (loader) {
-      new Promise((resolve) => {
-        this._isLoading = true
-        resolve(loader())
-      }).then((data) => {
+    this._isLoading = true
+
+    this._loader()
+      .then((data) => {
         this._loaderData = data
+      })
+      .finally(() => {
         this._isLoading = false
         this._render()
       })
-    }
-
-    this._render()
   }
 
   private _render(): void {
     if (this._isLoading) {
-      return this._container.replaceChildren(this._hydrateFallbackElement)
+      if (this._hydrateFallbackElement instanceof HTMLElement || typeof this._hydrateFallbackElement === 'string') {
+        return this._container.replaceChildren(this._hydrateFallbackElement)
+      }
+      return this._container.replaceChildren(new this._hydrateFallbackElement().getContent())
     }
 
     this._block = new this._blockClass()

@@ -25,9 +25,8 @@ export class Router {
       }
     })
 
-    Router._start()
-
     Router._isInit = true
+    Router._start()
   }
 
   static navigate(value: string | number) {
