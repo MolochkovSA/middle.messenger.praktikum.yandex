@@ -54,10 +54,16 @@ export class Route {
     this._loader()
       .then((data) => {
         this._loaderData = data
+        this._isLoading = false
+        this._render()
+      })
+      .catch((err) => {
+        if (err instanceof Error) {
+          console.error(err)
+        }
       })
       .finally(() => {
         this._isLoading = false
-        this._render()
       })
   }
 

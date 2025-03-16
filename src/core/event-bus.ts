@@ -13,7 +13,7 @@ export class EventBus<T = unknown> {
 
   off(event: string, callback: EventCallback<T>) {
     if (!this._listeners[event]) {
-      throw new Error(`Нет события: ${event}`)
+      return
     }
 
     this._listeners[event] = this._listeners[event].filter((listener) => listener !== callback)
@@ -21,7 +21,7 @@ export class EventBus<T = unknown> {
 
   emit(event: string, ...args: T[]) {
     if (!this._listeners[event]) {
-      throw new Error(`Нет события: ${event}`)
+      return
     }
 
     this._listeners[event].forEach(function (listener) {

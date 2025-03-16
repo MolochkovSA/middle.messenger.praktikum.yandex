@@ -3,9 +3,10 @@ import { RoutePath } from '@/config/routeConfig'
 import { Router } from '@/core'
 import { APIError } from '@/errors'
 import { NotificationService } from '@/services'
-import { dispatch } from '@/store'
+import { dispatch, getState } from '@/store'
 import { authActions } from '@/store/auth'
 import { userActions } from '@/store/user'
+import { User } from '@/types'
 
 export async function register({ formData }: { formData: FormData }): Promise<void> {
   dispatch(authActions.setLoading(true))
@@ -20,9 +21,7 @@ export async function register({ formData }: { formData: FormData }): Promise<vo
       password: formData.get('password') as string,
     })
 
-    const user = await authApi.me()
-
-    dispatch(userActions.setUser(user))
+    await me()
 
     Router.navigate(RoutePath.CHAT)
   } catch (error) {
@@ -45,9 +44,7 @@ export async function login({ formData }: { formData: FormData }): Promise<void>
       password: formData.get('password') as string,
     })
 
-    const user = await authApi.me()
-
-    dispatch(userActions.setUser(user))
+    await me()
 
     Router.navigate(RoutePath.CHAT)
   } catch (error) {
@@ -58,6 +55,20 @@ export async function login({ formData }: { formData: FormData }): Promise<void>
     console.log(error)
   } finally {
     dispatch(authActions.setLoading(false))
+  }
+}
+
+export async function me(): Promise<User | undefined> {
+  const currentUser = getState().user.user
+
+  if (currentUser) return currentUser
+
+  try {
+    const user = await authApi.me()
+    dispatch(userActions.setUser(user))
+    return user
+  } catch (error) {
+    return currentUser
   }
 }
 
