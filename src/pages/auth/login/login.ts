@@ -66,6 +66,10 @@ class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
     this.formControlService.attachSubmitHandler(authController.login)
   }
 
+  componentWillUnmount(): void {
+    this.formControlService.unmount()
+  }
+
   render(): string {
     const { isLoading } = this.getProps()
     const { LoginInput, PasswordInput, SubmitButton } = this.getChildren()

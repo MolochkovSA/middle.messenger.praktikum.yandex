@@ -28,4 +28,8 @@ export class EventBus<T = unknown> {
       listener(...args)
     })
   }
+
+  clear() {
+    this._listeners = {}
+  }
 }

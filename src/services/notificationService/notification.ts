@@ -31,7 +31,7 @@ export class NotificationComponent extends Block<NotificationProps, Notification
   hide() {
     if (this._timeout) clearTimeout(this._timeout)
     this.setProps({ message: '', type: 'error' })
-    this.remove()
+    this.componentWillUnmount()
   }
 
   render(): string {

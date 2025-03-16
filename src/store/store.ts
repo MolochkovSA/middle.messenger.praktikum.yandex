@@ -19,28 +19,28 @@ function createStore() {
 
   const store = new Store(initialState)
 
-  function reducer(sate: State, action: Action): State {
-    return Object.keys(sate).reduce<State>(
-      (nextState, key) => {
-        //eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        nextState[key] = slices[key].reducer(sate[key], action)
-
-        return nextState
-      },
-      { ...sate }
-    )
-  }
-
   return {
     getState: () => store.getState(),
     dispatch: (action: Action) => {
       const state = store.getState()
-      store.setState(reducer(state, action))
+      store.setState(rootReducer(state, action))
     },
     subscribe: (callback: () => void) => store.on(StoreEvents.UPDATE, callback),
     unsubscribe: (callback: () => void) => store.off(StoreEvents.UPDATE, callback),
   }
+}
+
+function rootReducer(sate: State, action: Action): State {
+  return Object.keys(sate).reduce<State>(
+    (nextState, key) => {
+      //eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      nextState[key] = slices[key].reducer(sate[key], action)
+
+      return nextState
+    },
+    { ...sate }
+  )
 }
 
 export const { dispatch, getState, subscribe, unsubscribe } = createStore()

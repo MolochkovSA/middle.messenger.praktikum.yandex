@@ -1,6 +1,6 @@
 import { Block } from '@/core'
 import { Indexed } from '@/types'
-import { getState, subscribe } from './store'
+import { getState, subscribe, unsubscribe } from './store'
 import { areObjectsEqual } from '@/utils'
 
 type State = ReturnType<typeof getState>
@@ -28,10 +28,10 @@ export function connect<P extends Indexed>(mapStateToProps: (state: State) => De
         subscribe(this.onChangeStoreCallback)
       }
 
-      // componentWillUnmount() {
-      //   super.componentWillUnmount()
-      //   store.off(StoreEvents.UPDATE, this.onChangeStoreCallback)
-      // }
+      componentWillUnmount() {
+        super.componentWillUnmount()
+        unsubscribe(this.onChangeStoreCallback)
+      }
     }
   }
 }

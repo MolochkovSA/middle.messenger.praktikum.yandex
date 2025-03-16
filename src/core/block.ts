@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars'
 
-import { areObjectsEqual } from '@/utils'
+import { areObjectsEqual, isObject } from '@/utils'
 import { Indexed } from '@/types'
 
 import { EventBus } from './event-bus'
@@ -10,6 +10,7 @@ enum BlockEvents {
   FLOW_CDM = 'flow:component-did-mount',
   FLOW_CDU = 'flow:component-did-update',
   FLOW_RENDER = 'flow:render',
+  FLOW_UNMOUNT = 'flow:component-will-unmount',
 }
 
 type Children = Record<string, Block | Block[]>
@@ -50,6 +51,7 @@ export abstract class Block<
     this._eventBus.on(BlockEvents.FLOW_CDM, this._componentDidMount.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDU, this._componentDidUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_RENDER, this._render.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_UNMOUNT, this._componentWillUnmount.bind(this))
   }
 
   init(): void {
@@ -74,14 +76,10 @@ export abstract class Block<
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _isProps(obj: unknown): obj is P {
-    return obj !== null && typeof obj === 'object'
-  }
-
   private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
-    if (!this._isProps(oldProps) || !this._isProps(newProps)) return
+    if (!isObject(oldProps) || !isObject(newProps)) return
 
-    const isEqual: boolean = this.componentDidUpdate(oldProps, newProps)
+    const isEqual: boolean = this.componentDidUpdate(oldProps as P, newProps as P)
 
     if (!isEqual) {
       this._eventBus.emit(BlockEvents.FLOW_RENDER)
@@ -90,6 +88,26 @@ export abstract class Block<
 
   protected componentDidUpdate(oldProps: P, newProps: P): boolean {
     return areObjectsEqual(oldProps, newProps)
+  }
+
+  protected _componentWillUnmount(): void {
+    Object.values(this._children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentWillUnmount())
+      } else {
+        child.dispatchComponentWillUnmount()
+      }
+    })
+
+    this.componentWillUnmount()
+    this._removeEvents()
+    this.getContent().remove()
+  }
+
+  protected componentWillUnmount(): void {}
+
+  dispatchComponentWillUnmount(): void {
+    this._eventBus.emit(BlockEvents.FLOW_UNMOUNT)
   }
 
   private _createDocumentElement(tagName: string): HTMLElement {
@@ -211,9 +229,5 @@ export abstract class Block<
     }
 
     Object.assign(this._children, nextChildren)
-  }
-
-  remove(): void {
-    this.getContent().remove()
   }
 }

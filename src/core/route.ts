@@ -7,7 +7,7 @@ export type RouteProps = {
   pathname: string
   block: new () => Block
   loader?: Loader
-  hydrateFallbackElement?: HTMLElement
+  hydrateFallbackElement?: HTMLElement | string
 }
 
 export class Route {
@@ -17,16 +17,16 @@ export class Route {
   private _block: Block | null
   private _loader: Loader | undefined
   private _loaderData: unknown
-  private _hydrateFallbackElement: HTMLElement
+  private _hydrateFallbackElement: HTMLElement | string
   private _isLoading = false
 
-  constructor(container: HTMLElement, { pathname, block, loader, hydrateFallbackElement }: RouteProps) {
+  constructor(container: HTMLElement, { pathname, block, loader, hydrateFallbackElement = '' }: RouteProps) {
     this._container = container
     this._pathname = pathname
     this._blockClass = block
     this._block = null
     this._loader = loader
-    this._hydrateFallbackElement = hydrateFallbackElement ?? document.createElement('div')
+    this._hydrateFallbackElement = hydrateFallbackElement
   }
 
   navigate(pathname: string): void {
@@ -36,9 +36,8 @@ export class Route {
   }
 
   leave(): void {
-    if (this._block) {
-      this._block.remove()
-    }
+    this._block?.dispatchComponentWillUnmount()
+    this._block = null
   }
 
   match(pathname: string): boolean {
@@ -64,14 +63,10 @@ export class Route {
 
   private _render(): void {
     if (this._isLoading) {
-      this._container.replaceChildren(this._hydrateFallbackElement)
-      return
+      return this._container.replaceChildren(this._hydrateFallbackElement)
     }
 
-    if (!this._block) {
-      this._block = new this._blockClass()
-    }
-
+    this._block = new this._blockClass()
     this._container.replaceChildren(this._block.getContent())
     this._block.dispatchComponentDidMount()
   }

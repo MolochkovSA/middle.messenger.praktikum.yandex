@@ -6,6 +6,7 @@ type FormInputs = Record<string, FormInput>
 type SubmitHandler = (args: { event: Event; formData: FormData }) => void
 
 export class FormControlService {
+  private _formElement?: HTMLFormElement
   private _inputs: FormInputs
   private _eventBus: EventBus<string>
   private _inputsValidationRules: Record<string, ValidationSchemaName | undefined>
@@ -21,6 +22,8 @@ export class FormControlService {
     const formElement: HTMLFormElement | null = element.querySelector('form')
 
     if (!formElement) return
+
+    this._formElement = formElement
 
     const inputElements = formElement.querySelectorAll('input')
     this._inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
@@ -38,6 +41,15 @@ export class FormControlService {
 
   attachSubmitHandler(handler: SubmitHandler) {
     this._submitHandler = handler
+  }
+
+  unmount(): void {
+    this._inputsValidationRules = {}
+    this._eventBus.clear()
+    this._detachBlurHandlers()
+    this._detachSubmitHandler()
+    this._submitHandler = undefined
+    this._inputs = {}
   }
 
   private _attachBlurHandlers(): void {
@@ -60,6 +72,12 @@ export class FormControlService {
     })
   }
 
+  private _detachBlurHandlers(): void {
+    Object.values(this._inputs).forEach(({ element }) => {
+      element.onblur = null
+    })
+  }
+
   private _attachSubmitHandler(formElement: HTMLFormElement): void {
     formElement.onsubmit = (e) => {
       e.preventDefault()
@@ -72,6 +90,11 @@ export class FormControlService {
 
       // formElement.reset()
     }
+  }
+
+  private _detachSubmitHandler(): void {
+    if (!this._formElement) return
+    this._formElement.onsubmit = null
   }
 
   private _checkInputValue(
