@@ -52,42 +52,39 @@ export class Route {
     logger.warn(context, this._pathname)
 
     if (!this._loader) {
-      return this.render()
+      return this._render()
     }
 
     logger.info(context, this._pathname + ' start loading')
-    this._isLoading = true
+    this._renderFallbackElement()
 
     this._loader()
       .then((data) => {
         this._loaderData = data
-        this._isLoading = false
         logger.info(context, this._pathname + ' end loading')
-        this.render()
+        this._render()
       })
       .catch((err) => {
         if (err instanceof Error) {
           logger.error(context, err.message)
         }
       })
-      .finally(() => {
-        this._isLoading = false
-      })
   }
 
-  private render(): void {
-    logger.warn(this._context + this.render.name, this._pathname)
-
-    if (this._isLoading) {
-      if (this._hydrateFallbackElement instanceof HTMLElement || typeof this._hydrateFallbackElement === 'string') {
-        return this._container.replaceChildren(this._hydrateFallbackElement)
-      }
-      return this._container.replaceChildren(new this._hydrateFallbackElement().getContent())
-    }
-
+  private _render(): void {
+    logger.warn(this._context + this._render.name, this._pathname)
     this._block = new this._blockClass()
     this._container.replaceChildren(this._block.getContent())
     this._block.dispatchComponentDidMount()
+  }
+
+  private _renderFallbackElement(): void {
+    logger.warn(this._context + this._renderFallbackElement.name, this._pathname)
+    if (this._hydrateFallbackElement instanceof HTMLElement || typeof this._hydrateFallbackElement === 'string') {
+      this._container.replaceChildren(this._hydrateFallbackElement)
+    } else {
+      this._container.replaceChildren(new this._hydrateFallbackElement().getContent())
+    }
   }
 
   getLoaderData<T>(): T {

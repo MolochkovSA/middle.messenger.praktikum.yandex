@@ -1,11 +1,11 @@
 import { Block, Router } from '@/core'
 import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
-
-import styles from './profileInfo.module.scss'
 import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
 import { logger } from '@/services'
 import { User } from '@/types'
+
+import styles from './profileInfo.module.scss'
 
 type ProfileInfoProps = {
   email: string

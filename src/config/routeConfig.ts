@@ -32,7 +32,7 @@ export const routeConfig: RouteProps[] = [
   { pathname: RoutePath.REGISTER, block: RegisterPage, loader: authBlockGuard },
   { pathname: RoutePath.CHAT, block: ChatPage, loader: chatLoader, hydrateFallbackElement: Loader },
   { pathname: RoutePath.PROFILE, block: ProfileInfoPage, loader: authGuard, hydrateFallbackElement: Loader },
-  { pathname: RoutePath.SETTINGS, block: ProfileEditPage },
+  { pathname: RoutePath.SETTINGS, block: ProfileEditPage, loader: authGuard, hydrateFallbackElement: Loader },
   { pathname: RoutePath.RESET_PASSWORD, block: ProfilePasswordPage },
   { pathname: RoutePath.SERVER_ERROR, block: ServerErrorPage },
   { pathname: RoutePath.NOT_FOUND, block: NotFoundPage },

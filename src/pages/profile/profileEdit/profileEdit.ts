@@ -1,10 +1,18 @@
-import { Block } from '@/core'
+import { Block, Router } from '@/core'
 import { AvataButton, BackLink, Button, ProfileInputField } from '@/components'
 import { FormControlService } from '@/services'
-
-import { user } from '../mockData'
+import { User } from '@/types'
 
 import styles from './profileEdit.module.scss'
+
+type ProfileEditPageProps = {
+  email: string
+  login: string
+  first_name: string
+  second_name: string
+  display_name: string
+  phone: string
+}
 
 type ProfileEditPageChildren = {
   BackLink: BackLink
@@ -18,13 +26,21 @@ type ProfileEditPageChildren = {
   SubmitButton: Button
 }
 
-export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
+export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
 
     super({
+      props: {
+        email: '',
+        login: '',
+        first_name: '',
+        second_name: '',
+        display_name: '',
+        phone: '',
+      },
       children: {
         BackLink: new BackLink(),
         AvataButton: new AvataButton({ disabled: true }),
@@ -32,47 +48,44 @@ export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
           type: 'email',
           name: 'email',
           label: 'Почта',
-          value: user.email,
           errorListener: formValidationService.validate('email'),
         }),
         LoginInput: new ProfileInputField({
           type: 'text',
           name: 'login',
           label: 'Логин',
-          value: user.login,
           errorListener: formValidationService.validate('login'),
         }),
         FirstNameInput: new ProfileInputField({
           type: 'text',
           name: 'first_name',
           label: 'Имя',
-          value: user.first_name,
           errorListener: formValidationService.validate('name'),
         }),
         SecondNameInput: new ProfileInputField({
           type: 'text',
           name: 'second_name',
           label: 'Фамилия',
-          value: user.second_name,
           errorListener: formValidationService.validate('name'),
         }),
         DisplayNameInput: new ProfileInputField({
           type: 'text',
           name: 'display_name',
           label: 'Имя в чате',
-          value: user.display_name,
           errorListener: formValidationService.validate('name'),
         }),
         PhoneInput: new ProfileInputField({
           type: 'text',
           name: 'phone',
           label: 'Телефон',
-          value: user.phone,
           errorListener: formValidationService.validate('phone'),
         }),
         SubmitButton: new Button({
           type: 'submit',
           label: 'Сохранить',
+          click: () => {
+            console.log(12313)
+          },
         }),
       },
     })
@@ -82,9 +95,21 @@ export class ProfileEditPage extends Block<{}, {}, ProfileEditPageChildren> {
 
   componentDidMount(): void {
     this.formControlService.init(this.getContent())
+
+    const user = Router.getLoaderData<User>()
+    if (!user) return
+    // this.setProps(user)
   }
 
   render(): string {
+    Object.values(this.getChildren()).forEach((child) => {
+      if (!(child instanceof ProfileInputField)) return
+      const key = child.getProps().name
+      if (!key) return
+      const value = this.getProps()[key as keyof ProfileEditPageProps]
+      child.setProps({ value })
+    })
+
     return `
       {{#> ProfileLayout}}
         <form class=${styles.form}>

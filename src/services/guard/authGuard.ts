@@ -8,12 +8,12 @@ export async function authGuard(): Promise<User> {
   const context = authGuard.name
   const user = await authController.me()
 
-  logger.debug(context, user)
-
   if (!user) {
+    logger.info(context, 'failed')
     Router.navigate(RoutePath.LOGIN)
     throw new Error('User is not authorized')
   }
 
+  logger.info(context, 'ok')
   return user
 }
