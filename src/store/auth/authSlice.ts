@@ -1,4 +1,4 @@
-import { mergeObjects } from '@/utils'
+import { setObjectValues } from '@/utils'
 import { Slice } from '../types'
 
 enum ActionType {
@@ -18,7 +18,7 @@ export const authSlice: Slice<AuthState> = {
   reducer: (state, action) => {
     switch (action.type) {
       case ActionType.SET_LOADING: {
-        return mergeObjects(state, { isLoading: action.payload?.isLoading })
+        return setObjectValues(state, { isLoading: action.payload?.isLoading })
       }
       default: {
         return state

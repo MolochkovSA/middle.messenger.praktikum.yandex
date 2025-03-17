@@ -1,4 +1,4 @@
-import { setObject } from '@/utils'
+import { setObjectValues } from '@/utils'
 import { Slice } from '../types'
 import { User } from '@/types'
 
@@ -17,7 +17,7 @@ export const userSlice: Slice<UserState> = {
   reducer: (state, action) => {
     switch (action.type) {
       case ActionType.SET_USER: {
-        return setObject(state, { user: action.payload?.user })
+        return setObjectValues(state, { user: action.payload?.user })
       }
       default: {
         return state

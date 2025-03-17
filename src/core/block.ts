@@ -1,6 +1,6 @@
 import Handlebars from 'handlebars'
 
-import { areObjectsEqual, isObject } from '@/utils'
+import { areObjectsEqual } from '@/utils'
 import { Indexed } from '@/types'
 
 import { EventBus } from './event-bus'
@@ -8,6 +8,7 @@ import { EventBus } from './event-bus'
 enum BlockEvents {
   INIT = 'init',
   FLOW_CDM = 'flow:component-did-mount',
+  FLOW_SCU = 'flow:should-component-update',
   FLOW_CDU = 'flow:component-did-update',
   FLOW_RENDER = 'flow:render',
   FLOW_UNMOUNT = 'flow:component-will-unmount',
@@ -28,7 +29,7 @@ export abstract class Block<
   C extends Children = Children
 > {
   private _id: string
-  private _eventBus: EventBus
+  private _eventBus: EventBus<P>
   private _element: HTMLElement | null
   private _children: C
   private _props: P
@@ -49,6 +50,7 @@ export abstract class Block<
   private _registerEvents(): void {
     this._eventBus.on(BlockEvents.INIT, this.init.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDM, this._componentDidMount.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_SCU, this._componentShouldUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDU, this._componentDidUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_RENDER, this._render.bind(this))
     this._eventBus.on(BlockEvents.FLOW_UNMOUNT, this._componentWillUnmount.bind(this))
@@ -76,19 +78,23 @@ export abstract class Block<
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
-    if (!isObject(oldProps) || !isObject(newProps)) return
-
-    const isEqual: boolean = this.componentDidUpdate(oldProps as P, newProps as P)
+  private _componentShouldUpdate(oldProps: P, newProps: P): void {
+    const isEqual: boolean = this.shouldComponentUpdate(oldProps, newProps)
 
     if (!isEqual) {
       this._eventBus.emit(BlockEvents.FLOW_RENDER)
     }
   }
 
-  protected componentDidUpdate(oldProps: P, newProps: P): boolean {
+  protected shouldComponentUpdate(oldProps: P, newProps: P): boolean {
     return areObjectsEqual(oldProps, newProps)
   }
+
+  private _componentDidUpdate(oldProps: P, newProps: P): void {
+    this.componentDidUpdate(oldProps, newProps)
+  }
+
+  protected componentDidUpdate(oldProps: P, newProps: P): void {}
 
   protected _componentWillUnmount(): void {
     Object.values(this._children).forEach((child) => {
@@ -176,21 +182,21 @@ export abstract class Block<
     return ''
   }
 
-  private _makeObjProxy<T extends Indexed>(obj: T): T {
+  private _makeObjProxy(obj: P): P {
     const emitBind = this._eventBus.emit.bind(this._eventBus)
 
     return new Proxy(obj, {
-      get(target: T, prop: string) {
+      get(target: P, prop: string) {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
 
-      set(target: T, prop: string, value: unknown) {
+      set(target: P, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
         ;(target as Indexed)[prop] = value
 
-        emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
+        emitBind(BlockEvents.FLOW_SCU, oldTarget, target)
         return true
       },
 
