@@ -61,33 +61,37 @@ export async function login({ formData }: { formData: FormData }): Promise<void>
   }
 }
 
-export async function me(): Promise<User | undefined> {
+export async function me(): Promise<User | null> {
   const context = service + me.name
-  const currentUser = getState().user.user
 
-  if (currentUser) {
-    logger.debug(context, 'return currentUser')
-    return currentUser
+  logger.debug(context, 'start')
+  const localUser = getState().user.user
+
+  if (localUser) {
+    logger.debug(context, 'return local user')
+    return localUser
   }
 
   try {
-    const user = await authApi.me()
-    logger.debug(context, 'dispatch and return user')
-    dispatch(userActions.setUser(user))
-    return user
+    const fetchedUser = await authApi.me()
+    dispatch(userActions.setUser(fetchedUser))
+    logger.debug(context, 'return fetched user')
+    return fetchedUser
   } catch (error) {
     logger.debug(context, 'return undefined')
-    return currentUser
+    return localUser
   }
 }
 
 export async function logout(): Promise<void> {
   const context = service + logout.name
+  logger.debug(context, 'logout start')
 
   try {
     dispatch(userActions.clearUser())
     await authApi.logout()
     Router.navigate(RoutePath.LOGIN)
+    logger.debug(context, 'logout end')
   } catch (error) {
     if (APIError.isAPIError(error)) {
       return NotificationService.notify(error.reason, 'error')

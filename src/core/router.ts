@@ -82,7 +82,7 @@ export class Router {
     }
 
     Router._currentRoute = route
-    route.render()
+    route.load()
   }
 
   private static _go(delta: number) {

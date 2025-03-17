@@ -7,7 +7,7 @@ export async function authGuard(): Promise<void> {
   const context = authGuard.name
   const user = await authController.me()
 
-  logger.debug(context, JSON.stringify(user))
+  logger.debug(context, user)
 
   if (!user) {
     Router.navigate(RoutePath.LOGIN)

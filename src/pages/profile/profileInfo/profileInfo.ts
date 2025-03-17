@@ -6,6 +6,7 @@ import { user } from '../mockData'
 import styles from './profileInfo.module.scss'
 import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
+import { logger } from '@/services'
 
 type ProfileInfoProps = {
   title: string
@@ -26,6 +27,8 @@ type ProfileInfoPageChildren = {
 }
 
 export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
+  private _context = ProfileInfoPage.name
+
   constructor() {
     super({
       props: {
@@ -89,6 +92,7 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
           to: '#',
           click: async (e) => {
             e.preventDefault()
+            logger.debug(this._context, 'logout click')
             await authController.logout()
             Router.navigate(RoutePath.LOGIN)
           },

@@ -32,17 +32,21 @@ function createStore() {
 }
 
 function rootReducer(sate: State, action: Action): State {
-  return Object.keys(sate).reduce<State>(
-    (nextState, key) => {
+  const nextState = Object.keys(sate).reduce<State>(
+    (acc, key) => {
       //eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      nextState[key] = slices[key].reducer(sate[key], action)
-      logger.info(rootReducer.name, JSON.stringify(nextState))
+      acc[key] = slices[key].reducer(sate[key], action)
 
-      return nextState
+      return acc
     },
     { ...sate }
   )
+
+  logger.info('reducer.action: ', action)
+  logger.info('reducer.nextState: ', nextState)
+
+  return nextState
 }
 
 export const { dispatch, getState, subscribe, unsubscribe } = createStore()

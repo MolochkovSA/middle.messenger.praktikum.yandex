@@ -1,4 +1,4 @@
-import { mergeObjects } from '@/utils'
+import { setObject } from '@/utils'
 import { Slice } from '../types'
 import { User } from '@/types'
 
@@ -7,17 +7,17 @@ enum ActionType {
 }
 
 type UserState = {
-  user?: User
+  user: User | null
 }
 
-const initialState: UserState = {}
+const initialState: UserState = { user: null }
 
 export const userSlice: Slice<UserState> = {
   initialState,
   reducer: (state, action) => {
     switch (action.type) {
       case ActionType.SET_USER: {
-        return mergeObjects(state, { user: action.payload?.user })
+        return setObject(state, { user: action.payload?.user })
       }
       default: {
         return state
@@ -28,5 +28,5 @@ export const userSlice: Slice<UserState> = {
 
 export const userActions = {
   setUser: (user: User) => ({ type: ActionType.SET_USER, payload: { user } }),
-  clearUser: () => ({ type: ActionType.SET_USER, payload: { user: undefined } }),
+  clearUser: () => ({ type: ActionType.SET_USER, payload: { user: null } }),
 }

@@ -12,7 +12,7 @@ export type RouteProps = {
 }
 
 export class Route {
-  private _className = Route.name
+  private _context = Route.name + '.'
   private _container: HTMLElement
   private _pathname: string
   private _blockClass: new () => Block
@@ -33,7 +33,7 @@ export class Route {
 
   navigate(pathname: string): void {
     if (this.match(pathname)) {
-      this.render()
+      this.load()
     }
   }
 
@@ -46,19 +46,24 @@ export class Route {
     return arePrimitivesEqual(pathname, this._pathname)
   }
 
-  render(): void {
-    const context = `${this._className}.render`
+  load(): void {
+    const context = this._context + this.load.name
+
+    logger.warn(context, this._pathname)
+
     if (!this._loader) {
-      return this._render()
+      return this.render()
     }
 
+    logger.info(context, this._pathname + ' start loading')
     this._isLoading = true
 
     this._loader()
       .then((data) => {
         this._loaderData = data
         this._isLoading = false
-        this._render()
+        logger.info(context, this._pathname + ' end loading')
+        this.render()
       })
       .catch((err) => {
         if (err instanceof Error) {
@@ -70,7 +75,9 @@ export class Route {
       })
   }
 
-  private _render(): void {
+  private render(): void {
+    logger.warn(this._context + this.render.name, this._pathname)
+
     if (this._isLoading) {
       if (this._hydrateFallbackElement instanceof HTMLElement || typeof this._hydrateFallbackElement === 'string') {
         return this._container.replaceChildren(this._hydrateFallbackElement)

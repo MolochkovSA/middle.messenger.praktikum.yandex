@@ -7,7 +7,7 @@ export async function authBlockGuard(): Promise<void> {
   const context = authBlockGuard.name
   const user = await authController.me()
 
-  logger.debug(context, JSON.stringify(user))
+  logger.debug(context, user)
 
   if (user) {
     Router.navigate(RoutePath.CHAT)
