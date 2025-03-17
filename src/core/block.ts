@@ -9,6 +9,7 @@ enum BlockEvents {
   INIT = 'init',
   FLOW_CDM = 'flow:component-did-mount',
   FLOW_SCU = 'flow:should-component-update',
+  FLOW_CWU = 'flow:component-will-update',
   FLOW_CDU = 'flow:component-did-update',
   FLOW_RENDER = 'flow:render',
   FLOW_UNMOUNT = 'flow:component-will-unmount',
@@ -34,6 +35,7 @@ export abstract class Block<
   private _children: C
   private _props: P
   private _events: E
+  private _isFirstRender: boolean = true
 
   constructor({ props = {} as P, events = {} as E, children = {} as C }: Meta<P, E, C> = {}) {
     this._id = crypto.randomUUID()
@@ -50,7 +52,8 @@ export abstract class Block<
   private _registerEvents(): void {
     this._eventBus.on(BlockEvents.INIT, this.init.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDM, this._componentDidMount.bind(this))
-    this._eventBus.on(BlockEvents.FLOW_SCU, this._componentShouldUpdate.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_SCU, this._shouldComponentUpdate.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_CWU, this._componentWillUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDU, this._componentDidUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_RENDER, this._render.bind(this))
     this._eventBus.on(BlockEvents.FLOW_UNMOUNT, this._componentWillUnmount.bind(this))
@@ -78,11 +81,11 @@ export abstract class Block<
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _componentShouldUpdate(oldProps: P, newProps: P): void {
+  private _shouldComponentUpdate(oldProps: P, newProps: P): void {
     const isEqual: boolean = this.shouldComponentUpdate(oldProps, newProps)
 
     if (!isEqual) {
-      this._eventBus.emit(BlockEvents.FLOW_RENDER)
+      this._eventBus.emit(BlockEvents.FLOW_CWU)
     }
   }
 
@@ -90,11 +93,19 @@ export abstract class Block<
     return areObjectsEqual(oldProps, newProps)
   }
 
-  private _componentDidUpdate(oldProps: P, newProps: P): void {
-    this.componentDidUpdate(oldProps, newProps)
+  private _componentWillUpdate(): void {
+    this.componentWillUpdate()
+    this._removeEvents()
+    this._eventBus.emit(BlockEvents.FLOW_RENDER)
   }
 
-  protected componentDidUpdate(oldProps: P, newProps: P): void {}
+  protected componentWillUpdate(): void {}
+
+  private _componentDidUpdate(): void {
+    this.componentDidUpdate()
+  }
+
+  protected componentDidUpdate(): void {}
 
   protected _componentWillUnmount(): void {
     Object.values(this._children).forEach((child) => {
@@ -137,8 +148,6 @@ export abstract class Block<
   }
 
   private _render(): void {
-    this._removeEvents()
-
     const template: string = this.render()
 
     const childrens: Record<string, string | string[]> = {}
@@ -176,6 +185,12 @@ export abstract class Block<
 
     this._element = newElement
     this._addEvents()
+
+    if (this._isFirstRender) {
+      this._isFirstRender = false
+    } else {
+      this._eventBus.emit(BlockEvents.FLOW_CDU)
+    }
   }
 
   render(): string {
