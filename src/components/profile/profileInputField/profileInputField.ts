@@ -11,6 +11,7 @@ type ProfileInputFieldChildren = {
 export class ProfileInputField extends Block<InputFieldProps, {}, ProfileInputFieldChildren> {
   constructor({ className, ...rest }: InputFieldProps) {
     super({
+      props: { ...rest },
       children: {
         InputField: new InputField({ ...rest, className: `${styles.profileInput} ${className ?? ''}`.trim() }),
       },
@@ -18,6 +19,11 @@ export class ProfileInputField extends Block<InputFieldProps, {}, ProfileInputFi
   }
 
   render(): string {
+    const { value, disabled } = this.getProps()
+    const { InputField } = this.getChildren()
+
+    InputField.setProps({ value, disabled })
+
     return `{{{ InputField }}}`
   }
 }

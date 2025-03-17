@@ -1,15 +1,19 @@
 import { Block, Router } from '@/core'
 import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
 
-import { user } from '../mockData'
-
 import styles from './profileInfo.module.scss'
 import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
 import { logger } from '@/services'
+import { User } from '@/types'
 
 type ProfileInfoProps = {
-  title: string
+  email: string
+  login: string
+  first_name: string
+  second_name: string
+  display_name: string
+  phone: string
 }
 
 type ProfileInfoPageChildren = {
@@ -32,7 +36,12 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
   constructor() {
     super({
       props: {
-        title: user.display_name,
+        email: '',
+        login: '',
+        first_name: '',
+        second_name: '',
+        display_name: '',
+        phone: '',
       },
       children: {
         BackLink: new BackLink(),
@@ -41,42 +50,36 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
           type: 'email',
           name: 'email',
           label: 'Почта',
-          value: user.email,
           disabled: true,
         }),
         LoginInput: new ProfileInputField({
           type: 'text',
           name: 'login',
           label: 'Логин',
-          value: user.login,
           disabled: true,
         }),
         FirstNameInput: new ProfileInputField({
           type: 'text',
           name: 'first_name',
           label: 'Имя',
-          value: user.first_name,
           disabled: true,
         }),
         SecondNameInput: new ProfileInputField({
           type: 'text',
           name: 'second_name',
           label: 'Фамилия',
-          value: user.second_name,
           disabled: true,
         }),
         DisplayNameInput: new ProfileInputField({
           type: 'text',
           name: 'display_name',
           label: 'Имя в чате',
-          value: user.display_name,
           disabled: true,
         }),
         PhoneInput: new ProfileInputField({
           type: 'text',
           name: 'phone',
           label: 'Телефон',
-          value: user.phone,
           disabled: true,
         }),
         ProfileChangeLink: new Link({
@@ -101,7 +104,21 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
     })
   }
 
+  protected componentDidMount(): void {
+    const user = Router.getLoaderData<User>()
+    if (!user) return
+    this.setProps(user)
+  }
+
   render(): string {
+    Object.values(this.getChildren()).forEach((child) => {
+      if (!(child instanceof ProfileInputField)) return
+      const key = child.getProps().name
+      if (!key) return
+      const value = this.getProps()[key as keyof ProfileInfoProps]
+      child.setProps({ value })
+    })
+
     return `
       {{#> ProfileLayout}}
         <h2 class=${styles.title}>{{ title }}</h2>

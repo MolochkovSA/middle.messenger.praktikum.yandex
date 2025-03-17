@@ -8,6 +8,7 @@ export type InputFieldProps = {
   errorListener?: (event: string, listener: (errorMessage: string) => void) => void
 } & Omit<InputProps, 'id'> &
   InputEvents
+
 type InputFieldChildren = { Input: Input }
 
 export class InputField extends Block<

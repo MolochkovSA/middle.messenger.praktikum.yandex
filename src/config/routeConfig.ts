@@ -12,7 +12,7 @@ import {
   NavigationPage,
   chatLoader,
 } from '@/pages'
-import { authBlockGuard } from '@/services'
+import { authBlockGuard, authGuard } from '@/services'
 
 export enum RoutePath {
   NAVIGATION = '/',
@@ -31,7 +31,7 @@ export const routeConfig: RouteProps[] = [
   { pathname: RoutePath.LOGIN, block: LoginPage, loader: authBlockGuard },
   { pathname: RoutePath.REGISTER, block: RegisterPage, loader: authBlockGuard },
   { pathname: RoutePath.CHAT, block: ChatPage, loader: chatLoader, hydrateFallbackElement: Loader },
-  { pathname: RoutePath.PROFILE, block: ProfileInfoPage },
+  { pathname: RoutePath.PROFILE, block: ProfileInfoPage, loader: authGuard, hydrateFallbackElement: Loader },
   { pathname: RoutePath.SETTINGS, block: ProfileEditPage },
   { pathname: RoutePath.RESET_PASSWORD, block: ProfilePasswordPage },
   { pathname: RoutePath.SERVER_ERROR, block: ServerErrorPage },
