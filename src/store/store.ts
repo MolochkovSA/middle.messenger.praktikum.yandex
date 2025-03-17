@@ -2,6 +2,7 @@ import { Store, StoreEvents } from '@/core'
 import { authSlice } from './auth/authSlice'
 import { userSlice } from './user/userSlice'
 import { Action } from './types'
+import { logger } from '@/services'
 
 const slices = {
   auth: authSlice,
@@ -36,6 +37,7 @@ function rootReducer(sate: State, action: Action): State {
       //eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       nextState[key] = slices[key].reducer(sate[key], action)
+      logger.info(rootReducer.name, JSON.stringify(nextState))
 
       return nextState
     },

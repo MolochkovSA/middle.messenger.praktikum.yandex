@@ -4,7 +4,7 @@ import { RoutePath } from '@/config/routeConfig'
 import styles from './link.module.scss'
 
 type LinkProps = {
-  to: `${RoutePath}`
+  to: `${RoutePath}` | '#'
   label: string | HTMLElement
   className?: string
 }
@@ -14,7 +14,7 @@ type LinkEvents = {
 }
 
 export class Link extends Block<LinkProps, LinkEvents> {
-  constructor({ to, label, className }: LinkProps) {
+  constructor({ to, label, className, click }: LinkProps & Partial<LinkEvents>) {
     super({
       props: {
         to,
@@ -22,10 +22,12 @@ export class Link extends Block<LinkProps, LinkEvents> {
         label,
       },
       events: {
-        click: (e: Event) => {
-          e.preventDefault()
-          Router.navigate(this.getProps().to)
-        },
+        click:
+          click ??
+          ((e: Event) => {
+            e.preventDefault()
+            Router.navigate(this.getProps().to)
+          }),
       },
     })
   }

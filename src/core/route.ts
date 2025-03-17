@@ -1,5 +1,6 @@
 import { arePrimitivesEqual } from '@/utils'
 import { Block } from './block'
+import { logger } from '@/services/loggerService'
 
 type Loader = () => Promise<unknown>
 
@@ -11,6 +12,7 @@ export type RouteProps = {
 }
 
 export class Route {
+  private _className = Route.name
   private _container: HTMLElement
   private _pathname: string
   private _blockClass: new () => Block
@@ -45,6 +47,7 @@ export class Route {
   }
 
   render(): void {
+    const context = `${this._className}.render`
     if (!this._loader) {
       return this._render()
     }
@@ -59,7 +62,7 @@ export class Route {
       })
       .catch((err) => {
         if (err instanceof Error) {
-          console.error(err.message)
+          logger.error(context, err.message)
         }
       })
       .finally(() => {

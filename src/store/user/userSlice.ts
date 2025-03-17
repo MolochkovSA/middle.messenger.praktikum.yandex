@@ -28,4 +28,5 @@ export const userSlice: Slice<UserState> = {
 
 export const userActions = {
   setUser: (user: User) => ({ type: ActionType.SET_USER, payload: { user } }),
+  clearUser: () => ({ type: ActionType.SET_USER, payload: { user: undefined } }),
 }

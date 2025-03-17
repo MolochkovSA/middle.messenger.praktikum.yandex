@@ -1,9 +1,11 @@
-import { Block } from '@/core'
+import { Block, Router } from '@/core'
 import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
 
 import { user } from '../mockData'
 
 import styles from './profileInfo.module.scss'
+import { authController } from '@/controllers'
+import { RoutePath } from '@/config/routeConfig'
 
 type ProfileInfoProps = {
   title: string
@@ -76,15 +78,20 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
         }),
         ProfileChangeLink: new Link({
           label: 'Изменить данные',
-          to: '/settings',
+          to: RoutePath.SETTINGS,
         }),
         PasswordChangeLink: new Link({
           label: 'Изменить пароль',
-          to: '/reset-password',
+          to: RoutePath.RESET_PASSWORD,
         }),
         LogoutLink: new Link({
           label: 'Выйти',
-          to: '/sign-in',
+          to: '#',
+          click: async (e) => {
+            e.preventDefault()
+            await authController.logout()
+            Router.navigate(RoutePath.LOGIN)
+          },
         }),
       },
     })
