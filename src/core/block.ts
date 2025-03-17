@@ -30,7 +30,7 @@ export abstract class Block<
   C extends Children = Children
 > {
   private _id: string
-  private _eventBus: EventBus<P>
+  private _eventBus: EventBus
   private _element: HTMLElement | null
   private _children: C
   private _props: P
@@ -81,8 +81,8 @@ export abstract class Block<
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _shouldComponentUpdate(oldProps: P, newProps: P): void {
-    const isEqual: boolean = this.shouldComponentUpdate(oldProps, newProps)
+  private _shouldComponentUpdate(oldProps: unknown, newProps: unknown): void {
+    const isEqual: boolean = this.shouldComponentUpdate(oldProps as P, newProps as P)
 
     if (!isEqual) {
       this._eventBus.emit(BlockEvents.FLOW_CWU)
@@ -107,7 +107,7 @@ export abstract class Block<
 
   protected componentDidUpdate(): void {}
 
-  protected _componentWillUnmount(): void {
+  private _componentWillUnmount(): void {
     Object.values(this._children).forEach((child) => {
       if (Array.isArray(child)) {
         child.forEach((component) => component.dispatchComponentWillUnmount())

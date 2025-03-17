@@ -52,7 +52,7 @@ export class ProfilePasswordPage extends Block<{}, {}, ProfilePasswordPageChildr
   }
 
   componentDidMount(): void {
-    this.formControlService.init(this.getContent())
+    this.formControlService.getElements(this.getContent())
   }
 
   render(): string {

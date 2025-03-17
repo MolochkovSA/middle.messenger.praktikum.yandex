@@ -3,7 +3,7 @@ import { InputValidationService, ValidationSchemaName } from './inputValidationS
 
 type FormInput = { element: HTMLInputElement; errorMessage?: string }
 type FormInputs = Record<string, FormInput>
-type SubmitHandler = (args: { event: Event; formData: FormData }) => void
+type SubmitHandler = (event: Event, formData: FormData) => void
 
 export class FormControlService {
   private _formElement?: HTMLFormElement
@@ -18,18 +18,27 @@ export class FormControlService {
     this._inputsValidationRules = {}
   }
 
-  init(element: HTMLElement): void {
+  getElements(element: HTMLElement): void {
     const formElement: HTMLFormElement | null = element.querySelector('form')
 
-    if (!formElement) return
+    if (!formElement) {
+      throw new Error('No form element')
+    }
 
     this._formElement = formElement
 
     const inputElements = formElement.querySelectorAll('input')
     this._inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
+  }
 
+  addEvents(): void {
     this._attachBlurHandlers()
-    this._attachSubmitHandler(formElement)
+    this._attachSubmitHandler()
+  }
+
+  removeEvents(): void {
+    this._detachBlurHandlers()
+    this._detachSubmitHandler()
   }
 
   validate(validationSchema: ValidationSchemaName) {
@@ -44,12 +53,11 @@ export class FormControlService {
   }
 
   unmount(): void {
-    this._inputsValidationRules = {}
-    this._eventBus.clear()
-    this._detachBlurHandlers()
-    this._detachSubmitHandler()
-    this._submitHandler = undefined
+    this._formElement = undefined
     this._inputs = {}
+    this._eventBus.clear()
+    this._inputsValidationRules = {}
+    this._submitHandler = undefined
   }
 
   private _attachBlurHandlers(): void {
@@ -78,17 +86,21 @@ export class FormControlService {
     })
   }
 
-  private _attachSubmitHandler(formElement: HTMLFormElement): void {
-    formElement.onsubmit = (e) => {
+  private _attachSubmitHandler(): void {
+    if (!this._formElement) {
+      throw new Error('No form element')
+    }
+
+    this._formElement.onsubmit = (e: SubmitEvent) => {
       e.preventDefault()
 
       if (this._isError()) return
 
       const formData = new FormData(e.target as HTMLFormElement)
 
-      if (this._submitHandler) this._submitHandler({ event: e, formData })
+      if (this._submitHandler) this._submitHandler(e, formData)
 
-      formElement.reset()
+      this._formElement?.reset()
     }
   }
 

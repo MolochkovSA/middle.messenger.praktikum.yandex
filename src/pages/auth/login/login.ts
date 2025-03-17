@@ -62,7 +62,7 @@ class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   }
 
   componentDidMount(): void {
-    this.formControlService.init(this.getContent())
+    this.formControlService.getElements(this.getContent())
     this.formControlService.attachSubmitHandler(authController.login)
   }
 

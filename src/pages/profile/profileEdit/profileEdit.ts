@@ -6,12 +6,7 @@ import { User } from '@/types'
 import styles from './profileEdit.module.scss'
 
 type ProfileEditPageProps = {
-  email: string
-  login: string
-  first_name: string
-  second_name: string
-  display_name: string
-  phone: string
+  user?: User
 }
 
 type ProfileEditPageChildren = {
@@ -33,14 +28,7 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
     const formValidationService = new FormControlService()
 
     super({
-      props: {
-        email: '',
-        login: '',
-        first_name: '',
-        second_name: '',
-        display_name: '',
-        phone: '',
-      },
+      props: {},
       children: {
         BackLink: new BackLink(),
         AvataButton: new AvataButton({ disabled: true }),
@@ -72,7 +60,7 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
           type: 'text',
           name: 'display_name',
           label: 'Имя в чате',
-          errorListener: formValidationService.validate('name'),
+          errorListener: formValidationService.validate('optionalName'),
         }),
         PhoneInput: new ProfileInputField({
           type: 'text',
@@ -83,9 +71,6 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
         SubmitButton: new Button({
           type: 'submit',
           label: 'Сохранить',
-          click: () => {
-            console.log(12313)
-          },
         }),
       },
     })
@@ -93,12 +78,42 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
     this.formControlService = formValidationService
   }
 
-  componentDidMount(): void {
-    this.formControlService.init(this.getContent())
+  protected componentDidMount(): void {
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+    this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
 
     const user = Router.getLoaderData<User>()
-    if (!user) return
-    // this.setProps(user)
+    if (user) this.setProps({ user })
+  }
+
+  protected componentWillUpdate(): void {
+    this.formControlService.removeEvents()
+  }
+
+  protected componentDidUpdate(): void {
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+  }
+
+  protected componentWillUnmount(): void {
+    this.formControlService.removeEvents()
+    this.formControlService.unmount()
+  }
+
+  handleSubmit(event: Event, formData: FormData): void {
+    event.preventDefault()
+
+    const newData = {
+      email: formData.get('email')?.toString(),
+      login: formData.get('login')?.toString(),
+      first_name: formData.get('first_name')?.toString(),
+      second_name: formData.get('second_name')?.toString(),
+      display_name: formData.get('display_name') ? formData.get('display_name')?.toString() : undefined,
+      phone: formData.get('phone')?.toString(),
+    }
+
+    console.log(newData)
   }
 
   render(): string {
@@ -106,7 +121,7 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
       if (!(child instanceof ProfileInputField)) return
       const key = child.getProps().name
       if (!key) return
-      const value = this.getProps()[key as keyof ProfileEditPageProps]
+      const value = this.getProps().user?.[key as keyof Omit<User, 'id'>]
       child.setProps({ value })
     })
 
