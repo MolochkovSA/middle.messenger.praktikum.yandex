@@ -2,11 +2,13 @@ import defaultAvatar from '@/assets/avatar.png'
 import { Block } from '@/core'
 import { Button, Modal } from '@/components'
 import { ChangeAvatarContent } from '../changeAvatarContent'
+import { BASE_URL } from '@/config/constants'
 
 import styles from './avatarButton.module.scss'
 
 type AvatarButtonProps = {
-  avatar: string
+  avatar?: string
+  disabled?: boolean
   isShowModal: boolean
 }
 
@@ -19,12 +21,12 @@ type AvatarButtonChildren = {
   Modal: Modal
 }
 
-export class AvataButton extends Block<AvatarButtonProps, AvatarButtonEvents, AvatarButtonChildren> {
-  constructor({ disabled }: { disabled?: boolean } = {}) {
+export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, AvatarButtonChildren> {
+  constructor({ disabled }: Pick<AvatarButtonProps, 'disabled' | 'avatar'> = {}) {
     super({
       props: {
-        avatar: defaultAvatar,
-        isShowModal: true,
+        isShowModal: false,
+        disabled,
       },
       events: {
         click: () => {
@@ -33,7 +35,7 @@ export class AvataButton extends Block<AvatarButtonProps, AvatarButtonEvents, Av
       },
       children: {
         Button: new Button({
-          label: getButtonLabel(defaultAvatar, disabled),
+          label: '',
           className: styles.button,
           disabled,
         }),
@@ -52,6 +54,13 @@ export class AvataButton extends Block<AvatarButtonProps, AvatarButtonEvents, Av
   }
 
   render(): string {
+    const { avatar, disabled } = this.getProps()
+    const { Button } = this.getChildren()
+
+    Button.setProps({
+      label: getButtonLabel(avatar, disabled),
+    })
+
     return `
       <div>
         {{{ Button }}}
@@ -64,7 +73,17 @@ export class AvataButton extends Block<AvatarButtonProps, AvatarButtonEvents, Av
   }
 }
 
-const getButtonLabel = (avatarSrc: string, disabled?: boolean) => `
-  <img src=${avatarSrc} class=${styles.avatar} alt="avatar">
+const getButtonLabel = (avatarSrc?: string, disabled?: boolean) => {
+  let avatarPath: string
+
+  if (avatarSrc) {
+    avatarPath = BASE_URL + '/resources' + avatarSrc
+  } else {
+    avatarPath = defaultAvatar
+  }
+
+  return `
+  <img src=${avatarPath} class=${styles.avatar} alt="avatar">
   ${disabled ? '' : `<div class=${styles.mask}><span>Поменять аватар</span></div>`}
 `
+}

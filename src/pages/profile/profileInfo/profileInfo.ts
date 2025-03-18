@@ -1,11 +1,12 @@
 import { Block, Router } from '@/core'
-import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
+import { AvatarButton, BackLink, Link, ProfileInputField } from '@/components'
 import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
 import { logger } from '@/services'
 import { User } from '@/types/user'
 
 import styles from './profileInfo.module.scss'
+import { withUserAvatarState } from '@/store/user'
 
 type ProfileInfoProps = {
   email: string
@@ -14,11 +15,12 @@ type ProfileInfoProps = {
   second_name: string
   display_name: string
   phone: string
+  avatar?: string
 }
 
 type ProfileInfoPageChildren = {
   BackLink: BackLink
-  AvataButton: AvataButton
+  AvatarButton: AvatarButton
   EmailInput: ProfileInputField
   LoginInput: ProfileInputField
   FirstNameInput: ProfileInputField
@@ -30,7 +32,7 @@ type ProfileInfoPageChildren = {
   LogoutLink: Link
 }
 
-export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
+class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
   private _context = ProfileInfoPage.name
 
   constructor() {
@@ -45,7 +47,7 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
       },
       children: {
         BackLink: new BackLink(),
-        AvataButton: new AvataButton(),
+        AvatarButton: new AvatarButton(),
         EmailInput: new ProfileInputField({
           type: 'email',
           name: 'email',
@@ -111,9 +113,11 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
   }
 
   render(): string {
-    const { email, login, first_name, second_name, display_name, phone } = this.getProps()
-    const { EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput } = this.getChildren()
+    const { email, login, first_name, second_name, display_name, phone, avatar } = this.getProps()
+    const { AvatarButton, EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput } =
+      this.getChildren()
 
+    AvatarButton.setProps({ avatar: avatar })
     EmailInput.setProps({ value: email })
     LoginInput.setProps({ value: login })
     FirstNameInput.setProps({ value: first_name })
@@ -148,3 +152,5 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
     `
   }
 }
+
+export default withUserAvatarState(ProfileInfoPage)

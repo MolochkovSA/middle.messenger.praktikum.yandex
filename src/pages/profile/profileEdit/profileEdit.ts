@@ -1,5 +1,5 @@
 import { Block, Router } from '@/core'
-import { AvataButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
+import { AvatarButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
 import { FormControlService, NotificationService } from '@/services'
 import { User, UserUpdateDTO } from '@/types/user'
 import { withUserState } from '@/store/user'
@@ -14,7 +14,7 @@ type ProfileEditPageProps = {
 
 type ProfileEditPageChildren = {
   BackLink: BackLink
-  AvataButton: AvataButton
+  AvatarButton: AvatarButton
   EmailInput: ProfileInputField
   LoginInput: ProfileInputField
   FirstNameInput: ProfileInputField
@@ -37,7 +37,7 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
       },
       children: {
         BackLink: new BackLink(),
-        AvataButton: new AvataButton({ disabled: true }),
+        AvatarButton: new AvatarButton({ disabled: true }),
         EmailInput: new ProfileInputField({
           type: 'email',
           name: 'email',
@@ -129,9 +129,18 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
 
   render(): string {
     const { isLoading, user } = this.getProps()
-    const { EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput, SubmitButton } =
-      this.getChildren()
+    const {
+      AvatarButton,
+      EmailInput,
+      LoginInput,
+      FirstNameInput,
+      SecondNameInput,
+      DisplayNameInput,
+      PhoneInput,
+      SubmitButton,
+    } = this.getChildren()
 
+    AvatarButton.setProps({ avatar: user?.avatar })
     EmailInput.setProps({ disabled: isLoading, value: user?.email })
     LoginInput.setProps({ disabled: isLoading, value: user?.login })
     FirstNameInput.setProps({ disabled: isLoading, value: user?.first_name })

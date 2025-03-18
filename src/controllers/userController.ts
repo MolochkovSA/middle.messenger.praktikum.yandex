@@ -33,7 +33,8 @@ export async function changeAvatar(data: FormData): Promise<void> {
   const context = service + changeAvatar.name
 
   logger.debug(context, 'start')
-  await userApi.changeAvatar(data)
+  const user = await userApi.changeAvatar(data)
+  dispatch(userActions.setUser(user))
   NotificationService.notify('Аватар успешно обновлен', 'success')
   logger.debug(context, 'successful')
 }

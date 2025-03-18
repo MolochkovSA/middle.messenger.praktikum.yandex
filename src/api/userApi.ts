@@ -27,12 +27,19 @@ class UserApi extends BaseApi {
     throw new APIError('Response data does not satisfy the user object')
   }
 
-  async changeAvatar(data: FormData): Promise<void> {
+  async changeAvatar(data: FormData): Promise<User> {
     const context = this._context + this.changeAvatar.name
 
     logger.debug(context, 'start')
-    await this.http.put('/profile/avatar', { data })
-    logger.debug(context, 'successful')
+    const { response } = await this.http.put('/profile/avatar', { data })
+
+    if (isUser(response)) {
+      logger.debug(context, 'successful')
+      return response
+    }
+
+    logger.debug(context, 'failed')
+    throw new APIError('Response data does not satisfy the user object')
   }
 
   async resetPassword(data: ResetPasswordDto): Promise<void> {

@@ -61,7 +61,6 @@ export class ChangeAvatarContent extends Block<
     this.resetError()
     const element = e.target as HTMLInputElement
     const fileName = element.files?.item(0)?.name
-    console.log(fileName)
 
     if (fileName) {
       this.getChildren().Input.setProps({ label: fileName })

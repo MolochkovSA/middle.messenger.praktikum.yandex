@@ -1,19 +1,20 @@
-import { Block } from '@/core'
-import { AvataButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
+import { Block, Router } from '@/core'
+import { AvatarButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
 import { FormControlService, NotificationService } from '@/services'
 import { withIsLoading } from '@/store/user'
-import { ResetPasswordDto } from '@/types/user'
+import { ResetPasswordDto, User } from '@/types/user'
 import { userController } from '@/controllers'
 
 import styles from './profilePassword.module.scss'
 
 type ProfilePasswordPageProps = {
+  avatar?: string
   isLoading: boolean
 }
 
 type ProfilePasswordPageChildren = {
   BackLink: BackLink
-  AvataButton: AvataButton
+  AvatarButton: AvatarButton
   OldPasswordInput: ProfileInputField
   NewPasswordInput: ProfileInputField
   NewPasswordRepeatInput: ProfileInputField
@@ -33,23 +34,26 @@ class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePas
       },
       children: {
         BackLink: new BackLink(),
-        AvataButton: new AvataButton({ disabled: true }),
+        AvatarButton: new AvatarButton({ disabled: true }),
         OldPasswordInput: new ProfileInputField({
           type: 'password',
           name: 'oldPassword',
           label: 'Старый пароль',
+          placeholder: 'Введите старый пароль',
           errorListener: formValidationService.validate('password'),
         }),
         NewPasswordInput: new ProfileInputField({
           type: 'password',
           name: 'newPassword',
           label: 'Новый пароль',
+          placeholder: 'Введите новый пароль',
           errorListener: formValidationService.validate('equalPassword'),
         }),
         NewPasswordRepeatInput: new ProfileInputField({
           type: 'password',
           name: 'newPasswordRepeat',
           label: 'Повторите новый пароль',
+          placeholder: 'Повторите новый пароль',
           errorListener: formValidationService.validate('equalPassword'),
         }),
         SubmitButton: new Button({
@@ -67,6 +71,9 @@ class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePas
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
     this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
+
+    const user = Router.getLoaderData<User>()
+    if (user) this.setProps({ avatar: user.avatar })
   }
 
   protected componentWillUpdate(): void {
@@ -99,9 +106,11 @@ class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePas
   }
 
   render(): string {
-    const { isLoading } = this.getProps()
-    const { OldPasswordInput, NewPasswordInput, NewPasswordRepeatInput, SubmitButton } = this.getChildren()
+    const { isLoading, avatar } = this.getProps()
+    const { AvatarButton, OldPasswordInput, NewPasswordInput, NewPasswordRepeatInput, SubmitButton } =
+      this.getChildren()
 
+    AvatarButton.setProps({ avatar: avatar })
     OldPasswordInput.setProps({ disabled: isLoading })
     NewPasswordInput.setProps({ disabled: isLoading })
     NewPasswordRepeatInput.setProps({ disabled: isLoading })

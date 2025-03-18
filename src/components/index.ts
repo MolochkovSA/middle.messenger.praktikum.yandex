@@ -12,7 +12,7 @@ export { AuthInputField } from './auth/authInputField'
 // Profile
 export { ProfileInputField } from './profile/profileInputField'
 export { BackLink } from './profile/backLink'
-export { AvataButton } from './profile/avatarButton'
+export { AvatarButton } from './profile/avatarButton'
 
 // Chat
 export { Navbar } from './chat/navbar'
