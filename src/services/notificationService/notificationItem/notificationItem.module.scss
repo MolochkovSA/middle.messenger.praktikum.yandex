@@ -28,6 +28,11 @@
   box-shadow: 0 0 10px 0 var(--color-toast-error);
 }
 
+.success {
+  background-color: var(--color-toast-success);
+  box-shadow: 0 0 10px 0 var(--color-toast-success);
+}
+
 @keyframes prix-clip-fix {
   0% {
     clip-path: polygon(50% 50%, 50% 0, 50% 0, 50% 0, 50% 0, 50% 0, 50% 0, 50% 0, 50% 0, 50% 0);

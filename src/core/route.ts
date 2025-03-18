@@ -20,7 +20,6 @@ export class Route {
   private _loader: Loader | undefined
   private _loaderData: unknown
   private _hydrateFallbackElement: (new () => Block) | HTMLElement | string
-  private _isLoading = false
 
   constructor(container: HTMLElement, { pathname, block, loader, hydrateFallbackElement = '' }: RouteProps) {
     this._container = container

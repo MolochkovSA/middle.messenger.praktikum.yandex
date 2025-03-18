@@ -1,12 +1,12 @@
 import { authApi } from '@/api'
 import { RoutePath } from '@/config/routeConfig'
 import { Router } from '@/core'
-import { APIError } from '@/errors'
+import { APIError } from '@/models'
 import { logger, NotificationService } from '@/services'
 import { dispatch, getState } from '@/store'
 import { authActions } from '@/store/auth'
 import { userActions } from '@/store/user'
-import { User } from '@/types'
+import { User } from '@/types/user'
 
 const service = 'authController.'
 
@@ -78,7 +78,7 @@ export async function me(): Promise<User | null> {
     logger.debug(context, 'return fetched user')
     return fetchedUser
   } catch (error) {
-    logger.debug(context, 'return undefined')
+    logger.debug(context, 'return null')
     return localUser
   }
 }

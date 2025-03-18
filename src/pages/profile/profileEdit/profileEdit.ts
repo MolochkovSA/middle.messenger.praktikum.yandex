@@ -1,12 +1,15 @@
 import { Block, Router } from '@/core'
-import { AvataButton, BackLink, Button, ProfileInputField } from '@/components'
-import { FormControlService } from '@/services'
-import { User } from '@/types'
+import { AvataButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
+import { FormControlService, NotificationService } from '@/services'
+import { User, UserUpdateDTO } from '@/types/user'
+import { withUserState } from '@/store/user'
+import { userController } from '@/controllers'
 
 import styles from './profileEdit.module.scss'
 
 type ProfileEditPageProps = {
   user?: User
+  isLoading: boolean
 }
 
 type ProfileEditPageChildren = {
@@ -19,16 +22,19 @@ type ProfileEditPageChildren = {
   DisplayNameInput: ProfileInputField
   PhoneInput: ProfileInputField
   SubmitButton: Button
+  Loader: Loader
 }
 
-export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChildren> {
+class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
 
     super({
-      props: {},
+      props: {
+        isLoading: false,
+      },
       children: {
         BackLink: new BackLink(),
         AvataButton: new AvataButton({ disabled: true }),
@@ -72,6 +78,7 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
           type: 'submit',
           label: 'Сохранить',
         }),
+        Loader: new Loader({ className: styles.loader }),
       },
     })
 
@@ -104,45 +111,61 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
   handleSubmit(event: Event, formData: FormData): void {
     event.preventDefault()
 
-    const newData = {
-      email: formData.get('email')?.toString(),
-      login: formData.get('login')?.toString(),
-      first_name: formData.get('first_name')?.toString(),
-      second_name: formData.get('second_name')?.toString(),
-      display_name: formData.get('display_name') ? formData.get('display_name')?.toString() : undefined,
-      phone: formData.get('phone')?.toString(),
+    const email = formData.get('email')?.toString()
+    const login = formData.get('login')?.toString()
+    const first_name = formData.get('first_name')?.toString()
+    const second_name = formData.get('second_name')?.toString()
+    const display_name = formData.get('display_name') ? formData.get('display_name')?.toString() : undefined
+    const phone = formData.get('phone')?.toString()
+
+    if (!email || !login || !first_name || !second_name || !phone) {
+      return NotificationService.notify('Заполните все поля', 'error')
     }
 
-    console.log(newData)
+    const newData: UserUpdateDTO = { email, login, first_name, second_name, display_name, phone }
+
+    userController.userUpdate(newData).then(() => {
+      NotificationService.notify('Данные успешно обновлены', 'success')
+    })
   }
 
   render(): string {
-    Object.values(this.getChildren()).forEach((child) => {
-      if (!(child instanceof ProfileInputField)) return
-      const key = child.getProps().name
-      if (!key) return
-      const value = this.getProps().user?.[key as keyof Omit<User, 'id'>]
-      child.setProps({ value })
-    })
+    const { isLoading, user } = this.getProps()
+    const { EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput, SubmitButton } =
+      this.getChildren()
+
+    EmailInput.setProps({ disabled: isLoading, value: user?.email })
+    LoginInput.setProps({ disabled: isLoading, value: user?.login })
+    FirstNameInput.setProps({ disabled: isLoading, value: user?.first_name })
+    SecondNameInput.setProps({ disabled: isLoading, value: user?.second_name })
+    DisplayNameInput.setProps({ disabled: isLoading, value: user?.display_name })
+    PhoneInput.setProps({ disabled: isLoading, value: user?.phone })
+    SubmitButton.setProps({ disabled: isLoading })
 
     return `
       {{#> ProfileLayout}}
-        <form class=${styles.form}>
-          {{{ EmailInput }}}
+        {{#if isLoading }}
+          {{{ Loader }}}
+        {{else}}
+          <form class=${styles.form}>
+            {{{ EmailInput }}}
 
-          {{{ LoginInput }}}
+            {{{ LoginInput }}}
 
-          {{{ FirstNameInput }}}
+            {{{ FirstNameInput }}}
 
-          {{{ SecondNameInput }}}
+            {{{ SecondNameInput }}}
 
-          {{{ DisplayNameInput }}}
+            {{{ DisplayNameInput }}}
 
-          {{{ PhoneInput }}}
+            {{{ PhoneInput }}}
 
-          {{{ SubmitButton }}} 
-        </form>   
+            {{{ SubmitButton }}} 
+          </form>   
+        {{/if}}
       {{/ ProfileLayout}}
     `
   }
 }
+
+export default withUserState(ProfileEditPage)

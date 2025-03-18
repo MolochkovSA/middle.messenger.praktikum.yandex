@@ -21,9 +21,7 @@ export class FormControlService {
   getElements(element: HTMLElement): void {
     const formElement: HTMLFormElement | null = element.querySelector('form')
 
-    if (!formElement) {
-      throw new Error('No form element')
-    }
+    if (!formElement) return
 
     this._formElement = formElement
 
@@ -87,9 +85,7 @@ export class FormControlService {
   }
 
   private _attachSubmitHandler(): void {
-    if (!this._formElement) {
-      throw new Error('No form element')
-    }
+    if (!this._formElement) return
 
     this._formElement.onsubmit = (e: SubmitEvent) => {
       e.preventDefault()

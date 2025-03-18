@@ -19,7 +19,9 @@ export class Loader extends Block<LoaderProps> {
 
   render(): string {
     return `
-      <span class=${styles.loader} ></span>
+      <div class="${styles.container} {{className}}">
+        <span class="${styles.loader}" ></span>
+      </div>
      `
   }
 }

@@ -31,6 +31,7 @@ export class NotificationItem extends Block<Notification, NotificationItemEvents
   render(): string {
     const notificationStyle: Record<NotificationType, string> = {
       error: styles.error,
+      success: styles.success,
     }
 
     if (this._timeout) clearTimeout(this._timeout)

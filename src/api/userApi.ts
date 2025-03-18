@@ -1,5 +1,8 @@
 import { logger } from '@/services'
 import { BaseApi } from './baseApi'
+import { User, UserUpdateDTO } from '@/types/user'
+import { isUser } from '@/utils'
+import { APIError } from '@/models'
 
 class UserApi extends BaseApi {
   private _context = UserApi.name + '.'
@@ -8,12 +11,20 @@ class UserApi extends BaseApi {
     super({ apiPath: '/user' })
   }
 
-  async getUser(): Promise<void> {
-    const context = this._context + this.getUser.name
+  async updatetUser(data: UserUpdateDTO): Promise<User> {
+    const context = this._context + this.updatetUser.name
 
     logger.debug(context, 'start')
-    await this.http.get('/user')
-    logger.debug(context, 'successful')
+    await new Promise((resolve) => setTimeout(resolve, 3000))
+    const { response } = await this.http.put('/profile', { data })
+
+    if (isUser(response)) {
+      logger.debug(context, 'successful')
+      return response
+    }
+
+    logger.debug(context, 'failed')
+    throw new APIError('Response data does not satisfy the user object')
   }
 }
 

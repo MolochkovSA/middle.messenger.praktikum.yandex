@@ -1,13 +1,8 @@
-import { User } from '@/types'
+import { SignInDto, SinUpDto, User } from '@/types/user'
 import { BaseApi } from './baseApi'
 import { isObject, isUser } from '@/utils'
-import { APIError } from '@/errors'
+import { APIError } from '@/models'
 import { logger } from '@/services'
-
-type SignUpRequestDto = Omit<User, 'id' | 'avatar' | 'display_name'> & { password: string }
-type SignUpResponseDto = Pick<User, 'id'>
-
-type SignInRequestDto = { login: string; password: string }
 
 class AuthApi extends BaseApi {
   private _context = AuthApi.name + '.'
@@ -15,7 +10,7 @@ class AuthApi extends BaseApi {
     super({ apiPath: '/auth' })
   }
 
-  async signUp(data: SignUpRequestDto): Promise<SignUpResponseDto> {
+  async signUp(data: SinUpDto): Promise<Pick<User, 'id'>> {
     const context = this._context + this.signUp.name
 
     logger.debug(context, 'start')
@@ -30,7 +25,7 @@ class AuthApi extends BaseApi {
     throw new APIError('Response data does not satisfy the user id')
   }
 
-  async signIn(data: SignInRequestDto): Promise<void> {
+  async signIn(data: SignInDto): Promise<void> {
     const context = this._context + this.signIn.name
 
     logger.debug(context, 'start')

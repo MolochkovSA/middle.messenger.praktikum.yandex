@@ -2,7 +2,7 @@ import { RoutePath } from '@/config/routeConfig'
 import { authController } from '@/controllers'
 import { logger } from '@/services'
 import { Router } from '@/core'
-import { User } from '@/types'
+import { User } from '@/types/user'
 
 export async function authGuard(): Promise<User> {
   const context = authGuard.name

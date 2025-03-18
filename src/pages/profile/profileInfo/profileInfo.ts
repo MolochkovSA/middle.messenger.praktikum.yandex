@@ -3,7 +3,7 @@ import { AvataButton, BackLink, Link, ProfileInputField } from '@/components'
 import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
 import { logger } from '@/services'
-import { User } from '@/types'
+import { User } from '@/types/user'
 
 import styles from './profileInfo.module.scss'
 
@@ -111,17 +111,19 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
   }
 
   render(): string {
-    Object.values(this.getChildren()).forEach((child) => {
-      if (!(child instanceof ProfileInputField)) return
-      const key = child.getProps().name
-      if (!key) return
-      const value = this.getProps()[key as keyof ProfileInfoProps]
-      child.setProps({ value })
-    })
+    const { email, login, first_name, second_name, display_name, phone } = this.getProps()
+    const { EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput } = this.getChildren()
+
+    EmailInput.setProps({ value: email })
+    LoginInput.setProps({ value: login })
+    FirstNameInput.setProps({ value: first_name })
+    SecondNameInput.setProps({ value: second_name })
+    DisplayNameInput.setProps({ value: display_name })
+    PhoneInput.setProps({ value: phone })
 
     return `
       {{#> ProfileLayout}}
-        <h2 class=${styles.title}>{{ title }}</h2>
+        <h2 class=${styles.title}>{{ display_name }}</h2>
 
         <form class=${styles.form}>
           {{{ EmailInput }}}

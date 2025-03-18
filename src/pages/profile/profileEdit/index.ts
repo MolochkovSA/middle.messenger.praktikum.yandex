@@ -1,1 +1,3 @@
-export { ProfileEditPage } from './profileEdit'
+import ProfileEditPage from './profileEdit'
+
+export { ProfileEditPage }

@@ -1,4 +1,4 @@
-import { APIError } from '@/errors'
+import { APIError } from '@/models'
 import { Indexed } from '@/types'
 
 enum Methods {
