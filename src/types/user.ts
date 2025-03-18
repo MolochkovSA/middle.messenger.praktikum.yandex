@@ -18,7 +18,6 @@ export type SignInDto = Pick<User, 'login'> & { password: string }
 export type SinUpDto = Omit<User, 'id' | 'avatar' | 'display_name'> & { password: string }
 
 export type ResetPasswordDto = {
-  password: string
+  oldPassword: string
   newPassword: string
-  confirmNewPassword: string
 }

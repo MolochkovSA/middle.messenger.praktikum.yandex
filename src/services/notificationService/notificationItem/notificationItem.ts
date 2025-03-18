@@ -1,6 +1,6 @@
 import { Block } from '@/core'
 
-import { Notification, NotificationType } from '../types'
+import { Notification } from '../types'
 
 import styles from './notificationItem.module.scss'
 
@@ -9,7 +9,7 @@ type NotificationItemEvents = {
 }
 
 export class NotificationItem extends Block<Notification, NotificationItemEvents> {
-  private _timeout?: NodeJS.Timeout
+  private static _timeout?: NodeJS.Timeout
 
   constructor({ message, type }: Notification) {
     super({
@@ -24,21 +24,15 @@ export class NotificationItem extends Block<Notification, NotificationItemEvents
   }
 
   hide() {
-    clearTimeout(this._timeout)
+    clearTimeout(NotificationItem._timeout)
     this.dispatchComponentWillUnmount()
   }
 
   render(): string {
-    const notificationStyle: Record<NotificationType, string> = {
-      error: styles.error,
-      success: styles.success,
-    }
-
-    if (this._timeout) clearTimeout(this._timeout)
-    this._timeout = setTimeout(() => this.hide(), 5000)
+    NotificationItem._timeout = setTimeout(this.hide.bind(this), 5000)
 
     return `
-      <div class="${styles.notification} ${notificationStyle[this.getProps().type]}" >
+      <div class="${styles.notification} ${styles[this.getProps().type]}" >
         <div class="${styles.loader}"></div>
         <span>{{message}}</span>
       </div>

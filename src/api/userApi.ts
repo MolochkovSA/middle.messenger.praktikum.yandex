@@ -1,6 +1,6 @@
 import { logger } from '@/services'
 import { BaseApi } from './baseApi'
-import { User, UserUpdateDTO } from '@/types/user'
+import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
 import { isUser } from '@/utils'
 import { APIError } from '@/models'
 
@@ -15,7 +15,7 @@ class UserApi extends BaseApi {
     const context = this._context + this.updatetUser.name
 
     logger.debug(context, 'start')
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+
     const { response } = await this.http.put('/profile', { data })
 
     if (isUser(response)) {
@@ -25,6 +25,14 @@ class UserApi extends BaseApi {
 
     logger.debug(context, 'failed')
     throw new APIError('Response data does not satisfy the user object')
+  }
+
+  async resetPassword(data: ResetPasswordDto): Promise<void> {
+    const context = this._context + this.resetPassword.name
+
+    logger.debug(context, 'start')
+    await this.http.put('/password', { data })
+    logger.debug(context, 'successful')
   }
 }
 

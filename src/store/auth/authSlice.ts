@@ -2,7 +2,7 @@ import { setObjectValues } from '@/utils'
 import { Slice } from '../types'
 
 enum ActionType {
-  SET_LOADING = 'SET_LOADING',
+  SET_LOADING = 'AUTH_SET_LOADING',
 }
 
 type AuthState = {

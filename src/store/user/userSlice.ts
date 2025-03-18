@@ -3,8 +3,8 @@ import { Slice } from '../types'
 import { User } from '@/types/user'
 
 enum ActionType {
-  SET_USER = 'SET_USER',
-  SET_LOADING = 'SET_LOADING',
+  SET_USER = 'USER_SET_USER',
+  SET_LOADING = 'USER_SET_LOADING',
 }
 
 type UserState = {

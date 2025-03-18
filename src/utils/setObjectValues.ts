@@ -2,8 +2,7 @@ import { Indexed } from '@/types'
 import { isObject } from '.'
 
 export function setObjectValues<T extends Indexed>(lhs: T, rhs: DeepPartial<T>): T {
-  const result: T = {} as T
-
+  const result: T = structuredClone(lhs)
   const keys = Object.keys(rhs)
 
   for (const key of keys) {

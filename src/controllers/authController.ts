@@ -26,6 +26,7 @@ export async function register({ formData }: { formData: FormData }): Promise<vo
 
     await me()
 
+    NotificationService.notify('Регистрация прошла успешно', 'success')
     Router.navigate(RoutePath.CHAT)
   } catch (error) {
     if (APIError.isAPIError(error)) {
@@ -85,13 +86,13 @@ export async function me(): Promise<User | null> {
 
 export async function logout(): Promise<void> {
   const context = service + logout.name
-  logger.debug(context, 'logout start')
+  logger.debug(context, 'start')
 
   try {
     dispatch(userActions.clearUser())
     await authApi.logout()
     Router.navigate(RoutePath.LOGIN)
-    logger.debug(context, 'logout end')
+    logger.debug(context, 'successful')
   } catch (error) {
     if (APIError.isAPIError(error)) {
       return NotificationService.notify(error.reason, 'error')

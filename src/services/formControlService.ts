@@ -96,7 +96,7 @@ export class FormControlService {
 
       if (this._submitHandler) this._submitHandler(e, formData)
 
-      this._formElement?.reset()
+      // this._formElement?.reset()
     }
   }
 

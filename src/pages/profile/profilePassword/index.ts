@@ -1,1 +1,3 @@
-export { ProfilePasswordPage } from './profilePassword'
+import ProfilePasswordPage from './profilePassword'
+
+export { ProfilePasswordPage }
