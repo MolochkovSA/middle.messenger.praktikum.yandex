@@ -4,6 +4,7 @@ export { Link } from './common/link'
 export { Input } from './common/input'
 export { InputField } from './common/inputField'
 export { Loader } from './common/loader'
+export { Modal } from './common/modal'
 
 // Auth
 export { AuthInputField } from './auth/authInputField'

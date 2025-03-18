@@ -124,7 +124,7 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
 
     const newData: UserUpdateDTO = { email, login, first_name, second_name, display_name, phone }
 
-    userController.userUpdate(newData)
+    userController.updateUser(newData)
   }
 
   render(): string {

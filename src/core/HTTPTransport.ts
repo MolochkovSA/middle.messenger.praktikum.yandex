@@ -11,7 +11,7 @@ enum Methods {
 type RequestOptions = {
   method: Methods
   headers?: Record<string, string>
-  data?: Indexed
+  data?: Indexed | FormData
   timeout?: number
 }
 
@@ -44,7 +44,7 @@ export class HTTPTransport {
       const isGet = method === Methods.GET
       const url = this._baseUrl + path
 
-      xhr.open(method, isGet && data ? `${url}${queryStringify(data)}` : url)
+      xhr.open(method, isGet && data && !(data instanceof FormData) ? `${url}${queryStringify(data)}` : url)
 
       if (headers) {
         Object.entries(headers).forEach(([key, value]) => {

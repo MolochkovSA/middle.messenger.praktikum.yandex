@@ -7,8 +7,8 @@ import { ResetPasswordDto, UserUpdateDTO } from '@/types/user'
 
 const service = 'userController.'
 
-export async function userUpdate(data: UserUpdateDTO): Promise<void> {
-  const context = service + userUpdate.name
+export async function updateUser(data: UserUpdateDTO): Promise<void> {
+  const context = service + updateUser.name
 
   logger.debug(context, 'start')
   dispatch(userActions.setLoading(true))
@@ -27,6 +27,15 @@ export async function userUpdate(data: UserUpdateDTO): Promise<void> {
   } finally {
     dispatch(userActions.setLoading(false))
   }
+}
+
+export async function changeAvatar(data: FormData): Promise<void> {
+  const context = service + changeAvatar.name
+
+  logger.debug(context, 'start')
+  await userApi.changeAvatar(data)
+  NotificationService.notify('Аватар успешно обновлен', 'success')
+  logger.debug(context, 'successful')
 }
 
 export async function resetPassword(data: ResetPasswordDto): Promise<void> {
