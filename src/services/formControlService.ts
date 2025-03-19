@@ -18,14 +18,18 @@ export class FormControlService {
     this._inputsValidationRules = {}
   }
 
-  getElements(element: HTMLElement): void {
-    const formElement: HTMLFormElement | null = element.querySelector('form')
+  getElements(element: HTMLElement | HTMLFormElement): void {
+    if (element instanceof HTMLFormElement) {
+      this._formElement = element
+    } else {
+      const formElement: HTMLFormElement | null = element.querySelector('form')
 
-    if (!formElement) return
+      if (!formElement) return
 
-    this._formElement = formElement
+      this._formElement = formElement
+    }
 
-    const inputElements = formElement.querySelectorAll('input')
+    const inputElements = this._formElement.querySelectorAll('input')
     this._inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
   }
 
@@ -96,7 +100,7 @@ export class FormControlService {
 
       if (this._submitHandler) this._submitHandler(e, formData)
 
-      // this._formElement?.reset()
+      this._formElement?.reset()
     }
   }
 

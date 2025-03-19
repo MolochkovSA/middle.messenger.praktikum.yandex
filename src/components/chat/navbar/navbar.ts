@@ -1,5 +1,5 @@
 import { Block } from '@/core'
-import { Link, Input, ContactListItem } from '@/components'
+import { Link, Input, ContactListItem, AddChatButton } from '@/components'
 import { ContactItem } from '@/pages/chat'
 
 import styles from './navbar.module.scss'
@@ -14,6 +14,7 @@ type NavbarProps = {
 type NavbarChildren = {
   ProfileLink: Link
   SearchInput: Input
+  AddChatButton: AddChatButton
   ContactList: ContactListItem[]
 }
 
@@ -38,6 +39,7 @@ export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
             })
           },
         }),
+        AddChatButton: new AddChatButton(),
         ContactList: [],
       },
     })
@@ -73,6 +75,8 @@ export class Navbar extends Block<NavbarProps, {}, NavbarChildren> {
             {{{ SearchInput }}}  
             <span></span> 
           </div>
+
+          {{{ AddChatButton }}}
         </div>
 
         <ul>

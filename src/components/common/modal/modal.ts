@@ -29,8 +29,9 @@ export class Modal extends Block<{}, ModalEvents, {}> {
     return `
       <div class="${styles.overlay}">
         <div class="${styles.modal}" >
-          {{{ children }}}
-          {{{ ModalContent1 }}}
+          {{#if children}}
+            {{{ children }}}
+          {{/if}}
         </div>
       </div>
      `

@@ -1,9 +1,9 @@
 import { Button } from '@/components/common/button'
 import { InputField } from '@/components/common/inputField'
 import { Block } from '@/core'
+import { userController } from '@/controllers'
 
 import styles from './changeAvatarContent.module.scss'
-import { userController } from '@/controllers'
 
 type ChangeAvatarContentProps = {
   title: string
@@ -50,7 +50,7 @@ export class ChangeAvatarContent extends Block<
           label: labelNoFile,
           change: (e: Event) => this.uploadFile(e),
         }),
-        SubmitButton: new Button({ label: 'Поменять', type: 'submit', className: styles.button }),
+        SubmitButton: new Button({ label: 'Поменять', type: 'submit' }),
       },
     })
 

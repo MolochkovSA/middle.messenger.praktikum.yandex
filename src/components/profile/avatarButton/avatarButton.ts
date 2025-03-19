@@ -1,7 +1,7 @@
 import defaultAvatar from '@/assets/avatar.png'
 import { Block } from '@/core'
 import { Button, Modal } from '@/components'
-import { ChangeAvatarContent } from '../changeAvatarContent'
+import { ChangeAvatarContent } from './changeAvatarContent'
 import { BASE_URL } from '@/config/constants'
 
 import styles from './avatarButton.module.scss'

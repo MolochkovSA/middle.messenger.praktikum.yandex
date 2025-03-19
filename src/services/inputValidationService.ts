@@ -1,4 +1,5 @@
 export type ValidationSchemaName =
+  | 'required'
   | 'name'
   | 'optionalName'
   | 'login'
@@ -77,6 +78,7 @@ export class InputValidationService {
   }
 
   private static schemas: ValidationSchemas = {
+    required: { tests: [this.requireValueTest] },
     name: { tests: [this.requireValueTest, this.isNameTest] },
     optionalName: { tests: [this.isNameTest] },
     login: {
