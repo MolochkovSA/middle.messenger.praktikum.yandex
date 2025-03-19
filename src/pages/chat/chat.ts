@@ -1,19 +1,26 @@
-import { Block } from '@/core'
-import { ContactChat, Navbar } from '@/components'
+import { Block, Router } from '@/core'
+import { AddChatButton, ContactChat, Input, Link, ChatList } from '@/components'
+import { Chat, ChatId } from '@/types/chat'
+import { UserId } from '@/types/user'
 
-import { mockContact, mockContactsList } from './mockData'
-import { Contact } from './types'
+import { mockContact } from './mockData'
 
 import styles from './chat.module.scss'
+import { MappedChatItem } from './types'
 
 type ChatProps = {
-  contacts: Contact[]
-  selectedContactId?: string
+  userId?: UserId
+  chats: Chat[]
+  searchValue: string
+  activeChatId?: ChatId
   isChatMenuOpen: boolean
 }
 
 type ChatChildren = {
-  Navbar: Navbar
+  ProfileLink: Link
+  SearchInput: Input
+  AddChatButton: AddChatButton
+  ChatList: ChatList
   ContactChat: ContactChat
 }
 
@@ -21,15 +28,29 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   constructor() {
     super({
       props: {
-        contacts: [],
+        userId: undefined,
+        chats: [],
+        searchValue: '',
+        activeChatId: undefined,
         isChatMenuOpen: false,
       },
       children: {
-        Navbar: new Navbar({
-          contactList: mockContactsList,
-          setActiveContactId: (id: string) => {
-            this.setProps({ selectedContactId: id })
+        ProfileLink: new Link({ to: '/profile', label: 'Профиль' }),
+        SearchInput: new Input({
+          id: 'searchInput',
+          type: 'text',
+          name: 'search',
+          placeholder: 'Поиск',
+          blur: (e) => {
+            this.setProps({
+              searchValue: (e.target as HTMLInputElement).value,
+            })
           },
+        }),
+        AddChatButton: new AddChatButton(),
+        ChatList: new ChatList({
+          chats: [],
+          setActiveChatId: (activeChatId: ChatId) => this.setProps({ activeChatId }),
         }),
         ContactChat: new ContactChat({ contact: mockContact }),
       },
@@ -37,21 +58,53 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   }
 
   protected componentDidMount(): void {
-    this.setProps({ contacts: [mockContact] })
+    const chats = Router.getLoaderData<Chat[]>()
+
+    this.setProps({ chats })
   }
 
   render() {
-    const { contacts, selectedContactId } = this.getProps()
+    const { userId, chats, searchValue, activeChatId } = this.getProps()
 
-    const selectedContact = contacts.find((contact) => contact.id === selectedContactId)
+    const filteredChats = chats.filter((chat) => chat.title.toLowerCase().includes(searchValue.toLowerCase()))
+    console.log(filteredChats)
 
-    if (selectedContact) {
-      this.setChildren({ ContactChat: new ContactChat({ contact: selectedContact }) })
-    }
+    const mappedChatItems: MappedChatItem[] = filteredChats.map<MappedChatItem>((chat) => {
+      const lastMessageUserId = chat.last_message?.user.id
+      const isMyMessage = !!lastMessageUserId && !!userId && lastMessageUserId === userId
+
+      return {
+        id: chat.id,
+        title: chat.title,
+        avatar: chat.avatar,
+        isActive: chat.id === activeChatId,
+        unread_count: chat.unread_count,
+        isMyMessage,
+        messageText: chat.last_message?.content || '',
+        messageDate: chat.last_message?.time || '',
+      }
+    })
+
+    console.log(mappedChatItems)
+
+    this.getChildren().ChatList.setProps({ chats: mappedChatItems })
 
     return `
       <main class=${styles.chatPage}>
-        {{{ Navbar }}}
+        <sidebar class=${styles.sidebar}>
+          <div class=${styles.sidebarTop}>
+            {{{ ProfileLink }}}
+
+            <div class=${styles.searchInput}>
+              {{{ SearchInput }}}  
+              <span></span> 
+            </div>
+
+            {{{ AddChatButton }}}
+          </div>
+
+          {{{ ChatList }}}
+        </sidebar>
 
         <div class=${styles.content}>
           {{#if selectedContactId}}

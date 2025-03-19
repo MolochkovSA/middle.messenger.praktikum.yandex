@@ -1,10 +1,10 @@
-.contactItem {
+.chatItem {
   width: 100%;
   display: flex;
   flex-direction: column;
 
   &:hover,
-  &.active {
+  &.isActive {
     background-color: var(--color-chat-sky);
   }
 

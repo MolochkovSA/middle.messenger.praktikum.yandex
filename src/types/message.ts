@@ -3,7 +3,7 @@ import { UserId } from './user'
 
 export type MessageId = number
 
-export enum MessageType {
+export enum MessageContentType {
   MESSAGE = 'message',
   FILE = 'file',
 }
@@ -12,7 +12,7 @@ export type Message = {
   id: MessageId
   user_Id: UserId
   chat_Id: ChatId
-  tyme: string
-  type: MessageType
+  time: string
+  type: MessageContentType
   contnet: string
 }

@@ -24,6 +24,13 @@ class ChatApi extends BaseApi {
     logger.debug(context, 'failed')
     throw new APIError('Response data does not satisfy the chat id')
   }
+
+  async getChats(): Promise<Chat[]> {
+    const context = this._context + this.getChats.name
+
+    logger.debug(context, 'start')
+    return (await this.http.get('')).response
+  }
 }
 
 export const chatApi = new ChatApi()

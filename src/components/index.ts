@@ -15,8 +15,8 @@ export { BackLink } from './profile/backLink'
 export { AvatarButton } from './profile/avatarButton'
 
 // Chat
-export { Navbar } from './chat/navbar'
-export { ContactListItem } from './chat/contactListItem'
+export { ChatList } from './chat/chatList'
+export { ChatListItem } from './chat/chatListItem'
 export { ContactChat } from './chat/contactChat'
 export { MessagesGroup } from './chat/messagesGroup'
 export { MessageItem } from './chat/message'
