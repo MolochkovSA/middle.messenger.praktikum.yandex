@@ -36,7 +36,7 @@ export class ChatListItem extends Block<ChatListItemProps, ChatListItemEvents> {
               <span class=${styles.date}>{{chat.messageDate}}</span>
             </div>
 
-            <div class=${styles.row}>
+            <div class="${styles.row} ${styles.message}">
               <p class="${styles.lastMessage} {{#if chat.isMyMessage}}${styles.outgoing}{{/if}}">
                 {{chat.messageText}}
               </p>
