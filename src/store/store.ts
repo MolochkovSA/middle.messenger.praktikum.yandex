@@ -1,12 +1,14 @@
 import { Store, StoreEvents } from '@/core'
-import { authSlice } from './auth/authSlice'
-import { userSlice } from './user/userSlice'
-import { Action } from './types'
 import { logger } from '@/services'
+import { authSlice } from './auth'
+import { userSlice } from './user'
+import { chatSlice } from './chat'
+import { Action } from './types'
 
 const slices = {
   auth: authSlice,
   user: userSlice,
+  chat: chatSlice,
 }
 
 type State = {

@@ -2,13 +2,16 @@ import { Block, Router } from '@/core'
 import { AddChatButton, ContactChat, Input, Link, ChatList } from '@/components'
 import { Chat, ChatId } from '@/types/chat'
 import { UserId } from '@/types/user'
+import { MappedChatItem } from './types'
+import { getState } from '@/store'
+import { withChatState } from '@/store/chat'
 
 import { mockContact } from './mockData'
 
 import styles from './chat.module.scss'
-import { MappedChatItem } from './types'
 
 type ChatProps = {
+  isLoading: boolean
   userId?: UserId
   chats: Chat[]
   searchValue: string
@@ -24,10 +27,11 @@ type ChatChildren = {
   ContactChat: ContactChat
 }
 
-export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
+class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   constructor() {
     super({
       props: {
+        isLoading: false,
         userId: undefined,
         chats: [],
         searchValue: '',
@@ -59,15 +63,16 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
 
   protected componentDidMount(): void {
     const chats = Router.getLoaderData<Chat[]>()
+    const userId = getState().user.user?.id
 
-    this.setProps({ chats })
+    if (chats) this.setProps({ chats })
+    this.setProps({ userId })
   }
 
   render() {
     const { userId, chats, searchValue, activeChatId } = this.getProps()
 
     const filteredChats = chats.filter((chat) => chat.title.toLowerCase().includes(searchValue.toLowerCase()))
-    console.log(filteredChats)
 
     const mappedChatItems: MappedChatItem[] = filteredChats.map<MappedChatItem>((chat) => {
       const lastMessageUserId = chat.last_message?.user.id
@@ -84,8 +89,6 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
         messageDate: chat.last_message?.time || '',
       }
     })
-
-    console.log(mappedChatItems)
 
     this.getChildren().ChatList.setProps({ chats: mappedChatItems })
 
@@ -117,3 +120,5 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     `
   }
 }
+
+export default withChatState(ChatPage)

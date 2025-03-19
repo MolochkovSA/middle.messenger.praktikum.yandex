@@ -1,5 +1,5 @@
 import { BaseApi } from './baseApi'
-import { isObject } from '@/utils'
+import { isChat, isObject } from '@/utils'
 import { APIError } from '@/models'
 import { logger } from '@/services'
 import { Chat, NewChatDto } from '@/types/chat'
@@ -29,7 +29,15 @@ class ChatApi extends BaseApi {
     const context = this._context + this.getChats.name
 
     logger.debug(context, 'start')
-    return (await this.http.get('')).response
+    const { response } = await this.http.get('')
+
+    if (Array.isArray(response) && response.every(isChat)) {
+      logger.debug(context, 'successful')
+      return response
+    }
+
+    logger.debug(context, 'failed')
+    throw new APIError('Response data does not satisfy the chats')
   }
 }
 
