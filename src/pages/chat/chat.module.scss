@@ -53,16 +53,3 @@
     }
   }
 }
-
-.content {
-  flex-grow: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  padding: 10px 20px;
-
-  .emptyChat {
-    color: var(--color-gray-text);
-  }
-}

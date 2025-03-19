@@ -3,7 +3,7 @@ import { APIError } from '@/models'
 import { logger, NotificationService } from '@/services'
 import { dispatch } from '@/store'
 import { userActions } from '@/store/user'
-import { ResetPasswordDto, UserUpdateDTO } from '@/types/user'
+import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
 
 const service = 'userController.'
 
@@ -57,5 +57,24 @@ export async function resetPassword(data: ResetPasswordDto): Promise<void> {
     logger.error(context, error)
   } finally {
     dispatch(userActions.setLoading(false))
+  }
+}
+
+export async function searchUsersByLogin(login: string): Promise<User[]> {
+  const context = service + searchUsersByLogin.name
+
+  logger.debug(context, 'start')
+
+  try {
+    const users = await userApi.searchUsersByLogin(login)
+    logger.debug(context, 'successful')
+    return users
+  } catch (error) {
+    if (APIError.isAPIError(error)) {
+      NotificationService.notify(error.reason, 'error')
+    }
+
+    logger.error(context, error)
+    return []
   }
 }

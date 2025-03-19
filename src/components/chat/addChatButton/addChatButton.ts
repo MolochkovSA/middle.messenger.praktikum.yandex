@@ -1,12 +1,11 @@
 import { Block } from '@/core'
 import { Button, Modal } from '@/components'
+import { AddChatModelContent } from './addChatModalContent'
 
 import styles from './addChatButton.module.scss'
-import { AddChatModelContent } from './addChatModalContent'
 
 type AddChatButtonProps = {
   isShowModal: boolean
-  disabled: boolean
 }
 
 type AddChatButtonEvents = {
@@ -23,7 +22,6 @@ export class AddChatButton extends Block<AddChatButtonProps, AddChatButtonEvents
     super({
       props: {
         isShowModal: false,
-        disabled: false,
       },
       events: {
         click: () => {
@@ -50,11 +48,6 @@ export class AddChatButton extends Block<AddChatButtonProps, AddChatButtonEvents
   }
 
   render(): string {
-    const { disabled } = this.getProps()
-    const { Button } = this.getChildren()
-
-    Button.setProps({ disabled })
-
     return `
       <div>
         {{{ Button }}}
