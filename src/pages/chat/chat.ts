@@ -3,13 +3,13 @@ import { AddChatButton, ChatView, Input, Link, ChatList } from '@/components'
 import { Chat, ChatId } from '@/types/chat'
 import { MappedChatItem } from './types'
 import { dispatch, getState } from '@/store'
-import { chatActions, withChatState } from '@/store/chat'
+import { chatActions } from '@/store/chat'
 import { formatDate, getAvatarSrc } from '@/utils'
+import { connect } from '@/store/connect'
 
 import styles from './chat.module.scss'
 
 type ChatProps = {
-  isLoading: boolean
   userLogin?: string
   chats: Chat[]
   searchValue: string
@@ -24,11 +24,10 @@ type ChatChildren = {
   ChatView: ChatView
 }
 
-class ChatPage extends Block<ChatProps, {}, ChatChildren> {
+export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   constructor() {
     super({
       props: {
-        isLoading: false,
         userLogin: undefined,
         chats: [],
         searchValue: '',
@@ -72,8 +71,8 @@ class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     const { userLogin, chats, searchValue, activeChatId } = this.getProps()
     const { ChatList, ChatView } = this.getChildren()
 
-    let aciveChat: Chat | undefined
     const filteredChats = chats.filter((chat) => chat.title.toLowerCase().includes(searchValue.toLowerCase()))
+    let aciveChat: Chat | undefined
 
     const mappedChatItems: MappedChatItem[] = filteredChats.map<MappedChatItem>((chat) => {
       const lastMessageUserLogin = chat.last_message?.user.login
@@ -121,4 +120,7 @@ class ChatPage extends Block<ChatProps, {}, ChatChildren> {
   }
 }
 
-export default withChatState(ChatPage)
+export const ChatPageWithState = connect<ChatProps, {}, ChatChildren>(({ chat }) => ({
+  chats: chat.chats,
+  activeChatId: chat.activeChatId,
+}))(ChatPage)
