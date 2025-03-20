@@ -4,9 +4,9 @@ import { logger, NotificationService } from '@/services'
 import { dispatch } from '@/store'
 import { userActions } from '@/store/user'
 import { ChatUser } from '@/types/chat'
-import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
+import { ResetPasswordDto, UserUpdateDTO } from '@/types/user'
 
-const service = 'userController.'
+const service = 'UserController.'
 
 export async function updateUser(data: UserUpdateDTO): Promise<void> {
   const context = service + updateUser.name

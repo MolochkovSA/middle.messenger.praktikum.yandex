@@ -1,10 +1,11 @@
 import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
-import { FormControlService } from '@/services'
+import { FormControlService, NotificationService } from '@/services'
 import { authController } from '@/controllers'
-import { withAuthState } from '@/store/auth'
 
 import styles from './login.module.scss'
+import { connect } from '@/store/connect'
+import { SignInDto } from '@/types/user'
 
 type LoginPageProps = {
   isLoading: boolean
@@ -17,7 +18,7 @@ type LoginPageChildren = {
   RegisterLink: Link
 }
 
-class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
+export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
@@ -61,13 +62,39 @@ class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
     this.formControlService = formValidationService
   }
 
-  componentDidMount(): void {
+  protected componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
-    this.formControlService.attachSubmitHandler(authController.login)
+    this.formControlService.addEvents()
+    this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
   }
 
-  componentWillUnmount(): void {
+  protected componentWillUpdate(): void {
+    this.formControlService.removeEvents()
+  }
+
+  protected componentDidUpdate(): void {
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+  }
+
+  protected componentWillUnmount(): void {
+    this.formControlService.removeEvents()
     this.formControlService.unmount()
+  }
+
+  handleSubmit(event: Event, formData: FormData): void {
+    event.preventDefault()
+
+    const login = formData.get('login')?.toString()
+    const password = formData.get('password')?.toString()
+
+    if (!login || !password) {
+      return NotificationService.notify('Заполните все поля', 'error')
+    }
+
+    const newData: SignInDto = { login, password }
+
+    authController.login(newData)
   }
 
   render(): string {
@@ -92,4 +119,4 @@ class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
   }
 }
 
-export default withAuthState(LoginPage)
+export const LoginPageWithState = connect((state) => ({ isLoading: state.user.isLoading }))(LoginPage)

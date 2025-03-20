@@ -3,9 +3,9 @@ import { RouteProps } from '@/core'
 import {
   NotFoundPage,
   ServerErrorPage,
-  RegisterPage,
+  RegisterPageWithState,
   ChatPageWithState,
-  LoginPage,
+  LoginPageWithState,
   ProfileInfoPage,
   ProfileEditPage,
   ProfilePasswordPage,
@@ -28,8 +28,8 @@ export enum RoutePath {
 
 export const routeConfig: RouteProps[] = [
   { pathname: RoutePath.NAVIGATION, block: NavigationPage },
-  { pathname: RoutePath.LOGIN, block: LoginPage, loader: authBlockGuard },
-  { pathname: RoutePath.REGISTER, block: RegisterPage, loader: authBlockGuard },
+  { pathname: RoutePath.LOGIN, block: LoginPageWithState, loader: authBlockGuard },
+  { pathname: RoutePath.REGISTER, block: RegisterPageWithState, loader: authBlockGuard },
   { pathname: RoutePath.CHAT, block: ChatPageWithState, loader: chatLoader, hydrateFallbackElement: Loader },
   { pathname: RoutePath.PROFILE, block: ProfileInfoPage, loader: authGuard, hydrateFallbackElement: Loader },
   { pathname: RoutePath.SETTINGS, block: ProfileEditPage, loader: authGuard, hydrateFallbackElement: Loader },

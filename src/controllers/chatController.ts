@@ -7,7 +7,7 @@ import { Chat, ChatId, ChatUser, NewChatDto } from '@/types/chat'
 import { UserId } from '@/types/user'
 import { getAvatarSrc } from '@/utils'
 
-const service = 'chatController.'
+const service = 'ChatController.'
 
 export async function createChat(data: NewChatDto): Promise<void> {
   const context = service + createChat.name

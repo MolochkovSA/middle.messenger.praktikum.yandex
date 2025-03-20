@@ -1,10 +1,11 @@
 import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
-import { FormControlService } from '@/services'
+import { FormControlService, NotificationService } from '@/services'
 import { authController } from '@/controllers'
+import { connect } from '@/store/connect'
 
 import styles from './register.module.scss'
-import { withAuthState } from '@/store/auth'
+import { SignUpDto } from '@/types/user'
 
 type LoginPageProps = {
   isLoading: boolean
@@ -21,7 +22,7 @@ type RegisterPageChildren = {
   SubmitButton: Button
   LoginLink: Link
 }
-class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
+export class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
@@ -105,13 +106,43 @@ class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
     this.formControlService = formValidationService
   }
 
-  componentDidMount(): void {
+  protected componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
-    this.formControlService.attachSubmitHandler(authController.register)
+    this.formControlService.addEvents()
+    this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
   }
 
-  componentWillUnmount(): void {
+  protected componentWillUpdate(): void {
+    this.formControlService.removeEvents()
+  }
+
+  protected componentDidUpdate(): void {
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+  }
+
+  protected componentWillUnmount(): void {
+    this.formControlService.removeEvents()
     this.formControlService.unmount()
+  }
+
+  handleSubmit(event: Event, formData: FormData): void {
+    event.preventDefault()
+
+    const email = formData.get('email')?.toString()
+    const login = formData.get('login')?.toString()
+    const first_name = formData.get('first_name')?.toString()
+    const second_name = formData.get('second_name')?.toString()
+    const phone = formData.get('phone')?.toString()
+    const password = formData.get('password')?.toString()
+
+    if (!email || !login || !first_name || !second_name || !phone || !password) {
+      return NotificationService.notify('Заполните все поля', 'error')
+    }
+
+    const newData: SignUpDto = { email, login, first_name, second_name, phone, password }
+
+    authController.register(newData)
   }
 
   render(): string {
@@ -161,4 +192,6 @@ class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
   }
 }
 
-export default withAuthState(RegisterPage)
+export const RegisterPageWithState = connect<LoginPageProps, {}, RegisterPageChildren>((state) => ({
+  isLoading: state.user.isLoading,
+}))(RegisterPage)

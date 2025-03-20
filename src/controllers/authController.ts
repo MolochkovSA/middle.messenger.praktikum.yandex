@@ -5,51 +5,43 @@ import { APIError } from '@/models'
 import { logger, NotificationService } from '@/services'
 import { dispatch, getState } from '@/store'
 import { authActions } from '@/store/auth'
+import { chatActions } from '@/store/chat'
 import { userActions } from '@/store/user'
-import { User } from '@/types/user'
+import { SignInDto, SignUpDto, User } from '@/types/user'
 
-const service = 'authController.'
+const service = 'AuthController.'
 
-export async function register({ formData }: { formData: FormData }): Promise<void> {
+export async function register(data: SignUpDto): Promise<void> {
   const context = service + register.name
+
+  logger.debug(context, 'start')
   dispatch(authActions.setLoading(true))
 
   try {
-    await authApi.signUp({
-      email: formData.get('email') as string,
-      login: formData.get('login') as string,
-      first_name: formData.get('first_name') as string,
-      second_name: formData.get('second_name') as string,
-      phone: formData.get('phone') as string,
-      password: formData.get('password') as string,
-    })
-
-    await me()
-
+    await authApi.signUp(data)
     NotificationService.notify('Регистрация прошла успешно', 'success')
     Router.navigate(RoutePath.CHAT)
+    logger.debug(context, 'successful')
   } catch (error) {
     if (APIError.isAPIError(error)) {
       return NotificationService.notify(error.reason, 'error')
     }
+
     logger.error(context, error)
   } finally {
     dispatch(authActions.setLoading(false))
   }
 }
 
-export async function login({ formData }: { formData: FormData }): Promise<void> {
+export async function login(data: SignInDto): Promise<void> {
   const context = service + login.name
+
+  logger.debug(context, 'start')
   dispatch(authActions.setLoading(true))
 
   try {
-    await authApi.signIn({
-      login: formData.get('login') as string,
-      password: formData.get('password') as string,
-    })
-
-    await me()
-
+    await authApi.signIn(data)
+    logger.debug(context, 'successful')
     Router.navigate(RoutePath.CHAT)
   } catch (error) {
     if (APIError.isAPIError(error)) {
@@ -86,10 +78,13 @@ export async function me(): Promise<User | null> {
 
 export async function logout(): Promise<void> {
   const context = service + logout.name
+
   logger.debug(context, 'start')
 
   try {
     dispatch(userActions.clearUser())
+    dispatch(chatActions.clearChats())
+    dispatch(chatActions.clearChatUsers())
     await authApi.logout()
     Router.navigate(RoutePath.LOGIN)
     logger.debug(context, 'successful')

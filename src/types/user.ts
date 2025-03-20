@@ -15,7 +15,7 @@ export type UserUpdateDTO = Pick<User, 'first_name' | 'second_name' | 'display_n
 
 export type SignInDto = Pick<User, 'login'> & { password: string }
 
-export type SinUpDto = Omit<User, 'id' | 'avatar' | 'display_name'> & { password: string }
+export type SignUpDto = Omit<User, 'id' | 'avatar' | 'display_name'> & { password: string }
 
 export type ResetPasswordDto = {
   oldPassword: string

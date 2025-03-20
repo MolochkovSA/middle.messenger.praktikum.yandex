@@ -1,4 +1,4 @@
-export { LoginPage, RegisterPage } from './auth'
+export { LoginPage, LoginPageWithState, RegisterPage, RegisterPageWithState } from './auth'
 export { ChatPageWithState, chatLoader } from './chat'
 export { NotFoundPage, ServerErrorPage } from './errors'
 export { ProfileInfoPage, ProfileEditPage, ProfilePasswordPage } from './profile'

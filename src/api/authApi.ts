@@ -1,4 +1,4 @@
-import { SignInDto, SinUpDto, User } from '@/types/user'
+import { SignInDto, SignUpDto, User } from '@/types/user'
 import { BaseApi } from './baseApi'
 import { isObject, isUser } from '@/utils'
 import { APIError } from '@/models'
@@ -10,7 +10,7 @@ class AuthApi extends BaseApi {
     super({ apiPath: '/auth' })
   }
 
-  async signUp(data: SinUpDto): Promise<Pick<User, 'id'>> {
+  async signUp(data: SignUpDto): Promise<Pick<User, 'id'>> {
     const context = this._context + this.signUp.name
 
     logger.debug(context, 'start')
