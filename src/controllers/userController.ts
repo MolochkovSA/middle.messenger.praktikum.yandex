@@ -3,6 +3,7 @@ import { APIError } from '@/models'
 import { logger, NotificationService } from '@/services'
 import { dispatch } from '@/store'
 import { userActions } from '@/store/user'
+import { ChatUser } from '@/types/chat'
 import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
 
 const service = 'userController.'
@@ -60,7 +61,7 @@ export async function resetPassword(data: ResetPasswordDto): Promise<void> {
   }
 }
 
-export async function searchUsersByLogin(login: string): Promise<User[]> {
+export async function searchUsersByLogin(login: string): Promise<ChatUser[]> {
   const context = service + searchUsersByLogin.name
 
   logger.debug(context, 'start')

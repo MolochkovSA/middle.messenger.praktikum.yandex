@@ -1,8 +1,9 @@
 import { logger } from '@/services'
 import { BaseApi } from './baseApi'
 import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
-import { isUser } from '@/utils'
+import { isChatUser, isUser } from '@/utils'
 import { APIError } from '@/models'
+import { ChatUser } from '@/types/chat'
 
 class UserApi extends BaseApi {
   private _context = UserApi.name + '.'
@@ -50,13 +51,13 @@ class UserApi extends BaseApi {
     logger.debug(context, 'successful')
   }
 
-  async searchUsersByLogin(login: string): Promise<User[]> {
+  async searchUsersByLogin(login: string): Promise<ChatUser[]> {
     const context = this._context + this.searchUsersByLogin.name
 
     logger.debug(context, 'start')
     const { response } = await this.http.post('/search', { data: { login } })
 
-    if (Array.isArray(response) && response.every(isUser)) {
+    if (Array.isArray(response) && response.every(isChatUser)) {
       logger.debug(context, 'successful')
       return response
     }

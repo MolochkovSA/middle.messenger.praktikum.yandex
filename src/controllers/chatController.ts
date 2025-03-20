@@ -81,8 +81,8 @@ export async function addUsersToChat(data: { chatId: ChatId; users: UserId[] }):
 
   try {
     await chatApi.addUsersToChat(data)
-    NotificationService.notify('Пользователи успешно добавлены', 'success')
-    await getChats()
+    NotificationService.notify('Пользователь успешно добавлен', 'success')
+    await getChatUsers(data.chatId)
     logger.debug(context, 'successful')
   } catch (error) {
     if (APIError.isAPIError(error)) {
@@ -103,8 +103,8 @@ export async function removeUsersFromChat(data: { chatId: ChatId; users: UserId[
 
   try {
     await chatApi.removeUsersFromChat(data)
-    NotificationService.notify('Пользователи успешно удалены', 'success')
-    await getChats()
+    NotificationService.notify('Пользователь успешно удален', 'success')
+    await getChatUsers(data.chatId)
     logger.debug(context, 'successful')
   } catch (error) {
     if (APIError.isAPIError(error)) {

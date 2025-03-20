@@ -21,7 +21,7 @@ export class ChatMenuButton extends Block<ChatMenuButtonProps, ChatMenuButtonEve
   constructor() {
     super({
       props: {
-        isShowMenu: true,
+        isShowMenu: false,
       },
       events: {
         click: () => {

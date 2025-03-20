@@ -1,5 +1,5 @@
 import { Block } from '@/core'
-import { Button, ChatMenuUserItem } from '@/components'
+import { AddChatUserButton, Button, ChatMenuUserItem } from '@/components'
 import circlePlusIcon from '@/assets/circlePlus.svg'
 
 import styles from './chatMenu.module.scss'
@@ -18,7 +18,7 @@ type ChatMenuEvents = {
 }
 
 type ChatMenuChildren = {
-  AddUserButton: Button
+  AddUserButton: AddChatUserButton
   ChatUsers: ChatMenuUserItem[]
   RemoveChatButton: Button
 }
@@ -38,10 +38,8 @@ export class ChatMenu extends Block<ChatMenuProps, ChatMenuEvents, ChatMenuChild
         },
       },
       children: {
-        AddUserButton: new Button({
-          label: addUserButtonLabel,
-          className: styles.chatMenuBtn,
-          click: (e) => {
+        AddUserButton: new AddChatUserButton({
+          onClose: (e) => {
             this.getProps().onClose(e)
           },
         }),
@@ -80,11 +78,6 @@ export class ChatMenu extends Block<ChatMenuProps, ChatMenuEvents, ChatMenuChild
     `
   }
 }
-
-const addUserButtonLabel = `
-    <img src=${circlePlusIcon} alt="addUserIcon">
-    <p>Добавить пользователя</p>   
-  `
 
 const removeUserButtonLabel = `
     <img src=${circlePlusIcon} class=${styles.removeChatIcon} alt="removeChatIcon">
