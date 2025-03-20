@@ -6,3 +6,4 @@ export { Store } from './store'
 export { StoreEvents } from './store'
 
 export type { RouteProps } from './route'
+export type { Children, EventListeners } from './block'

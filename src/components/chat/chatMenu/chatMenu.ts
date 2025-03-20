@@ -1,8 +1,17 @@
 import { Block } from '@/core'
-import { Button } from '@/components'
+import { Button, ChatMenuUserItem } from '@/components'
 import circlePlusIcon from '@/assets/circlePlus.svg'
 
 import styles from './chatMenu.module.scss'
+import { ChatId, ChatUser } from '@/types/chat'
+import { connect } from '@/store/connect'
+import { chatController } from '@/controllers'
+
+type ChatMenuProps = {
+  chatId?: ChatId
+  chatUsers: ChatUser[]
+  onClose: (e: Event) => void
+}
 
 type ChatMenuEvents = {
   click: (e: Event) => void
@@ -10,19 +19,22 @@ type ChatMenuEvents = {
 
 type ChatMenuChildren = {
   AddUserButton: Button
-  RemoveUserButton: Button
+  ChatUsers: ChatMenuUserItem[]
+  RemoveChatButton: Button
 }
 
-export class ChatMenu extends Block<{}, ChatMenuEvents, ChatMenuChildren> {
-  private onClose: (e: Event) => void
-
-  constructor({ onClose }: { onClose: (e: Event) => void }) {
+export class ChatMenu extends Block<ChatMenuProps, ChatMenuEvents, ChatMenuChildren> {
+  constructor({ chatUsers, onClose }: ChatMenuProps) {
     super({
+      props: {
+        chatUsers,
+        onClose,
+      },
       events: {
         click: (e) => {
-          //   e.stopPropagation()
+          e.stopPropagation()
           if (e.target !== e.currentTarget) return
-          onClose(e)
+          this.getProps().onClose(e)
         },
       },
       children: {
@@ -30,28 +42,39 @@ export class ChatMenu extends Block<{}, ChatMenuEvents, ChatMenuChildren> {
           label: addUserButtonLabel,
           className: styles.chatMenuBtn,
           click: (e) => {
-            this.onClose(e)
+            this.getProps().onClose(e)
           },
         }),
-        RemoveUserButton: new Button({
+        ChatUsers: [],
+        RemoveChatButton: new Button({
           label: removeUserButtonLabel,
           className: styles.chatMenuBtn,
           click: (e) => {
-            this.onClose(e)
+            chatController.removeChat(this.getProps().chatId!)
+            this.getProps().onClose(e)
           },
         }),
       },
     })
-
-    this.onClose = onClose
   }
 
   render(): string {
+    const { chatUsers, chatId, onClose } = this.getProps()
+
+    this.setChildren({ ChatUsers: chatUsers.map((user) => new ChatMenuUserItem({ chatId: chatId!, user, onClose })) })
+
     return `
       <div class="${styles.overlay}">
         <div class="${styles.chatMenu}">
           {{{ AddUserButton }}}
-          {{{ RemoveUserButton }}}
+
+          <ul>
+            {{#each ChatUsers as |user|}}
+              {{{ user }}}
+            {{/each}}           
+          </ul>
+
+          {{{ RemoveChatButton }}}
         </div>
       </div>
     `
@@ -59,11 +82,16 @@ export class ChatMenu extends Block<{}, ChatMenuEvents, ChatMenuChildren> {
 }
 
 const addUserButtonLabel = `
-    <img src=${circlePlusIcon} alt="circlePlusIcon">
+    <img src=${circlePlusIcon} alt="addUserIcon">
     <p>Добавить пользователя</p>   
   `
 
 const removeUserButtonLabel = `
-    <img src=${circlePlusIcon} class=${styles.removeUserIcon} alt="circlePlusIcon">
-    <p>Удалить пользователя</p>    
+    <img src=${circlePlusIcon} class=${styles.removeChatIcon} alt="removeChatIcon">
+    <p>Удалить чат</p>    
   `
+
+export const ChatMenuWithState = connect<ChatMenuProps, ChatMenuEvents, ChatMenuChildren>((state) => ({
+  chatUsers: state.chat.chatUsers,
+  chatId: state.chat.activeChatId,
+}))(ChatMenu)

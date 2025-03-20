@@ -1,5 +1,6 @@
 import { Block } from '@/core'
 import { Button, ChatMenu } from '@/components'
+import { ChatMenuWithState } from '../chatMenu/chatMenu'
 
 import styles from './chatMenuButton.module.scss'
 
@@ -20,7 +21,7 @@ export class ChatMenuButton extends Block<ChatMenuButtonProps, ChatMenuButtonEve
   constructor() {
     super({
       props: {
-        isShowMenu: false,
+        isShowMenu: true,
       },
       events: {
         click: () => {
@@ -32,7 +33,8 @@ export class ChatMenuButton extends Block<ChatMenuButtonProps, ChatMenuButtonEve
           label: '<div></div>',
           className: styles.button,
         }),
-        ChatMenu: new ChatMenu({
+        ChatMenu: new ChatMenuWithState({
+          chatUsers: [],
           onClose: () => {
             this.setProps({ isShowMenu: false })
           },

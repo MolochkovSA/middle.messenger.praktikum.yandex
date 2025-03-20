@@ -16,3 +16,8 @@ export type Chat = {
 }
 
 export type NewChatDto = Pick<Chat, 'title'>
+
+export type ChatUserDto = Pick<User, 'id' | 'first_name' | 'second_name' | 'login' | 'avatar' | 'display_name'>
+
+export type ChatUser = Pick<User, 'id' | 'first_name' | 'second_name' | 'login'> &
+  Required<Pick<User, 'avatar' | 'display_name'>>

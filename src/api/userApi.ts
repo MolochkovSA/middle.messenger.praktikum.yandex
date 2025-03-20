@@ -1,6 +1,6 @@
 import { logger } from '@/services'
 import { BaseApi } from './baseApi'
-import { ResetPasswordDto, User, UserId, UserUpdateDTO } from '@/types/user'
+import { ResetPasswordDto, User, UserUpdateDTO } from '@/types/user'
 import { isUser } from '@/utils'
 import { APIError } from '@/models'
 

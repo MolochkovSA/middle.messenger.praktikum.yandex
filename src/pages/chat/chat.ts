@@ -2,8 +2,8 @@ import { Block, Router } from '@/core'
 import { AddChatButton, ChatView, Input, Link, ChatList } from '@/components'
 import { Chat, ChatId } from '@/types/chat'
 import { MappedChatItem } from './types'
-import { getState } from '@/store'
-import { withChatState } from '@/store/chat'
+import { dispatch, getState } from '@/store'
+import { chatActions, withChatState } from '@/store/chat'
 import { formatDate, getAvatarSrc } from '@/utils'
 
 import styles from './chat.module.scss'
@@ -50,7 +50,10 @@ class ChatPage extends Block<ChatProps, {}, ChatChildren> {
         AddChatButton: new AddChatButton(),
         ChatList: new ChatList({
           chats: [],
-          setActiveChatId: (activeChatId: ChatId) => this.setProps({ activeChatId }),
+          setActiveChatId: (activeChatId: ChatId) => {
+            dispatch(chatActions.setActiveChatId(activeChatId))
+            this.setProps({ activeChatId })
+          },
         }),
         ChatView: new ChatView(),
       },

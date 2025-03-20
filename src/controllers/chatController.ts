@@ -3,8 +3,9 @@ import { APIError } from '@/models'
 import { logger, NotificationService } from '@/services'
 import { dispatch } from '@/store'
 import { chatActions } from '@/store/chat'
-import { Chat, ChatId, NewChatDto } from '@/types/chat'
+import { Chat, ChatId, ChatUser, NewChatDto } from '@/types/chat'
 import { UserId } from '@/types/user'
+import { getAvatarSrc } from '@/utils'
 
 const service = 'chatController.'
 
@@ -50,6 +51,28 @@ export async function getChats(): Promise<Chat[]> {
   }
 }
 
+export async function removeChat(chatId: ChatId): Promise<void> {
+  const context = service + removeChat.name
+
+  logger.debug(context, 'start')
+  dispatch(chatActions.setLoading(true))
+
+  try {
+    await chatApi.removeChat(chatId)
+    NotificationService.notify('Чат успешно удален', 'success')
+    await getChats()
+    logger.debug(context, 'successful')
+  } catch (error) {
+    if (APIError.isAPIError(error)) {
+      NotificationService.notify(error.reason, 'error')
+    }
+
+    logger.error(context, error)
+  } finally {
+    dispatch(chatActions.setLoading(false))
+  }
+}
+
 export async function addUsersToChat(data: { chatId: ChatId; users: UserId[] }): Promise<void> {
   const context = service + addUsersToChat.name
 
@@ -89,6 +112,35 @@ export async function removeUsersFromChat(data: { chatId: ChatId; users: UserId[
     }
 
     logger.error(context, error)
+  } finally {
+    dispatch(chatActions.setLoading(false))
+  }
+}
+
+export async function getChatUsers(chatId: ChatId): Promise<ChatUser[]> {
+  const context = service + getChatUsers.name
+
+  logger.debug(context, 'start')
+  dispatch(chatActions.setLoading(true))
+
+  try {
+    const chatUsersRow = await chatApi.getChatUsers(chatId)
+    const usersWithAvatarSrc: ChatUser[] = chatUsersRow.map<ChatUser>((user) => ({
+      ...user,
+      avatar: getAvatarSrc(user.avatar),
+      display_name: user.display_name || `${user.first_name} ${user.second_name}`,
+    }))
+    dispatch(chatActions.setChatUsers(usersWithAvatarSrc))
+    logger.debug(context, 'successful')
+    return usersWithAvatarSrc
+  } catch (error) {
+    if (APIError.isAPIError(error)) {
+      NotificationService.notify(error.reason, 'error')
+    }
+
+    logger.error(context, error)
+    dispatch(chatActions.clearChatUsers())
+    return []
   } finally {
     dispatch(chatActions.setLoading(false))
   }

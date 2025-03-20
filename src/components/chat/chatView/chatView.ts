@@ -2,12 +2,12 @@ import { Block } from '@/core'
 import { Button, ChatMenuButton, InputField } from '@/components'
 import { FormControlService } from '@/services'
 import { Chat } from '@/types/chat'
+import { chatController } from '@/controllers'
 
 import styles from './chatView.module.scss'
 
 export type ChatViewProps = {
   chat?: Chat
-  isChatMenuOpen: boolean
 }
 
 type ChatViewChildren = {
@@ -27,7 +27,6 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
     super({
       props: {
         chat,
-        isChatMenuOpen: false,
       },
       children: {
         ChatMenuButton: new ChatMenuButton(),
@@ -58,11 +57,22 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
 
   componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
+    this.getChatUsers()
+  }
+
+  protected componentDidUpdate(): void {
+    this.getChatUsers()
+  }
+
+  getChatUsers() {
+    const chatId = this.getProps().chat?.id
+
+    if (chatId) {
+      chatController.getChatUsers(chatId)
+    }
   }
 
   render(): string {
-    console.log(this.getProps().chat)
-
     return `
       <div class=${styles.chatView}>
         {{#if chat}}

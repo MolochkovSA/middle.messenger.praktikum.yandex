@@ -1,8 +1,8 @@
 import { BaseApi } from './baseApi'
-import { isChat, isObject } from '@/utils'
+import { isChat, isChatUser, isObject } from '@/utils'
 import { APIError } from '@/models'
 import { logger } from '@/services'
-import { Chat, ChatId, NewChatDto } from '@/types/chat'
+import { Chat, ChatId, ChatUserDto, NewChatDto } from '@/types/chat'
 import { UserId } from '@/types/user'
 
 class ChatApi extends BaseApi {
@@ -41,6 +41,14 @@ class ChatApi extends BaseApi {
     throw new APIError('Response data does not satisfy the chats')
   }
 
+  async removeChat(chatId: ChatId): Promise<void> {
+    const context = this._context + this.removeChat.name
+
+    logger.debug(context, 'start')
+    await this.http.delete(``, { data: { chatId } })
+    logger.debug(context, 'successful')
+  }
+
   async addUsersToChat(data: { chatId: ChatId; users: UserId[] }): Promise<void> {
     const context = this._context + this.addUsersToChat.name
 
@@ -55,6 +63,21 @@ class ChatApi extends BaseApi {
     logger.debug(context, 'start')
     await this.http.delete('/users', { data })
     logger.debug(context, 'successful')
+  }
+
+  async getChatUsers(chatId: ChatId): Promise<ChatUserDto[]> {
+    const context = this._context + this.getChatUsers.name
+
+    logger.debug(context, 'start')
+    const { response } = await this.http.get(`/${chatId}/users`)
+
+    if (Array.isArray(response) && response.every(isChatUser)) {
+      logger.debug(context, 'successful')
+      return response
+    }
+
+    logger.debug(context, 'failed')
+    throw new APIError('Response data does not satisfy the users array')
   }
 }
 

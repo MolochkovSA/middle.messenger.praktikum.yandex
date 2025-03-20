@@ -1,8 +1,6 @@
-import defaultAvatar from '@/assets/avatar.png'
 import { Block } from '@/core'
 import { Button, Modal } from '@/components'
 import { ChangeAvatarContent } from './changeAvatarContent'
-import { BASE_URL } from '@/config/constants'
 import { getAvatarSrc } from '@/utils'
 
 import styles from './avatarButton.module.scss'
@@ -75,7 +73,7 @@ export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, A
 }
 
 const getButtonLabel = (avatar?: string, disabled?: boolean) => {
-  const avatarSrc = getAvatarSrc(avatar)
+  const avatarSrc = getAvatarSrc(avatar || null)
 
   return `
   <img src=${avatarSrc} class=${styles.avatar} alt="avatar">

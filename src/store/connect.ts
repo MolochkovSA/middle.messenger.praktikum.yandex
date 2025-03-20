@@ -1,12 +1,14 @@
-import { Block } from '@/core'
+import { Block, Children, EventListeners } from '@/core'
 import { Indexed } from '@/types'
 import { getState, subscribe, unsubscribe } from './store'
 import { areObjectsEqual } from '@/utils'
 
 type State = ReturnType<typeof getState>
 
-export function connect<P extends Indexed>(mapStateToProps: (state: State) => DeepPartial<P>) {
-  return function (Component: new (props: P) => Block) {
+export function connect<P extends Indexed, E extends EventListeners, C extends Children>(
+  mapStateToProps: (state: State) => Partial<P>
+) {
+  return function (Component: new (props: P) => Block<P, E, C>) {
     return class extends Component {
       private onChangeStoreCallback: () => void
 

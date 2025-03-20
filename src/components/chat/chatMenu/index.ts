@@ -1,1 +1,1 @@
-export { ChatMenu } from './chatMenu'
+export { ChatMenu, ChatMenuWithState } from './chatMenu'
