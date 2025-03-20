@@ -1,9 +1,9 @@
 import { Block, Router } from '@/core'
 import { AvatarButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
 import { FormControlService, NotificationService } from '@/services'
-import { withIsLoading } from '@/store/user'
 import { ResetPasswordDto, User } from '@/types/user'
 import { userController } from '@/controllers'
+import { connect } from '@/store/connect'
 
 import styles from './profilePassword.module.scss'
 
@@ -22,7 +22,7 @@ type ProfilePasswordPageChildren = {
   Loader: Loader
 }
 
-class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePasswordPageChildren> {
+export class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePasswordPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
@@ -73,7 +73,7 @@ class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePas
     this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
 
     const user = Router.getLoaderData<User>()
-    if (user) this.setProps({ avatar: user.avatar })
+    if (user) this.setProps({ avatar: user.avatar ?? undefined })
   }
 
   protected componentWillUpdate(): void {
@@ -136,4 +136,6 @@ class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, ProfilePas
   }
 }
 
-export default withIsLoading(ProfilePasswordPage)
+export const ProfilePasswordPageWithState = connect<ProfilePasswordPageProps, {}, ProfilePasswordPageChildren>(
+  (state) => ({ isLoading: state.user.isLoading })
+)(ProfilePasswordPage)

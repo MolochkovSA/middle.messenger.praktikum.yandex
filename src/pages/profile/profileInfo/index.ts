@@ -1,3 +1,1 @@
-import ProfileInfoPage from './profileInfo'
-
-export { ProfileInfoPage }
+export { ProfileInfoPage, ProfileInfoPageWithState } from './profileInfo'

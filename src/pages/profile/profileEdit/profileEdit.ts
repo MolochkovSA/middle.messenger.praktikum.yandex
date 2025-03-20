@@ -2,8 +2,8 @@ import { Block, Router } from '@/core'
 import { AvatarButton, BackLink, Button, Loader, ProfileInputField } from '@/components'
 import { FormControlService, NotificationService } from '@/services'
 import { User, UserUpdateDTO } from '@/types/user'
-import { withUserState } from '@/store/user'
 import { userController } from '@/controllers'
+import { connect } from '@/store/connect'
 
 import styles from './profileEdit.module.scss'
 
@@ -25,7 +25,7 @@ type ProfileEditPageChildren = {
   Loader: Loader
 }
 
-class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChildren> {
+export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
@@ -122,7 +122,7 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
       return NotificationService.notify('Заполните все поля', 'error')
     }
 
-    const newData: UserUpdateDTO = { email, login, first_name, second_name, display_name, phone }
+    const newData: UserUpdateDTO = { email, login, first_name, second_name, display_name: display_name ?? null, phone }
 
     userController.updateUser(newData)
   }
@@ -140,12 +140,12 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
       SubmitButton,
     } = this.getChildren()
 
-    AvatarButton.setProps({ avatar: user?.avatar })
+    AvatarButton.setProps({ avatar: user?.avatar ?? undefined })
     EmailInput.setProps({ disabled: isLoading, value: user?.email })
     LoginInput.setProps({ disabled: isLoading, value: user?.login })
     FirstNameInput.setProps({ disabled: isLoading, value: user?.first_name })
     SecondNameInput.setProps({ disabled: isLoading, value: user?.second_name })
-    DisplayNameInput.setProps({ disabled: isLoading, value: user?.display_name })
+    DisplayNameInput.setProps({ disabled: isLoading, value: user?.display_name ?? undefined })
     PhoneInput.setProps({ disabled: isLoading, value: user?.phone })
     SubmitButton.setProps({ disabled: isLoading })
 
@@ -175,4 +175,7 @@ class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEditPageChi
   }
 }
 
-export default withUserState(ProfileEditPage)
+export const ProfileEditPageWithState = connect<ProfileEditPageProps, {}, ProfileEditPageChildren>((state) => ({
+  isLoading: state.user.isLoading,
+  user: state.user.user ?? undefined,
+}))(ProfileEditPage)

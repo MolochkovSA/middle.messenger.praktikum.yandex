@@ -4,18 +4,12 @@ import { authController } from '@/controllers'
 import { RoutePath } from '@/config/routeConfig'
 import { logger } from '@/services'
 import { User } from '@/types/user'
+import { connect } from '@/store/connect'
 
 import styles from './profileInfo.module.scss'
-import { withUserAvatarState } from '@/store/user'
 
 type ProfileInfoProps = {
-  email: string
-  login: string
-  first_name: string
-  second_name: string
-  display_name: string
-  phone: string
-  avatar?: string
+  user?: User
 }
 
 type ProfileInfoPageChildren = {
@@ -32,18 +26,13 @@ type ProfileInfoPageChildren = {
   LogoutLink: Link
 }
 
-class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
+export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildren> {
   private _context = ProfileInfoPage.name
 
-  constructor() {
+  constructor({ user }: ProfileInfoProps = {}) {
     super({
       props: {
-        email: '',
-        login: '',
-        first_name: '',
-        second_name: '',
-        display_name: '',
-        phone: '',
+        user,
       },
       children: {
         BackLink: new BackLink(),
@@ -109,21 +98,22 @@ class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildre
   protected componentDidMount(): void {
     const user = Router.getLoaderData<User>()
     if (!user) return
-    this.setProps(user)
+
+    this.setProps({ user })
   }
 
   render(): string {
-    const { email, login, first_name, second_name, display_name, phone, avatar } = this.getProps()
+    const { user } = this.getProps()
     const { AvatarButton, EmailInput, LoginInput, FirstNameInput, SecondNameInput, DisplayNameInput, PhoneInput } =
       this.getChildren()
 
-    AvatarButton.setProps({ avatar: avatar })
-    EmailInput.setProps({ value: email })
-    LoginInput.setProps({ value: login })
-    FirstNameInput.setProps({ value: first_name })
-    SecondNameInput.setProps({ value: second_name })
-    DisplayNameInput.setProps({ value: display_name })
-    PhoneInput.setProps({ value: phone })
+    AvatarButton.setProps({ avatar: user?.avatar ?? undefined })
+    EmailInput.setProps({ value: user?.email })
+    LoginInput.setProps({ value: user?.login })
+    FirstNameInput.setProps({ value: user?.first_name })
+    SecondNameInput.setProps({ value: user?.second_name })
+    DisplayNameInput.setProps({ value: user?.display_name ?? undefined })
+    PhoneInput.setProps({ value: user?.phone })
 
     return `
       {{#> ProfileLayout}}
@@ -153,4 +143,7 @@ class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPageChildre
   }
 }
 
-export default withUserAvatarState(ProfileInfoPage)
+export const ProfileInfoPageWithState = connect<ProfileInfoProps, {}, ProfileInfoPageChildren>((state) => {
+  const user = state.user.user
+  return user ? { ...user } : {}
+})(ProfileInfoPage)
