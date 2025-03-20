@@ -1,5 +1,4 @@
 import { Block } from '@/core'
-import defaultAvatar from '@/assets/avatar.png'
 import { ChatId } from '@/types/chat'
 import { MappedChatItem } from '@/pages/chat/types'
 
@@ -25,10 +24,7 @@ export class ChatListItem extends Block<ChatListItemProps, ChatListItemEvents> {
     return `
       <li class="${styles.chatItem} {{#if chat.isActive}}${styles.isActive}{{/if}}">
         <div class=${styles.container}>
-          <img 
-            src="{{#if chat.avatar}} {{chat.avatar}} {{else}} ${defaultAvatar}{{/if}}" 
-            class=${styles.avatar} 
-            alt="avatar">
+          <img src="{{chat.avatar}}" class=${styles.avatar} alt="avatar">
 
           <div class=${styles.info}>
             <div class=${styles.row}>

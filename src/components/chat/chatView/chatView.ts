@@ -1,7 +1,6 @@
 import { Block } from '@/core'
 import { Button, ChatMenuButton, InputField } from '@/components'
 import { FormControlService } from '@/services'
-import defaultAvatar from '@/assets/avatar.png'
 import { Chat } from '@/types/chat'
 
 import styles from './chatView.module.scss'
@@ -62,14 +61,13 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
   }
 
   render(): string {
+    console.log(this.getProps().chat)
+
     return `
       <div class=${styles.chatView}>
         {{#if chat}}
           <header class=${styles.header}>
-            <img 
-              src="{{#if contact.avatar}} {{contact.avatar}} {{else}} ${defaultAvatar} {{/if}}"  
-              class=${styles.avatar} 
-              alt="avatar">
+            <img src="{{chat.avatar}}" class=${styles.avatar} alt="avatar">
             <h2>{{chat.title}}</h2>      
             {{{ ChatMenuButton }}}
           </header>

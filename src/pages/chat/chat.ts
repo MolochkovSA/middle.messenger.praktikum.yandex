@@ -4,7 +4,7 @@ import { Chat, ChatId } from '@/types/chat'
 import { MappedChatItem } from './types'
 import { getState } from '@/store'
 import { withChatState } from '@/store/chat'
-import { formatDate } from '@/utils'
+import { formatDate, getAvatarSrc } from '@/utils'
 
 import styles from './chat.module.scss'
 
@@ -69,18 +69,22 @@ class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     const { userLogin, chats, searchValue, activeChatId } = this.getProps()
     const { ChatList, ChatView } = this.getChildren()
 
+    let aciveChat: Chat | undefined
     const filteredChats = chats.filter((chat) => chat.title.toLowerCase().includes(searchValue.toLowerCase()))
 
     const mappedChatItems: MappedChatItem[] = filteredChats.map<MappedChatItem>((chat) => {
       const lastMessageUserLogin = chat.last_message?.user.login
       const isMyMessage = !!lastMessageUserLogin && !!userLogin && lastMessageUserLogin === userLogin
       const date = chat.last_message?.time ? formatDate(chat.last_message?.time) : ''
+      const isActive = chat.id === activeChatId
+
+      if (isActive) aciveChat = { ...chat, avatar: getAvatarSrc(chat.avatar) }
 
       return {
         id: chat.id,
         title: chat.title,
-        avatar: chat.avatar,
-        isActive: chat.id === activeChatId,
+        avatar: getAvatarSrc(chat.avatar),
+        isActive,
         unread_count: chat.unread_count,
         isMyMessage,
         messageText: chat.last_message?.content || '',
@@ -89,9 +93,6 @@ class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     })
 
     ChatList.setProps({ chats: mappedChatItems })
-
-    const aciveChat: Chat | undefined = filteredChats.find((chat) => chat.id === activeChatId)
-
     ChatView.setProps({ chat: aciveChat })
 
     return `

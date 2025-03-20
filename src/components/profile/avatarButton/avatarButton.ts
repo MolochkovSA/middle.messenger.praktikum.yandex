@@ -3,6 +3,7 @@ import { Block } from '@/core'
 import { Button, Modal } from '@/components'
 import { ChangeAvatarContent } from './changeAvatarContent'
 import { BASE_URL } from '@/config/constants'
+import { getAvatarSrc } from '@/utils'
 
 import styles from './avatarButton.module.scss'
 
@@ -73,17 +74,11 @@ export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, A
   }
 }
 
-const getButtonLabel = (avatarSrc?: string, disabled?: boolean) => {
-  let avatarPath: string
-
-  if (avatarSrc) {
-    avatarPath = BASE_URL + '/resources' + avatarSrc
-  } else {
-    avatarPath = defaultAvatar
-  }
+const getButtonLabel = (avatar?: string, disabled?: boolean) => {
+  const avatarSrc = getAvatarSrc(avatar)
 
   return `
-  <img src=${avatarPath} class=${styles.avatar} alt="avatar">
+  <img src=${avatarSrc} class=${styles.avatar} alt="avatar">
   ${disabled ? '' : `<div class=${styles.mask}><span>Поменять аватар</span></div>`}
 `
 }
