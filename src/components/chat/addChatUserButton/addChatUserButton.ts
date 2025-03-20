@@ -1,9 +1,9 @@
 import { Block } from '@/core'
 import { Button, Modal } from '@/components'
 import circlePlusIcon from '@/assets/circlePlus.svg'
+import { AddChatUserModelContent } from './addChatUserModalContent'
 
 import styles from './addChatUserButton.module.scss'
-import { AddChatUserModelContent } from './addChatUserModalContent'
 
 type AddChatUserProps = {
   isShowModal?: boolean
@@ -16,7 +16,7 @@ type AddChatUserEvents = {
 
 type AddChatUserChildren = {
   Button: Button
-  Modal: Modal
+  Modal: Modal<AddChatUserModelContent>
 }
 
 export class AddChatUserButton extends Block<AddChatUserProps, AddChatUserEvents, AddChatUserChildren> {
@@ -36,20 +36,20 @@ export class AddChatUserButton extends Block<AddChatUserProps, AddChatUserEvents
           label: addUserButtonLabel,
           className: styles.button,
         }),
-        Modal: new Modal({
+        Modal: new Modal<AddChatUserModelContent>({
           children: new AddChatUserModelContent({
-            onClose: (e) => {
-              this.getProps().onClose(e)
-              this.setProps({ isShowModal: false })
-            },
+            onClose: (e) => this.closeModal(e),
           }),
-          onClose: (e) => {
-            this.getProps().onClose(e)
-            this.setProps({ isShowModal: false })
-          },
+          onClose: (e) => this.closeModal(e),
         }),
       },
     })
+  }
+
+  closeModal(e: Event) {
+    this.getChildren().Modal.getChildren().Content.clearError()
+    this.getProps().onClose(e)
+    this.setProps({ isShowModal: false })
   }
 
   render(): string {

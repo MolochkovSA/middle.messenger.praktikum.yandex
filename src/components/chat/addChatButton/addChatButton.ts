@@ -5,7 +5,7 @@ import { AddChatModelContent } from './addChatModalContent'
 import styles from './addChatButton.module.scss'
 
 type AddChatButtonProps = {
-  isShowModal: boolean
+  isShowModal?: boolean
 }
 
 type AddChatButtonEvents = {
@@ -14,14 +14,14 @@ type AddChatButtonEvents = {
 
 type AddChatButtonChildren = {
   Button: Button
-  Modal: Modal
+  Modal: Modal<AddChatModelContent>
 }
 
 export class AddChatButton extends Block<AddChatButtonProps, AddChatButtonEvents, AddChatButtonChildren> {
-  constructor() {
+  constructor({ isShowModal }: AddChatButtonProps = {}) {
     super({
       props: {
-        isShowModal: false,
+        isShowModal,
       },
       events: {
         click: () => {
@@ -33,18 +33,19 @@ export class AddChatButton extends Block<AddChatButtonProps, AddChatButtonEvents
           label: 'Создать чат',
           className: styles.button,
         }),
-        Modal: new Modal({
+        Modal: new Modal<AddChatModelContent>({
           children: new AddChatModelContent({
-            onClose: () => {
-              this.setProps({ isShowModal: false })
-            },
+            onClose: () => this.closeModal(),
           }),
-          onClose: () => {
-            this.setProps({ isShowModal: false })
-          },
+          onClose: () => this.closeModal(),
         }),
       },
     })
+  }
+
+  closeModal() {
+    this.getChildren().Modal.getChildren().Content.clearError()
+    this.setProps({ isShowModal: false })
   }
 
   render(): string {

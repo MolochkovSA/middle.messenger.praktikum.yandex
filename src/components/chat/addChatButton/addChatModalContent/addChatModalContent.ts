@@ -1,13 +1,13 @@
 import { Block } from '@/core'
 import { AuthInputField, Button } from '@/components'
-
-import styles from './addChatModalContent.module.scss'
 import { FormControlService } from '@/services'
 import { chatController } from '@/controllers'
 
+import styles from './addChatModalContent.module.scss'
+
 type AddChatModelContentProps = {
-  title: string
-  isApiError: boolean
+  apiError?: string
+  onClose: (e: Event) => void
 }
 
 type AddChatModelContentChildren = {
@@ -15,20 +15,16 @@ type AddChatModelContentChildren = {
   SubmitButton: Button
 }
 
-const title = 'Создать чат'
-const titleError = 'Ошибка, попробуйте ещё раз'
-
 export class AddChatModelContent extends Block<AddChatModelContentProps, {}, AddChatModelContentChildren> {
   private formControlService: FormControlService
-  private onClose: (e: Event) => void
 
-  constructor({ onClose }: { onClose: (e: Event) => void }) {
+  constructor({ apiError, onClose }: AddChatModelContentProps) {
     const formValidationService = new FormControlService()
 
     super({
       props: {
-        title,
-        isApiError: false,
+        apiError,
+        onClose,
       },
       children: {
         Input: new AuthInputField({
@@ -44,7 +40,6 @@ export class AddChatModelContent extends Block<AddChatModelContentProps, {}, Add
     })
 
     this.formControlService = formValidationService
-    this.onClose = onClose
   }
 
   protected componentDidMount(): void {
@@ -67,24 +62,36 @@ export class AddChatModelContent extends Block<AddChatModelContentProps, {}, Add
     this.formControlService.unmount()
   }
 
-  handleSubmit(e: Event, formData: FormData): void {
+  async handleSubmit(e: Event, formData: FormData): Promise<void> {
     e.preventDefault()
-    this.setProps({ title, isApiError: false })
 
-    const chatTitle = formData.get('title')!.toString()
-    chatController
-      .createChat({ title: chatTitle })
-      .then(() => this.onClose(e))
-      .catch(() => this.setProps({ title: titleError, isApiError: true }))
+    try {
+      const chatTitle = formData.get('title')!.toString()
+
+      await chatController.createChat({ title: chatTitle })
+
+      this.getProps().onClose(e)
+    } catch (error) {
+      this.setProps({ apiError: (error as Error).message })
+    }
+  }
+
+  clearError(): void {
+    this.formControlService.clearForm()
+    this.setProps({ apiError: undefined })
   }
 
   render(): string {
+    const { apiError } = this.getProps()
+
     return `     
           <form class=${styles.content}>
-            <h2 {{#if isApiError}}class=${styles.error}{{/if}}>{{ title }}</h2>
+            <h2 {{#if isApiError}}class=${styles.error}{{/if}}>${getTitle(apiError)}</h2>
             {{{ Input }}}
             {{{ SubmitButton }}}
           </form>  
         `
   }
 }
+
+const getTitle = (errorMsg?: string) => (errorMsg ? `Ошибка: ${errorMsg}, попробуйте ещё раз` : 'Создать чат')

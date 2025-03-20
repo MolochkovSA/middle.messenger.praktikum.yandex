@@ -7,7 +7,8 @@ import { getState } from '@/store'
 import styles from './addChatUserModalContent.module.scss'
 
 type AddChatUserModelContentProps = {
-  isApiError: boolean
+  apiError?: string
+  onClose: (e: Event) => void
 }
 
 type AddChatUserModelContentChildren = {
@@ -15,19 +16,16 @@ type AddChatUserModelContentChildren = {
   SubmitButton: Button
 }
 
-const title = 'Добавить пользователя'
-const titleError = 'Ошибка, попробуйте ещё раз'
-
 export class AddChatUserModelContent extends Block<AddChatUserModelContentProps, {}, AddChatUserModelContentChildren> {
   private formControlService: FormControlService
-  private onClose: (e: Event) => void
 
-  constructor({ onClose }: { onClose: (e: Event) => void }) {
+  constructor({ apiError, onClose }: AddChatUserModelContentProps) {
     const formValidationService = new FormControlService()
 
     super({
       props: {
-        isApiError: false,
+        apiError,
+        onClose,
       },
       children: {
         Input: new AuthInputField({
@@ -43,7 +41,6 @@ export class AddChatUserModelContent extends Block<AddChatUserModelContentProps,
     })
 
     this.formControlService = formValidationService
-    this.onClose = onClose
   }
 
   protected componentDidMount(): void {
@@ -66,40 +63,45 @@ export class AddChatUserModelContent extends Block<AddChatUserModelContentProps,
     this.formControlService.unmount()
   }
 
-  handleSubmit(e: Event, formData: FormData): void {
+  async handleSubmit(e: Event, formData: FormData): Promise<void> {
     e.preventDefault()
-    this.setProps({ isApiError: false })
 
-    const login = formData.get('login')!.toString()
+    try {
+      const login = formData.get('login')!.toString()
+      const candidates = await userController.searchUsersByLogin(login)
+      const user = candidates.find((candidate) => candidate.login === login)
 
-    userController
-      .searchUsersByLogin(login)
-      .then((candidates) => {
-        const user = candidates.find((candidate) => candidate.login === login)
+      if (!user) throw new Error('пользователь не найден')
 
-        if (!user) throw new Error('Пользователь не найден')
+      const { chats, activeChatId } = getState().chat
+      const currentChat = chats.find((chat) => chat.id === activeChatId)
 
-        const { chats, activeChatId } = getState().chat
-        const currentChat = chats.find((chat) => chat.id === activeChatId)
+      if (!currentChat) throw new Error('чат не найден')
 
-        if (!currentChat) throw new Error('Чат не найден')
+      await chatController.addUsersToChat({ chatId: currentChat.id, users: [user.id] })
 
-        return chatController.addUsersToChat({ chatId: currentChat.id, users: [user.id] })
-      })
-      .then(() => this.onClose(e))
-      .catch(() => this.setProps({ isApiError: true }))
+      this.getProps().onClose(e)
+    } catch (error) {
+      this.setProps({ apiError: (error as Error).message })
+    }
+  }
+
+  clearError(): void {
+    this.formControlService.clearForm()
+    this.setProps({ apiError: undefined })
   }
 
   render(): string {
-    const { isApiError } = this.getProps()
-    console.log(this.getChildren())
+    const { apiError } = this.getProps()
 
     return `     
           <form class=${styles.content}>
-            <h2 {{#if isApiError}}class=${styles.error}{{/if}}>${isApiError ? titleError : title}</h2>
+            <h2 {{#if apiError}}class=${styles.error}{{/if}}>${getTitle(apiError)}</h2>
             {{{ Input }}}
             {{{ SubmitButton }}}
           </form>  
         `
   }
 }
+
+const getTitle = (errorMsg?: string) => (errorMsg ? `Ошибка: ${errorMsg}, попробуйте ещё раз` : 'Добавить пользователя')

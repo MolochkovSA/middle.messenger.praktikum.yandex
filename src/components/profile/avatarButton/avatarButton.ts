@@ -8,7 +8,7 @@ import styles from './avatarButton.module.scss'
 type AvatarButtonProps = {
   avatar?: string
   disabled?: boolean
-  isShowModal: boolean
+  isShowModal?: boolean
 }
 
 type AvatarButtonEvents = {
@@ -17,15 +17,16 @@ type AvatarButtonEvents = {
 
 type AvatarButtonChildren = {
   Button: Button
-  Modal: Modal
+  Modal: Modal<ChangeAvatarContent>
 }
 
 export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, AvatarButtonChildren> {
-  constructor({ disabled }: Pick<AvatarButtonProps, 'disabled' | 'avatar'> = {}) {
+  constructor({ avatar, disabled, isShowModal }: AvatarButtonProps = {}) {
     super({
       props: {
-        isShowModal: false,
+        avatar,
         disabled,
+        isShowModal,
       },
       events: {
         click: () => {
@@ -38,18 +39,19 @@ export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, A
           className: styles.button,
           disabled,
         }),
-        Modal: new Modal({
+        Modal: new Modal<ChangeAvatarContent>({
           children: new ChangeAvatarContent({
-            onClose: () => {
-              this.setProps({ isShowModal: false })
-            },
+            onClose: () => this.closeModal(),
           }),
-          onClose: () => {
-            this.setProps({ isShowModal: false })
-          },
+          onClose: () => this.closeModal(),
         }),
       },
     })
+  }
+
+  closeModal() {
+    this.getChildren().Modal.getChildren().Content.resetState()
+    this.setProps({ isShowModal: false })
   }
 
   render(): string {

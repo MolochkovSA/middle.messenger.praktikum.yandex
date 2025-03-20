@@ -54,6 +54,16 @@ export class FormControlService {
     this._submitHandler = handler
   }
 
+  clearForm(): void {
+    if (!this._formElement) return
+
+    this._formElement.reset()
+
+    Object.values(this._inputs).forEach(({ element }) => {
+      this._eventBus.emit(element.id, '')
+    })
+  }
+
   unmount(): void {
     this._formElement = undefined
     this._inputs = {}

@@ -2,8 +2,8 @@ import { Block } from '@/core'
 
 import styles from './modal.module.scss'
 
-type ModalProps = {
-  children?: Block
+type ModalProps<C> = {
+  children: C
   onClose: (e: Event) => void
 }
 
@@ -11,8 +11,8 @@ type ModalEvents = {
   click: (e: Event) => void
 }
 
-export class Modal extends Block<{}, ModalEvents, {}> {
-  constructor({ onClose, children }: ModalProps) {
+export class Modal<C extends Block> extends Block<{}, ModalEvents, { Content: C }> {
+  constructor({ onClose, children }: ModalProps<C>) {
     super({
       events: {
         click: (e) => {
@@ -21,7 +21,9 @@ export class Modal extends Block<{}, ModalEvents, {}> {
           onClose(e)
         },
       },
-      children: { children },
+      children: {
+        Content: children,
+      },
     })
   }
 
@@ -29,8 +31,8 @@ export class Modal extends Block<{}, ModalEvents, {}> {
     return `
       <div class="${styles.overlay}">
         <div class="${styles.modal}" >
-          {{#if children}}
-            {{{ children }}}
+          {{#if Content}}
+            {{{ Content }}}
           {{/if}}
         </div>
       </div>

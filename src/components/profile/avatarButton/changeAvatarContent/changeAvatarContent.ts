@@ -6,9 +6,9 @@ import { userController } from '@/controllers'
 import styles from './changeAvatarContent.module.scss'
 
 type ChangeAvatarContentProps = {
-  title: string
-  isNoFileError: boolean
-  isApiError: boolean
+  isFileExist?: boolean
+  apiError?: string
+  onClose: (e: Event) => void
 }
 
 type ChangeAvatarContentEvents = {
@@ -20,9 +20,6 @@ type ChangeAvatarContentChildren = {
   SubmitButton: Button
 }
 
-const titleNoFile = 'Загрузите файл'
-const titleFile = 'Файл загружен'
-const titleError = 'Ошибка, попробуйте ещё раз'
 const labelNoFile = 'Выбрать файл на компьютере'
 
 export class ChangeAvatarContent extends Block<
@@ -30,14 +27,12 @@ export class ChangeAvatarContent extends Block<
   ChangeAvatarContentEvents,
   ChangeAvatarContentChildren
 > {
-  private onClose: (e: Event) => void
-
-  constructor({ onClose }: { onClose: (e: Event) => void }) {
+  constructor({ isFileExist, apiError, onClose }: ChangeAvatarContentProps) {
     super({
       props: {
-        title: titleNoFile,
-        isNoFileError: true,
-        isApiError: false,
+        isFileExist,
+        apiError,
+        onClose,
       },
       events: {
         submit: (e: Event) => this.submit(e),
@@ -53,61 +48,70 @@ export class ChangeAvatarContent extends Block<
         SubmitButton: new Button({ label: 'Поменять', type: 'submit' }),
       },
     })
-
-    this.onClose = onClose
   }
 
-  uploadFile(e: Event) {
-    this.resetError()
+  uploadFile(e: Event): void {
+    this.clearError()
     const element = e.target as HTMLInputElement
     const fileName = element.files?.item(0)?.name
 
     if (fileName) {
       this.getChildren().Input.setProps({ label: fileName })
-      this.setProps({ title: titleFile, isNoFileError: false })
+      this.setProps({ isFileExist: true })
     } else {
       this.getChildren().Input.setProps({ label: labelNoFile })
-      this.setProps({ title: titleNoFile, isNoFileError: true })
     }
   }
 
-  submit(e: Event) {
+  async submit(e: Event): Promise<void> {
     e.preventDefault()
 
-    if (this.getProps().isNoFileError) {
-      return this.getChildren().Input.setProps({ errorMessage: 'Файл не выбран' })
+    try {
+      if (!this.getProps().isFileExist) {
+        return this.getChildren().Input.setProps({ errorMessage: 'Файл не выбран' })
+      }
+
+      const form = new FormData(this.getContent() as HTMLFormElement)
+
+      await userController.changeAvatar(form)
+
+      this.resetState()
+      this.getProps().onClose(e)
+    } catch (error) {
+      this.setProps({ apiError: (error as Error).message })
     }
-
-    const form = new FormData(this.getContent() as HTMLFormElement)
-    userController
-      .changeAvatar(form)
-      .then(() => {
-        this.resetState()
-        this.onClose(e)
-      })
-      .catch(() => {
-        this.setProps({ title: titleError, isApiError: true })
-        this.getChildren().Input.setProps({ label: labelNoFile })
-      })
-  }
-
-  resetError() {
-    this.setProps({ title: titleNoFile, isNoFileError: false, isApiError: false })
-    this.getChildren().Input.setProps({ errorMessage: undefined })
   }
 
   resetState() {
-    this.resetError()
-    this.getChildren().Input.setProps({ label: labelNoFile })
+    const { Input } = this.getChildren()
+    const inputElement = Input.getContent() as HTMLInputElement
+
+    this.clearError()
+
+    Input.setProps({ label: labelNoFile })
+    inputElement.files = null
+  }
+
+  clearError(): void {
+    this.setProps({ isFileExist: undefined, apiError: undefined })
+    this.getChildren().Input.setProps({ errorMessage: undefined })
   }
 
   render(): string {
+    const { isFileExist, apiError } = this.getProps()
+
     return `     
       <form class=${styles.content}>
-        <h2 {{#if isApiError}}class=${styles.error}{{/if}}>{{ title }}</h2>
+        <h2 {{#if apiError}}class=${styles.error}{{/if}}>${getTitle(isFileExist, apiError)}</h2>
         {{{ Input }}}
         {{{ SubmitButton }}}
       </form>  
     `
   }
+}
+
+const getTitle = (isFileExist?: boolean, apiError?: string) => {
+  if (isFileExist && !apiError) return 'Файл загружен'
+
+  return apiError ? `Ошибка: ${apiError}, попробуйте ещё раз` : 'Загрузите файл'
 }
