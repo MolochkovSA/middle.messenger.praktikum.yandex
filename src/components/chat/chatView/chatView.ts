@@ -75,12 +75,9 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
             {{{ ChatMenuButton }}}
           </header>
 
-          <main class=${styles.messages}>
+          
             {{{ MessagesFeed }}}
-            {{#each MessagesGroup as |group|}}
-              {{{ group }}}
-            {{/each}}
-          </main>
+          
 
           <footer>
             <form class=${styles.form}>
