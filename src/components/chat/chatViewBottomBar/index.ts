@@ -1,0 +1,1 @@
+export { ChatViewBottomBar } from './chatViewBottomBar'

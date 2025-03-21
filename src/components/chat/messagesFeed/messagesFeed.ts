@@ -3,11 +3,12 @@ import { Block } from '@/core'
 import { connect } from '@/store/connect'
 import { Message } from '@/types/message'
 import { UserId } from '@/types/user'
-
-import styles from './messagesFeed.module.scss'
 import { ChatId } from '@/types/chat'
 import { chatController, messageController } from '@/controllers'
 import { NotificationService } from '@/services'
+import { getAnotherDate } from '@/utils'
+
+import styles from './messagesFeed.module.scss'
 
 type MessagesFeedProps = {
   messages: Message[]
@@ -52,22 +53,27 @@ export class MessagesFeed extends Block<MessagesFeedProps, {}, MessagesFeedChild
     const { messages, userId } = this.getProps()
 
     this.setChildren({
-      Messages: messages.map(({ time: rowTime, content, user_id, is_read }) => {
+      Messages: messages.map(({ time: rowTime, content, user_id, is_read }, i) => {
         const time = new Date(rowTime).toLocaleTimeString('ru-Ru', { hour: '2-digit', minute: '2-digit' })
         const isMyMessage = user_id === userId
+        const date = getAnotherDate(rowTime, messages[i + 1]?.time)
 
-        return new MessageItem({ time, content, isMyMessage, is_read })
+        return new MessageItem({
+          time,
+          content,
+          isMyMessage,
+          is_read,
+          date,
+        })
       }),
     })
 
     return `
-      <main class=${styles.container}>
-        <ul class=${styles.messages}>
-          {{#each Messages as |message|}}
-            {{{ message }}}
-          {{/each}}
-        </ul>
-      </main>
+      <ul class=${styles.messages}>
+        {{#each Messages as |message|}}
+          {{{ message }}}
+        {{/each}}
+      </ul>
     `
   }
 }

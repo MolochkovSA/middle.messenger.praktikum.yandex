@@ -1,6 +1,5 @@
 import { Block } from '@/core'
-import { Button, ChatMenuButton, InputField, MessagesFeed, MessagesFeedWithState } from '@/components'
-import { FormControlService } from '@/services'
+import { ChatMenuButton, ChatViewBottomBar, MessagesFeed, MessagesFeedWithState } from '@/components'
 import { Chat } from '@/types/chat'
 import { chatController } from '@/controllers'
 
@@ -12,49 +11,22 @@ export type ChatViewProps = {
 
 type ChatViewChildren = {
   ChatMenuButton: ChatMenuButton
-  AddAttachmentButton: Button
-  MessageInput: InputField
-  SendMessageButton: Button
   MessagesFeed: MessagesFeed
+  ChatViewBottomBar: ChatViewBottomBar
 }
 
 export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
-  private formControlService: FormControlService
-
   constructor({ chat }: ChatViewProps = {}) {
-    const formValidationService = new FormControlService()
-
     super({
       props: {
         chat,
       },
       children: {
         ChatMenuButton: new ChatMenuButton(),
-        AddAttachmentButton: new Button({
-          label: '',
-          className: `${styles.button} ${styles.addAttachmentBtn}`,
-        }),
-        SendMessageButton: new Button({
-          label: '',
-          type: 'submit',
-          className: `${styles.button} ${styles.sendMessageBtn}`,
-        }),
-        MessageInput: new InputField({
-          type: 'text',
-          name: 'message',
-          placeholder: 'Сообщение',
-          className: styles.meassageInput,
-          errorListener: formValidationService.validate('message'),
-        }),
         MessagesFeed: new MessagesFeedWithState(),
+        ChatViewBottomBar: new ChatViewBottomBar(),
       },
     })
-
-    this.formControlService = formValidationService
-  }
-
-  componentDidMount(): void {
-    this.formControlService.getElements(this.getContent())
   }
 
   componentDidUpdate(): void {
@@ -74,18 +46,9 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
             <h2>{{chat.title}}</h2>      
             {{{ ChatMenuButton }}}
           </header>
-
           
-            {{{ MessagesFeed }}}
-          
-
-          <footer>
-            <form class=${styles.form}>
-              {{{ AddAttachmentButton }}}
-              {{{ MessageInput }}}
-              {{{ SendMessageButton }}}
-            </form>
-          </footer>
+          {{{ MessagesFeed }}}           
+          {{{ ChatViewBottomBar }}}
         {{else}}
           <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2>
         {{/if}}

@@ -8,6 +8,7 @@ type MessageItemProps = {
   content: string
   is_read: boolean
   image?: string
+  date?: string
 }
 
 export class MessageItem extends Block<MessageItemProps> {
@@ -21,7 +22,12 @@ export class MessageItem extends Block<MessageItemProps> {
     const { isMyMessage } = this.getProps()
 
     return ` 
-      <artcicle class="${styles.message} ${isMyMessage ? styles.outgoing : styles.incoming}">  
+    <li class=${styles.container}>
+      {{#if date}}
+        <span class=${styles.date}>{{date}}</span>
+      {{/if}}  
+
+      <artcicle class="${styles.message} ${isMyMessage ? styles.outgoing : styles.incoming}">
         {{#if image}}
           <div class=${styles.imageMessage}>       
             <img src="{{image}}" class=${styles.image} alt="message with image"/>
@@ -35,7 +41,8 @@ export class MessageItem extends Block<MessageItemProps> {
             <time data-is-readed="{{is_read}}">{{time}}</time>
           </div>  
         {{/if}}  
-      </artcicle>         
+      </artcicle>  
+    </li><>       
     `
   }
 }
