@@ -13,7 +13,7 @@
   right: 20px;
   padding: 7px 15px;
   border-radius: 12px;
-  box-shadow: 0 0 6px 0 rgba(0 0 0 / 14%);
+  box-shadow: 0 0 6px 0 var(--color-shadow);
   background-color: var(--color-white);
 
   .chatMenuBtn {

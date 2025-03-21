@@ -71,7 +71,7 @@ export async function me(): Promise<User | null> {
     logger.debug(context, 'return fetched user')
     return fetchedUser
   } catch (error) {
-    logger.debug(context, 'return null')
+    logger.error(context, (error as Error).message)
     return localUser
   }
 }
