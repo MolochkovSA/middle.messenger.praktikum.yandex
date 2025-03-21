@@ -4,11 +4,13 @@ import { authSlice } from './auth'
 import { userSlice } from './user'
 import { chatSlice } from './chat'
 import { Action } from './types'
+import { messageSlice } from './massage'
 
 const slices = {
   auth: authSlice,
   user: userSlice,
   chat: chatSlice,
+  message: messageSlice,
 }
 
 type State = {

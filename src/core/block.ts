@@ -75,7 +75,7 @@ export abstract class Block<
     })
   }
 
-  protected componentDidMount(): void {}
+  componentDidMount(): void {}
 
   dispatchComponentDidMount(): void {
     this._eventBus.emit(BlockEvents.FLOW_CDM)
@@ -89,7 +89,7 @@ export abstract class Block<
     }
   }
 
-  protected shouldComponentUpdate(oldProps: P, newProps: P): boolean {
+  shouldComponentUpdate(oldProps: P, newProps: P): boolean {
     return areObjectsEqual(oldProps, newProps)
   }
 
@@ -99,13 +99,13 @@ export abstract class Block<
     this._eventBus.emit(BlockEvents.FLOW_RENDER)
   }
 
-  protected componentWillUpdate(): void {}
+  componentWillUpdate(): void {}
 
   private _componentDidUpdate(): void {
     this.componentDidUpdate()
   }
 
-  protected componentDidUpdate(): void {}
+  componentDidUpdate(): void {}
 
   private _componentWillUnmount(): void {
     Object.values(this._children).forEach((child) => {
@@ -121,7 +121,7 @@ export abstract class Block<
     this.getContent().remove()
   }
 
-  protected componentWillUnmount(): void {}
+  componentWillUnmount(): void {}
 
   dispatchComponentWillUnmount(): void {
     this._eventBus.emit(BlockEvents.FLOW_UNMOUNT)

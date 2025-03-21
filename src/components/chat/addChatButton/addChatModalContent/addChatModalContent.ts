@@ -42,22 +42,22 @@ export class AddChatModelContent extends Block<AddChatModelContentProps, {}, Add
     this.formControlService = formValidationService
   }
 
-  protected componentDidMount(): void {
+  componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
     this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
   }
 
-  protected componentWillUpdate(): void {
+  componentWillUpdate(): void {
     this.formControlService.removeEvents()
   }
 
-  protected componentDidUpdate(): void {
+  componentDidUpdate(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
   }
 
-  protected componentWillUnmount(): void {
+  componentWillUnmount(): void {
     this.formControlService.removeEvents()
     this.formControlService.unmount()
   }

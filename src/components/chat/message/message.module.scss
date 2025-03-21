@@ -7,8 +7,8 @@ time {
 }
 
 .message {
+  display: block;
   max-width: 60%;
-  margin-bottom: 10px;
 }
 
 .incoming {
@@ -29,7 +29,7 @@ time {
   time {
     color: var(--color-primary);
 
-    &::before {
+    &[data-is-readed='true']::before {
       content: url('@/assets/checked.svg');
       padding-right: 4px;
     }

@@ -3,6 +3,8 @@ import { WSTransport } from '@/core/WSTransport'
 import { BASE_WS_URL } from '@/config/constants'
 import { NewMessageDto } from '@/types/message'
 import { isMessage } from '@/utils/isMessage'
+import { dispatch } from '@/store'
+import { messageActions } from '@/store/massage'
 
 class MessageController {
   private _ws?: WSTransport
@@ -38,9 +40,9 @@ class MessageController {
     if (json.type === 'pong') {
       return
     } else if (isMessage(json)) {
-      console.log('message', JSON.parse(data as string))
+      console.log('message', data)
     } else if (Array.isArray(json) && json.every(isMessage)) {
-      console.log('message[]', JSON.parse(data as string))
+      dispatch(messageActions.setMessages(json))
     }
   }
 

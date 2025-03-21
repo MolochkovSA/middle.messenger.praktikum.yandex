@@ -1,11 +1,10 @@
 import { Block } from '@/core'
-import { Button, ChatMenuButton, InputField } from '@/components'
-import { FormControlService, NotificationService } from '@/services'
-import { Chat, ChatId } from '@/types/chat'
-import { chatController, messageController } from '@/controllers'
+import { Button, ChatMenuButton, InputField, MessagesFeed, MessagesFeedWithState } from '@/components'
+import { FormControlService } from '@/services'
+import { Chat } from '@/types/chat'
+import { chatController } from '@/controllers'
 
 import styles from './chatView.module.scss'
-import { getState } from '@/store'
 
 export type ChatViewProps = {
   chat?: Chat
@@ -16,13 +15,13 @@ type ChatViewChildren = {
   AddAttachmentButton: Button
   MessageInput: InputField
   SendMessageButton: Button
-  // MessagesGroup: MessagesGroup[]
+  MessagesFeed: MessagesFeed
 }
 
 export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
   private formControlService: FormControlService
 
-  constructor({ chat }: { chat?: Chat } = {}) {
+  constructor({ chat }: ChatViewProps = {}) {
     const formValidationService = new FormControlService()
 
     super({
@@ -47,9 +46,7 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
           className: styles.meassageInput,
           errorListener: formValidationService.validate('message'),
         }),
-        // MessagesGroup: props.contact.messagesGroup.map(
-        //   (group) => new MessagesGroup({ date: group.date, messages: group.messages })
-        // ),
+        MessagesFeed: new MessagesFeedWithState(),
       },
     })
 
@@ -58,44 +55,14 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
 
   componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
-    this.getChatUsers()
   }
 
-  protected componentDidUpdate(): void {
-    this.getChatUsers()
-    this.loadMessageHistory()
-  }
-
-  getChatUsers(): void {
+  componentDidUpdate(): void {
     const chatId = this.getProps().chat?.id
 
     if (chatId) {
       chatController.getChatUsers(chatId)
     }
-  }
-
-  async loadMessageHistory(): Promise<void> {
-    try {
-      const chatId = this.getProps().chat?.id
-
-      if (!chatId) throw new Error('Chat id not found')
-
-      const userId = getState().user.user?.id
-
-      if (!userId) throw new Error('User id not found')
-
-      const token = await this.getChatToken(chatId)
-
-      await messageController.connect({ userId, chatId, token })
-
-      messageController.loadOldMessages()
-    } catch (error) {
-      NotificationService.notify((error as Error).message, 'error')
-    }
-  }
-
-  async getChatToken(chatId: ChatId): Promise<string> {
-    return await chatController.getChatToken(chatId)
   }
 
   render(): string {
@@ -109,6 +76,7 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
           </header>
 
           <main class=${styles.messages}>
+            {{{ MessagesFeed }}}
             {{#each MessagesGroup as |group|}}
               {{{ group }}}
             {{/each}}
@@ -124,10 +92,6 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
         {{else}}
           <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2>
         {{/if}}
-      </div>
-
-      <div class=${styles.chat}>
-
       </div>
     `
   }
