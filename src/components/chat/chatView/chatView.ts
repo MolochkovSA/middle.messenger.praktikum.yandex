@@ -1,10 +1,11 @@
 import { Block } from '@/core'
 import { Button, ChatMenuButton, InputField } from '@/components'
-import { FormControlService } from '@/services'
-import { Chat } from '@/types/chat'
-import { chatController } from '@/controllers'
+import { FormControlService, NotificationService } from '@/services'
+import { Chat, ChatId } from '@/types/chat'
+import { chatController, messageController } from '@/controllers'
 
 import styles from './chatView.module.scss'
+import { getState } from '@/store'
 
 export type ChatViewProps = {
   chat?: Chat
@@ -62,14 +63,39 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
 
   protected componentDidUpdate(): void {
     this.getChatUsers()
+    this.loadMessageHistory()
   }
 
-  getChatUsers() {
+  getChatUsers(): void {
     const chatId = this.getProps().chat?.id
 
     if (chatId) {
       chatController.getChatUsers(chatId)
     }
+  }
+
+  async loadMessageHistory(): Promise<void> {
+    try {
+      const chatId = this.getProps().chat?.id
+
+      if (!chatId) throw new Error('Chat id not found')
+
+      const userId = getState().user.user?.id
+
+      if (!userId) throw new Error('User id not found')
+
+      const token = await this.getChatToken(chatId)
+
+      await messageController.connect({ userId, chatId, token })
+
+      messageController.loadOldMessages()
+    } catch (error) {
+      NotificationService.notify((error as Error).message, 'error')
+    }
+  }
+
+  async getChatToken(chatId: ChatId): Promise<string> {
+    return await chatController.getChatToken(chatId)
   }
 
   render(): string {

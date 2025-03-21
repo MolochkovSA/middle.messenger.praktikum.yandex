@@ -145,3 +145,25 @@ export async function getChatUsers(chatId: ChatId): Promise<ChatUser[]> {
     dispatch(chatActions.setLoading(false))
   }
 }
+
+export async function getChatToken(chatId: ChatId): Promise<string> {
+  const context = service + getChatToken.name
+
+  logger.debug(context, 'start')
+  dispatch(chatActions.setLoading(true))
+
+  try {
+    const token = await chatApi.getChatToken(chatId)
+    logger.debug(context, 'successful')
+    return token
+  } catch (error) {
+    if (APIError.isAPIError(error)) {
+      NotificationService.notify(error.reason, 'error')
+    }
+
+    logger.error(context, error)
+    return ''
+  } finally {
+    dispatch(chatActions.setLoading(false))
+  }
+}

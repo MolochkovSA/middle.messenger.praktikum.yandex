@@ -7,6 +7,8 @@ export type MappedChatItem = Pick<Chat, 'id' | 'title' | 'avatar' | 'unread_coun
   isMyMessage: boolean
 }
 
+// Delete
+
 export type Contact = {
   id: string
   name: string

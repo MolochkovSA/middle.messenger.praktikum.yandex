@@ -79,6 +79,21 @@ class ChatApi extends BaseApi {
     logger.debug(context, 'failed')
     throw new APIError('Response data does not satisfy the users array')
   }
+
+  async getChatToken(chatId: ChatId): Promise<string> {
+    const context = this._context + this.getChatToken.name
+
+    logger.debug(context, 'start')
+    const { response } = await this.http.post(`/token/${chatId}`)
+
+    if (isObject(response) && typeof response.token === 'string') {
+      logger.debug(context, 'successful')
+      return response.token
+    }
+
+    logger.debug(context, 'failed')
+    throw new APIError('Response data does not satisfy the token string')
+  }
 }
 
 export const chatApi = new ChatApi()
