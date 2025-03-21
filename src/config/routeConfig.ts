@@ -14,9 +14,9 @@ import {
 import { authBlockGuard, authGuard } from '@/services'
 
 export enum RoutePath {
-  LOGIN = '/sign-in',
+  LOGIN = '/',
   REGISTER = '/sign-up',
-  CHAT = '/',
+  CHAT = '/messenger',
   PROFILE = '/profile',
   SETTINGS = '/settings',
   RESET_PASSWORD = '/reset-password',
