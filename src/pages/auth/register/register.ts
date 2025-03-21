@@ -98,7 +98,7 @@ export class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren
         LoginLink: new Link({
           label: 'Войти',
           className: styles.link,
-          to: '/sign-in',
+          to: '/',
         }),
       },
     })
