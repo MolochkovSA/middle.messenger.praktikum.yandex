@@ -145,5 +145,5 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
 
 export const ProfileInfoPageWithState = connect<ProfileInfoProps, {}, ProfileInfoPageChildren>((state) => {
   const user = state.user.user
-  return user ? { ...user } : {}
+  return { user: user ?? undefined }
 })(ProfileInfoPage)
