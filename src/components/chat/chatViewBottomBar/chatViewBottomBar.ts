@@ -70,7 +70,7 @@ export class ChatViewBottomBar extends Block<{}, {}, ChatViewBottomBarChildren> 
 
   render(): string {
     return `
-      <form class=${styles.form}>
+      <form class="${styles.form}">
         {{{ AddAttachmentButton }}}
         {{{ MessageInput }}}
         {{{ SendMessageButton }}}

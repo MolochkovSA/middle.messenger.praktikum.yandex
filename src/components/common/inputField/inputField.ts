@@ -43,7 +43,7 @@ export class InputField extends Block<
         {{{ Input }}}
         
         {{#if label}}
-          <label for={{id}}>{{label}}</label>
+          <label for="{{id}}">{{label}}</label>
         {{/if}} 
 
         {{#if errorMessage}}

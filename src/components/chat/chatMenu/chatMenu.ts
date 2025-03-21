@@ -80,7 +80,7 @@ export class ChatMenu extends Block<ChatMenuProps, ChatMenuEvents, ChatMenuChild
 }
 
 const removeUserButtonLabel = `
-    <img src=${circlePlusIcon} class=${styles.removeChatIcon} alt="removeChatIcon">
+    <img src="${circlePlusIcon}" class="${styles.removeChatIcon}" alt="removeChatIcon">
     <p>Удалить чат</p>    
   `
 

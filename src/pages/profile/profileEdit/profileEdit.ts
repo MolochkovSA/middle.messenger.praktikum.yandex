@@ -154,7 +154,7 @@ export class ProfileEditPage extends Block<ProfileEditPageProps, {}, ProfileEdit
         {{#if isLoading }}
           {{{ Loader }}}
         {{else}}
-          <form class=${styles.form}>
+          <form class="${styles.form}">
             {{{ EmailInput }}}
 
             {{{ LoginInput }}}

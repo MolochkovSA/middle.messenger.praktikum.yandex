@@ -98,12 +98,12 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     ChatView.setProps({ chat: aciveChat })
 
     return `
-      <main class=${styles.chatPage}>
-        <sidebar class=${styles.sidebar}>
-          <div class=${styles.sidebarTop}>
+      <main class="${styles.chatPage}">
+        <sidebar class="${styles.sidebar}">
+          <div class="${styles.sidebarTop}">
             {{{ ProfileLink }}}
 
-            <div class=${styles.searchInput}>
+            <div class="${styles.searchInput}">
               {{{ SearchInput }}}  
               <span></span> 
             </div>
