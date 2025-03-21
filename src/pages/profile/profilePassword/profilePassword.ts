@@ -67,7 +67,7 @@ export class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, Pro
     this.formControlService = formValidationService
   }
 
-  protected componentDidMount(): void {
+  componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
     this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
@@ -76,16 +76,16 @@ export class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, Pro
     if (user) this.setProps({ avatar: user.avatar ?? undefined })
   }
 
-  protected componentWillUpdate(): void {
+  componentWillUpdate(): void {
     this.formControlService.removeEvents()
   }
 
-  protected componentDidUpdate(): void {
+  componentDidUpdate(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
   }
 
-  protected componentWillUnmount(): void {
+  componentWillUnmount(): void {
     this.formControlService.removeEvents()
     this.formControlService.unmount()
   }

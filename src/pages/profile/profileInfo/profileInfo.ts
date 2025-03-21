@@ -95,7 +95,7 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
     })
   }
 
-  protected componentDidMount(): void {
+  componentDidMount(): void {
     const user = Router.getLoaderData<User>()
     if (!user) return
 

@@ -59,7 +59,7 @@ export class ChatPage extends Block<ChatProps, {}, ChatChildren> {
     })
   }
 
-  protected componentDidMount(): void {
+  componentDidMount(): void {
     const chats = Router.getLoaderData<Chat[]>()
     const userLogin = getState().user.user?.login
 

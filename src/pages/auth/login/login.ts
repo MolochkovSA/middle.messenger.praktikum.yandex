@@ -2,10 +2,10 @@ import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
 import { FormControlService, NotificationService } from '@/services'
 import { authController } from '@/controllers'
-
-import styles from './login.module.scss'
 import { connect } from '@/store/connect'
 import { SignInDto } from '@/types/user'
+
+import styles from './login.module.scss'
 
 type LoginPageProps = {
   isLoading: boolean
@@ -62,22 +62,22 @@ export class LoginPage extends Block<LoginPageProps, {}, LoginPageChildren> {
     this.formControlService = formValidationService
   }
 
-  protected componentDidMount(): void {
+  componentDidMount(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
     this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
   }
 
-  protected componentWillUpdate(): void {
+  componentWillUpdate(): void {
     this.formControlService.removeEvents()
   }
 
-  protected componentDidUpdate(): void {
+  componentDidUpdate(): void {
     this.formControlService.getElements(this.getContent())
     this.formControlService.addEvents()
   }
 
-  protected componentWillUnmount(): void {
+  componentWillUnmount(): void {
     this.formControlService.removeEvents()
     this.formControlService.unmount()
   }

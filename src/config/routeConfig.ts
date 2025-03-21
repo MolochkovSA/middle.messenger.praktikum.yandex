@@ -9,16 +9,14 @@ import {
   ProfileInfoPageWithState,
   ProfileEditPageWithState,
   ProfilePasswordPageWithState,
-  NavigationPage,
   chatLoader,
 } from '@/pages'
 import { authBlockGuard, authGuard } from '@/services'
 
 export enum RoutePath {
-  NAVIGATION = '/',
   LOGIN = '/sign-in',
   REGISTER = '/sign-up',
-  CHAT = '/messenger',
+  CHAT = '/',
   PROFILE = '/profile',
   SETTINGS = '/settings',
   RESET_PASSWORD = '/reset-password',
@@ -27,7 +25,6 @@ export enum RoutePath {
 }
 
 export const routeConfig: RouteProps[] = [
-  { pathname: RoutePath.NAVIGATION, block: NavigationPage },
   { pathname: RoutePath.LOGIN, block: LoginPageWithState, loader: authBlockGuard },
   { pathname: RoutePath.REGISTER, block: RegisterPageWithState, loader: authBlockGuard },
   { pathname: RoutePath.CHAT, block: ChatPageWithState, loader: chatLoader, hydrateFallbackElement: Loader },
