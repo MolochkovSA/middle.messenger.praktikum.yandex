@@ -45,7 +45,7 @@ export class ChatList extends Block<ChatListProps, {}, ChatListChildren> {
         {{#each ChatList as |contact|}}
           {{{ contact }}}
         {{else}}
-          <p class=${styles.empty}>No contacts</p>
+          <p class="${styles.empty}">No contacts</p>
         {{/each}}
       </ul>
     `

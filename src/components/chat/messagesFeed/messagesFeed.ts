@@ -69,7 +69,7 @@ export class MessagesFeed extends Block<MessagesFeedProps, {}, MessagesFeedChild
     })
 
     return `
-      <ul class=${styles.messages}>
+      <ul class="${styles.messages}">
         {{#each Messages as |message|}}
           {{{ message }}}
         {{/each}}

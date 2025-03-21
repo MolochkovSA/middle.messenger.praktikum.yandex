@@ -30,7 +30,7 @@ export class Modal<C extends Block> extends Block<{}, ModalEvents, { Content: C 
   render(): string {
     return `
       <div class="${styles.overlay}">
-        <div class="${styles.modal}" >
+        <div class="${styles.modal}">
           {{#if Content}}
             {{{ Content }}}
           {{/if}}

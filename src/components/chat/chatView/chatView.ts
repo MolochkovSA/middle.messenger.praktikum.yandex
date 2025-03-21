@@ -39,10 +39,10 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
 
   render(): string {
     return `
-      <div class=${styles.chatView}>
+      <div class="${styles.chatView}">
         {{#if chat}}
-          <header class=${styles.header}>
-            <img src="{{chat.avatar}}" class=${styles.avatar} alt="avatar">
+          <header class="${styles.header}">
+            <img src="{{chat.avatar}}" class="${styles.avatar}" alt="avatar">
             <h2>{{chat.title}}</h2>      
             {{{ ChatMenuButton }}}
           </header>
@@ -50,7 +50,7 @@ export class ChatView extends Block<ChatViewProps, {}, ChatViewChildren> {
           {{{ MessagesFeed }}}           
           {{{ ChatViewBottomBar }}}
         {{else}}
-          <h2 class=${styles.emptyChat}>Выберите чат чтобы отправить сообщение</h2>
+          <h2 class="${styles.emptyChat}">Выберите чат чтобы отправить сообщение</h2>
         {{/if}}
       </div>
     `

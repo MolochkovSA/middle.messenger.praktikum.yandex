@@ -101,8 +101,8 @@ export class ChangeAvatarContent extends Block<
     const { isFileExist, apiError } = this.getProps()
 
     return `     
-      <form class=${styles.content}>
-        <h2 {{#if apiError}}class=${styles.error}{{/if}}>${getTitle(isFileExist, apiError)}</h2>
+      <form class="${styles.content}">
+        <h2 {{#if apiError}}class="${styles.error}"{{/if}}>${getTitle(isFileExist, apiError)}</h2>
         {{{ Input }}}
         {{{ SubmitButton }}}
       </form>  

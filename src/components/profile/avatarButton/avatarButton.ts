@@ -78,7 +78,7 @@ const getButtonLabel = (avatar?: string, disabled?: boolean) => {
   const avatarSrc = getAvatarSrc(avatar || null)
 
   return `
-  <img src=${avatarSrc} class=${styles.avatar} alt="avatar">
-  ${disabled ? '' : `<div class=${styles.mask}><span>Поменять аватар</span></div>`}
+  <img src="${avatarSrc}" class="${styles.avatar}" alt="avatar">
+  ${disabled ? '' : `<div class="${styles.mask}"><span>Поменять аватар</span></div>`}
 `
 }

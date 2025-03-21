@@ -34,7 +34,7 @@ export class Link extends Block<LinkProps, LinkEvents> {
 
   render(): string {
     return `
-      <a href={{to}} class="${styles.link} {{className}}">
+      <a href="{{to}}" class="${styles.link} {{className}}">
         {{{ label }}}
       </a>
     `

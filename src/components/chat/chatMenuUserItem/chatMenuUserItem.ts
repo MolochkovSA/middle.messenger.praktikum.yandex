@@ -34,10 +34,10 @@ export class ChatMenuUserItem extends Block<ChatMenuUserItemProps, ChatMenuUserI
 
   render(): string {
     return `
-        <li class=${styles.userItem}>
-          <img src=${circlePlusIcon} class=${styles.removeUserIcon} alt="removeUserIcon">
+        <li class="${styles.userItem}">
+          <img src="${circlePlusIcon}" class="${styles.removeUserIcon}" alt="removeUserIcon">
           <p>{{user.display_name}} </p>
-          <img src="{{user.avatar}}" class=${styles.avatar} alt="avatar">
+          <img src="{{user.avatar}}" class="${styles.avatar}" alt="avatar">
         </li>
     `
   }

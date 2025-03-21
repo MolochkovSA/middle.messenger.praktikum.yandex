@@ -121,7 +121,7 @@ export class ProfilePasswordPage extends Block<ProfilePasswordPageProps, {}, Pro
         {{#if isLoading }}
           {{{ Loader }}}
         {{else}}
-          <form class=${styles.form}>
+          <form class="${styles.form}">
             {{{ OldPasswordInput }}}
 
             {{{ NewPasswordInput }}}

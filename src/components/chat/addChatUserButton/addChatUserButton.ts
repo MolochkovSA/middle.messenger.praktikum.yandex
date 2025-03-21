@@ -66,6 +66,6 @@ export class AddChatUserButton extends Block<AddChatUserProps, AddChatUserEvents
 }
 
 const addUserButtonLabel = `
-    <img src=${circlePlusIcon} alt="addUserIcon">
+    <img src="${circlePlusIcon}" alt="addUserIcon">
     <p>Добавить пользователя</p>   
   `

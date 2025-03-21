@@ -22,21 +22,21 @@ export class MessageItem extends Block<MessageItemProps> {
     const { isMyMessage } = this.getProps()
 
     return ` 
-    <li class=${styles.container}>
+    <li class="${styles.container}">
       {{#if date}}
-        <span class=${styles.date}>{{date}}</span>
+        <span class="${styles.date}">{{date}}</span>
       {{/if}}  
 
       <artcicle class="${styles.message} ${isMyMessage ? styles.outgoing : styles.incoming}">
         {{#if image}}
-          <div class=${styles.imageMessage}>       
-            <img src="{{image}}" class=${styles.image} alt="message with image"/>
+          <div class="${styles.imageMessage}">       
+            <img src="{{image}}" class="${styles.image}" alt="message with image"/>
             <time data-is-readed="{{is_read}}">{{time}}</time>           
           </div>    
         {{/if}}        
 
         {{#if content}}
-          <div class=${styles.textMessage}>
+          <div class="${styles.textMessage}">
             {{content}}
             <time data-is-readed="{{is_read}}">{{time}}</time>
           </div>  

@@ -117,9 +117,9 @@ export class ProfileInfoPage extends Block<ProfileInfoProps, {}, ProfileInfoPage
 
     return `
       {{#> ProfileLayout}}
-        <h2 class=${styles.title}>{{ display_name }}</h2>
+        <h2 class="${styles.title}">{{ display_name }}</h2>
 
-        <form class=${styles.form}>
+        <form class="${styles.form}">
           {{{ EmailInput }}}
 
           {{{ LoginInput }}}

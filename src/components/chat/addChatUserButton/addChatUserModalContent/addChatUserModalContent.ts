@@ -95,8 +95,8 @@ export class AddChatUserModelContent extends Block<AddChatUserModelContentProps,
     const { apiError } = this.getProps()
 
     return `     
-          <form class=${styles.content}>
-            <h2 {{#if apiError}}class=${styles.error}{{/if}}>${getTitle(apiError)}</h2>
+          <form class="${styles.content}">
+            <h2 {{#if apiError}}class="${styles.error}"{{/if}}>${getTitle(apiError)}</h2>
             {{{ Input }}}
             {{{ SubmitButton }}}
           </form>  

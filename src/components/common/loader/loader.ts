@@ -20,7 +20,7 @@ export class Loader extends Block<LoaderProps> {
   render(): string {
     return `
       <div class="${styles.container} {{className}}">
-        <span class="${styles.loader}" ></span>
+        <span class="${styles.loader}"></span>
       </div>
      `
   }

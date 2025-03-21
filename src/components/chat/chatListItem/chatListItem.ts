@@ -23,13 +23,13 @@ export class ChatListItem extends Block<ChatListItemProps, ChatListItemEvents> {
   render(): string {
     return `
       <li class="${styles.chatItem} {{#if chat.isActive}}${styles.isActive}{{/if}}">
-        <div class=${styles.container}>
-          <img src="{{chat.avatar}}" class=${styles.avatar} alt="avatar">
+        <div class="${styles.container}">
+          <img src="{{chat.avatar}}" class="${styles.avatar}" alt="avatar">
 
-          <div class=${styles.info}>
-            <div class=${styles.row}>
-              <span class=${styles.name}>{{chat.title}}</span>
-              <span class=${styles.date}>{{chat.messageDate}}</span>
+          <div class="${styles.info}">
+            <div class="${styles.row}">
+              <span class="${styles.name}">{{chat.title}}</span>
+              <span class="${styles.date}">{{chat.messageDate}}</span>
             </div>
 
             <div class="${styles.row} ${styles.message}">
@@ -38,7 +38,7 @@ export class ChatListItem extends Block<ChatListItemProps, ChatListItemEvents> {
               </p>
 
               {{#if chat.unread_count}}
-                <div class=${styles.newMessageCount}>{{chat.unread_count}}</div>
+                <div class="${styles.newMessageCount}">{{chat.unread_count}}</div>
               {{/if}}
             </div>
           </div>  
