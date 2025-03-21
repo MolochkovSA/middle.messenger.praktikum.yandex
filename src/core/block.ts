@@ -1,12 +1,31 @@
 import Handlebars from 'handlebars'
 
-import { compareObjects } from '@/utils'
+import { areObjectsEqual } from '@/utils'
+import { Indexed } from '@/types'
 
 import { EventBus } from './event-bus'
-import { BlockEvents, Children, EventListeners, Meta, Props } from './types'
+
+enum BlockEvents {
+  INIT = 'init',
+  FLOW_CDM = 'flow:component-did-mount',
+  FLOW_SCU = 'flow:should-component-update',
+  FLOW_CWU = 'flow:component-will-update',
+  FLOW_CDU = 'flow:component-did-update',
+  FLOW_RENDER = 'flow:render',
+  FLOW_UNMOUNT = 'flow:component-will-unmount',
+}
+
+export type Children = Record<string, Block | Block[]>
+export type EventListeners = { [key in keyof HTMLElementEventMap]?: (e: Event) => void }
+
+type Meta<P extends Indexed, E extends EventListeners, C extends Children> = {
+  props?: P
+  events?: E
+  children?: C
+}
 
 export abstract class Block<
-  P extends Props = Props,
+  P extends Indexed = Indexed,
   E extends EventListeners = EventListeners,
   C extends Children = Children
 > {
@@ -16,6 +35,7 @@ export abstract class Block<
   private _children: C
   private _props: P
   private _events: E
+  private _isFirstRender: boolean = true
 
   constructor({ props = {} as P, events = {} as E, children = {} as C }: Meta<P, E, C> = {}) {
     this._id = crypto.randomUUID()
@@ -32,8 +52,11 @@ export abstract class Block<
   private _registerEvents(): void {
     this._eventBus.on(BlockEvents.INIT, this.init.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDM, this._componentDidMount.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_SCU, this._shouldComponentUpdate.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_CWU, this._componentWillUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_CDU, this._componentDidUpdate.bind(this))
     this._eventBus.on(BlockEvents.FLOW_RENDER, this._render.bind(this))
+    this._eventBus.on(BlockEvents.FLOW_UNMOUNT, this._componentWillUnmount.bind(this))
   }
 
   init(): void {
@@ -52,28 +75,56 @@ export abstract class Block<
     })
   }
 
-  protected componentDidMount(): void {}
+  componentDidMount(): void {}
 
   dispatchComponentDidMount(): void {
     this._eventBus.emit(BlockEvents.FLOW_CDM)
   }
 
-  private _isProps(obj: unknown): obj is P {
-    return obj !== null && typeof obj === 'object'
-  }
-
-  private _componentDidUpdate(oldProps: unknown, newProps: unknown): void {
-    if (!this._isProps(oldProps) || !this._isProps(newProps)) return
-
-    const isEqual: boolean = this.componentDidUpdate(oldProps, newProps)
+  private _shouldComponentUpdate(oldProps: unknown, newProps: unknown): void {
+    const isEqual: boolean = this.shouldComponentUpdate(oldProps as P, newProps as P)
 
     if (!isEqual) {
-      this._eventBus.emit(BlockEvents.FLOW_RENDER)
+      this._eventBus.emit(BlockEvents.FLOW_CWU)
     }
   }
 
-  protected componentDidUpdate(oldProps: P, newProps: P): boolean {
-    return compareObjects(oldProps, newProps)
+  shouldComponentUpdate(oldProps: P, newProps: P): boolean {
+    return areObjectsEqual(oldProps, newProps)
+  }
+
+  private _componentWillUpdate(): void {
+    this.componentWillUpdate()
+    this._removeEvents()
+    this._eventBus.emit(BlockEvents.FLOW_RENDER)
+  }
+
+  componentWillUpdate(): void {}
+
+  private _componentDidUpdate(): void {
+    this.componentDidUpdate()
+  }
+
+  componentDidUpdate(): void {}
+
+  private _componentWillUnmount(): void {
+    Object.values(this._children).forEach((child) => {
+      if (Array.isArray(child)) {
+        child.forEach((component) => component.dispatchComponentWillUnmount())
+      } else {
+        child.dispatchComponentWillUnmount()
+      }
+    })
+
+    this.componentWillUnmount()
+    this._removeEvents()
+    this.getContent().remove()
+  }
+
+  componentWillUnmount(): void {}
+
+  dispatchComponentWillUnmount(): void {
+    this._eventBus.emit(BlockEvents.FLOW_UNMOUNT)
   }
 
   private _createDocumentElement(tagName: string): HTMLElement {
@@ -97,8 +148,6 @@ export abstract class Block<
   }
 
   private _render(): void {
-    this._removeEvents()
-
     const template: string = this.render()
 
     const childrens: Record<string, string | string[]> = {}
@@ -136,27 +185,33 @@ export abstract class Block<
 
     this._element = newElement
     this._addEvents()
+
+    if (this._isFirstRender) {
+      this._isFirstRender = false
+    } else {
+      this._eventBus.emit(BlockEvents.FLOW_CDU)
+    }
   }
 
   render(): string {
     return ''
   }
 
-  private _makeObjProxy<T extends Record<string, unknown>>(obj: T): T {
+  private _makeObjProxy(obj: P): P {
     const emitBind = this._eventBus.emit.bind(this._eventBus)
 
     return new Proxy(obj, {
-      get(target: T, prop: string) {
+      get(target: P, prop: string) {
         const value = target[prop]
         return typeof value === 'function' ? value.bind(target) : value
       },
 
-      set(target: T, prop: string, value: unknown) {
+      set(target: P, prop: string, value: unknown) {
         const oldTarget = { ...target }
 
-        ;(target as Props)[prop] = value
+        ;(target as Indexed)[prop] = value
 
-        emitBind(BlockEvents.FLOW_CDU, oldTarget, target)
+        emitBind(BlockEvents.FLOW_SCU, oldTarget, target)
         return true
       },
 
@@ -195,13 +250,5 @@ export abstract class Block<
     }
 
     Object.assign(this._children, nextChildren)
-  }
-
-  hide(): void {
-    this.getContent().style.display = 'none'
-  }
-
-  show(): void {
-    this.getContent().style.display = 'block'
   }
 }

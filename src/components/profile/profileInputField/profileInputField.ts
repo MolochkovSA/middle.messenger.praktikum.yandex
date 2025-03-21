@@ -1,23 +1,13 @@
 import { InputField } from '@/components'
-import { InputFieldInitProps } from '@/components/common/inputField'
-import { Block } from '@/core'
+import { InputFieldProps } from '@/components/common/inputField'
 
 import styles from './profileInputField.module.scss'
 
-type ProfileInputFieldChildren = {
-  InputField: InputField
-}
-
-export class ProfileInputField extends Block<InputFieldInitProps, {}, ProfileInputFieldChildren> {
-  constructor({ className, ...rest }: InputFieldInitProps) {
+export class ProfileInputField extends InputField {
+  constructor(props: InputFieldProps) {
     super({
-      children: {
-        InputField: new InputField({ ...rest, className: `${styles.profileInput} ${className ?? ''}`.trim() }),
-      },
+      ...props,
+      className: `${styles.input} ${props.className ?? ''}`.trim(),
     })
-  }
-
-  render(): string {
-    return `{{{ InputField }}}`
   }
 }

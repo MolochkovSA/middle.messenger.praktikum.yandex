@@ -3,40 +3,44 @@ import { InputValidationService, ValidationSchemaName } from './inputValidationS
 
 type FormInput = { element: HTMLInputElement; errorMessage?: string }
 type FormInputs = Record<string, FormInput>
-class Form {
-  get isError(): boolean {
-    const inputElements = Object.values(this.inputs)
-
-    inputElements.forEach(({ element }) => {
-      element.dispatchEvent(new Event('blur'))
-    })
-
-    return inputElements.some((input) => input.errorMessage)
-  }
-
-  constructor(public element: HTMLFormElement, public inputs: FormInputs, public submitButton?: HTMLButtonElement) {}
-}
+type SubmitHandler = (event: Event, formData: FormData) => void
 
 export class FormControlService {
+  private _formElement?: HTMLFormElement
+  private _inputs: FormInputs
   private _eventBus: EventBus<string>
-  private _forms: Form[]
   private _inputsValidationRules: Record<string, ValidationSchemaName | undefined>
+  private _submitHandler?: SubmitHandler
 
   constructor() {
+    this._inputs = {}
     this._eventBus = new EventBus<string>()
-    this._forms = []
     this._inputsValidationRules = {}
   }
 
-  init(element: HTMLElement): void {
-    const formElements: HTMLFormElement[] = Array.from(element.querySelectorAll('form'))
+  getElements(element: HTMLElement | HTMLFormElement): void {
+    if (element instanceof HTMLFormElement) {
+      this._formElement = element
+    } else {
+      const formElement: HTMLFormElement | null = element.querySelector('form')
 
-    formElements.forEach((formElement) => {
-      const form = this._createForm(formElement)
-      this._forms.push(form)
-      this._attachBlurHandlers(form)
-      this._attachSubmitHandler(form)
-    })
+      if (!formElement) return
+
+      this._formElement = formElement
+    }
+
+    const inputElements = this._formElement.querySelectorAll('input')
+    this._inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
+  }
+
+  addEvents(): void {
+    this._attachBlurHandlers()
+    this._attachSubmitHandler()
+  }
+
+  removeEvents(): void {
+    this._detachBlurHandlers()
+    this._detachSubmitHandler()
   }
 
   validate(validationSchema: ValidationSchemaName) {
@@ -46,8 +50,30 @@ export class FormControlService {
     }
   }
 
-  private _attachBlurHandlers(form: Form): void {
-    const inputs: FormInput[] = Object.values(form.inputs)
+  attachSubmitHandler(handler: SubmitHandler) {
+    this._submitHandler = handler
+  }
+
+  clearForm(): void {
+    if (!this._formElement) return
+
+    this._formElement.reset()
+
+    Object.values(this._inputs).forEach(({ element }) => {
+      this._eventBus.emit(element.id, '')
+    })
+  }
+
+  unmount(): void {
+    this._formElement = undefined
+    this._inputs = {}
+    this._eventBus.clear()
+    this._inputsValidationRules = {}
+    this._submitHandler = undefined
+  }
+
+  private _attachBlurHandlers(): void {
+    const inputs = Object.values(this._inputs)
     const passwordInputs = inputs.filter(({ element }) => this._inputsValidationRules[element.id] === 'equalPassword')
 
     inputs.forEach(({ element }) => {
@@ -56,37 +82,41 @@ export class FormControlService {
       if (valitionSchemaName) {
         element.onblur = () => {
           if (valitionSchemaName === 'equalPassword') {
-            this._checkEqualPasswords(passwordInputs, form.inputs[element.id], element, valitionSchemaName)
+            this._checkEqualPasswords(passwordInputs, this._inputs[element.id], element, valitionSchemaName)
             return
           }
 
-          this._checkInputValue(form.inputs[element.id], element, valitionSchemaName)
+          this._checkInputValue(this._inputs[element.id], element, valitionSchemaName)
         }
       }
     })
   }
 
-  private _attachSubmitHandler(form: Form): void {
-    form.element.onsubmit = (e) => {
+  private _detachBlurHandlers(): void {
+    Object.values(this._inputs).forEach(({ element }) => {
+      element.onblur = null
+    })
+  }
+
+  private _attachSubmitHandler(): void {
+    if (!this._formElement) return
+
+    this._formElement.onsubmit = (e: SubmitEvent) => {
       e.preventDefault()
 
-      if (form.isError) return
+      if (this._isError()) return
 
       const formData = new FormData(e.target as HTMLFormElement)
 
-      console.log(Object.fromEntries(formData))
+      if (this._submitHandler) this._submitHandler(e, formData)
 
-      form.element.reset()
+      this._formElement?.reset()
     }
   }
 
-  private _createForm(form: HTMLFormElement): Form {
-    const inputElements = form.querySelectorAll('input')
-    const submitButton = form.querySelector<HTMLButtonElement>('[type=submit]') ?? undefined
-
-    const inputs = Object.fromEntries(Array.from(inputElements).map((input) => [input.id, { element: input }]))
-
-    return new Form(form, inputs, submitButton)
+  private _detachSubmitHandler(): void {
+    if (!this._formElement) return
+    this._formElement.onsubmit = null
   }
 
   private _checkInputValue(
@@ -117,5 +147,15 @@ export class FormControlService {
       input.errorMessage = errorMeasage
       this._eventBus.emit(input.element.id, errorMeasage)
     })
+  }
+
+  private _isError(): boolean {
+    const inputElements = Object.values(this._inputs)
+
+    inputElements.forEach(({ element }) => {
+      element.dispatchEvent(new Event('blur'))
+    })
+
+    return inputElements.some((input) => input.errorMessage)
   }
 }

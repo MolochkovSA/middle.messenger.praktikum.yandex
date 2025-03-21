@@ -1,0 +1,1 @@
+export { ChangeAvatarContent } from './changeAvatarContent'

@@ -1,8 +1,15 @@
 import { Block } from '@/core'
 import { Button, AuthInputField, Link } from '@/components'
-import { FormControlService } from '@/services'
+import { FormControlService, NotificationService } from '@/services'
+import { authController } from '@/controllers'
+import { connect } from '@/store/connect'
+import { SignUpDto } from '@/types/user'
 
 import styles from './register.module.scss'
+
+type LoginPageProps = {
+  isLoading: boolean
+}
 
 type RegisterPageChildren = {
   EmailInput: AuthInputField
@@ -15,13 +22,16 @@ type RegisterPageChildren = {
   SubmitButton: Button
   LoginLink: Link
 }
-export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
+export class RegisterPage extends Block<LoginPageProps, {}, RegisterPageChildren> {
   private formControlService: FormControlService
 
   constructor() {
     const formValidationService = new FormControlService()
 
     super({
+      props: {
+        isLoading: false,
+      },
       children: {
         EmailInput: new AuthInputField({
           type: 'email',
@@ -88,7 +98,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
         LoginLink: new Link({
           label: 'Войти',
           className: styles.link,
-          to: '/login',
+          to: '/sign-in',
         }),
       },
     })
@@ -97,10 +107,66 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
   }
 
   componentDidMount(): void {
-    this.formControlService.init(this.getContent())
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+    this.formControlService.attachSubmitHandler(this.handleSubmit.bind(this))
+  }
+
+  componentWillUpdate(): void {
+    this.formControlService.removeEvents()
+  }
+
+  componentDidUpdate(): void {
+    this.formControlService.getElements(this.getContent())
+    this.formControlService.addEvents()
+  }
+
+  componentWillUnmount(): void {
+    this.formControlService.removeEvents()
+    this.formControlService.unmount()
+  }
+
+  handleSubmit(event: Event, formData: FormData): void {
+    event.preventDefault()
+
+    const email = formData.get('email')?.toString()
+    const login = formData.get('login')?.toString()
+    const first_name = formData.get('first_name')?.toString()
+    const second_name = formData.get('second_name')?.toString()
+    const phone = formData.get('phone')?.toString()
+    const password = formData.get('password')?.toString()
+
+    if (!email || !login || !first_name || !second_name || !phone || !password) {
+      return NotificationService.notify('Заполните все поля', 'error')
+    }
+
+    const newData: SignUpDto = { email, login, first_name, second_name, phone, password }
+
+    authController.register(newData)
   }
 
   render(): string {
+    const { isLoading } = this.getProps()
+    const {
+      EmailInput,
+      LoginInput,
+      FirstNameInput,
+      SecondNameInput,
+      PhoneInput,
+      PasswordInput,
+      PasswordRepeatInput,
+      SubmitButton,
+    } = this.getChildren()
+
+    EmailInput.setProps({ disabled: isLoading })
+    LoginInput.setProps({ disabled: isLoading })
+    FirstNameInput.setProps({ disabled: isLoading })
+    SecondNameInput.setProps({ disabled: isLoading })
+    PhoneInput.setProps({ disabled: isLoading })
+    PasswordInput.setProps({ disabled: isLoading })
+    PasswordRepeatInput.setProps({ disabled: isLoading })
+    SubmitButton.setProps({ disabled: isLoading })
+
     return `
       {{#> AuthLayout title="Регистрация"}}
         {{{ EmailInput }}}
@@ -125,3 +191,7 @@ export class RegisterPage extends Block<{}, {}, RegisterPageChildren> {
     `
   }
 }
+
+export const RegisterPageWithState = connect<LoginPageProps, {}, RegisterPageChildren>((state) => ({
+  isLoading: state.user.isLoading,
+}))(RegisterPage)

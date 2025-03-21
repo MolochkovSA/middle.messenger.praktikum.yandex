@@ -53,11 +53,11 @@ Vanilla Chat - это сервис, предназначенный для обм
 
 Страницы сервиса:
 
-- [Страница авторизации](https://vanilla-chat-by-molochkov.netlify.app/login)
-- [Страница регистрации](https://vanilla-chat-by-molochkov.netlify.app/register)
-- [Страница чата](https://vanilla-chat-by-molochkov.netlify.app/chat)
+- [Страница авторизации](https://vanilla-chat-by-molochkov.netlify.app/sign-in)
+- [Страница регистрации](https://vanilla-chat-by-molochkov.netlify.app/sign-up)
+- [Страница чата](https://vanilla-chat-by-molochkov.netlify.app/)
 - [Страница просмотра профиля](https://vanilla-chat-by-molochkov.netlify.app/profile)
-- [Страница редактирования профиля](https://vanilla-chat-by-molochkov.netlify.app/profile/edit)
-- [Страница изменения пароля](https://vanilla-chat-by-molochkov.netlify.app/profile/password)
+- [Страница редактирования профиля](https://vanilla-chat-by-molochkov.netlify.app/settings)
+- [Страница изменения пароля](https://vanilla-chat-by-molochkov.netlify.app/reset-password)
 - [Страница ошибки 404](https://vanilla-chat-by-molochkov.netlify.app/not-found)
 - [Страница ошибки 500](https://vanilla-chat-by-molochkov.netlify.app/server-error)

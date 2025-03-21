@@ -1,1 +1,1 @@
-export { ProfileInfoPage } from './profileInfo'
+export { ProfileInfoPage, ProfileInfoPageWithState } from './profileInfo'

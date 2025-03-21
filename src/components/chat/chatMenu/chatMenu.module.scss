@@ -1,0 +1,32 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.chatMenu {
+  position: absolute;
+  top: 65px;
+  right: 20px;
+  padding: 7px 15px;
+  border-radius: 12px;
+  box-shadow: 0 0 6px 0 rgba(0 0 0 / 14%);
+  background-color: var(--color-white);
+
+  .chatMenuBtn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 8px 0;
+    min-width: max-content;
+    background-color: inherit;
+    color: var(--color-black);
+
+    .removeChatIcon {
+      transform: rotate(45deg);
+    }
+  }
+}

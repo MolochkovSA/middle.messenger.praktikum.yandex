@@ -1,13 +1,14 @@
 import { Block } from '@/core'
-import { MessageType } from '@/pages/chat/types'
 
 import styles from './message.module.scss'
 
 type MessageItemProps = {
-  date: string
-  type: MessageType
+  time: string
+  isMyMessage: boolean
+  content: string
+  is_read: boolean
   image?: string
-  text?: string
+  date?: string
 }
 
 export class MessageItem extends Block<MessageItemProps> {
@@ -18,25 +19,30 @@ export class MessageItem extends Block<MessageItemProps> {
   }
 
   render(): string {
-    const isOutgoingMessage = this.getProps().type === MessageType.Outgoing
+    const { isMyMessage } = this.getProps()
 
     return ` 
-      <div class="${styles.message} ${isOutgoingMessage ? styles.outgoing : styles.incoming}">  
+    <li class=${styles.container}>
+      {{#if date}}
+        <span class=${styles.date}>{{date}}</span>
+      {{/if}}  
+
+      <artcicle class="${styles.message} ${isMyMessage ? styles.outgoing : styles.incoming}">
         {{#if image}}
-          <div class=${styles.imageMessage}>
-       
-              <img src="{{image}}" class=${styles.image}/>
-              <time>{{date}}</time>
-           
+          <div class=${styles.imageMessage}>       
+            <img src="{{image}}" class=${styles.image} alt="message with image"/>
+            <time data-is-readed="{{is_read}}">{{time}}</time>           
           </div>    
         {{/if}}        
 
-        {{#if text}}
-          <artcicle class=${styles.textMessage}>
-            <p>{{text}}<time>{{date}}</time></p>   
-          </artcicle>  
+        {{#if content}}
+          <div class=${styles.textMessage}>
+            {{content}}
+            <time data-is-readed="{{is_read}}">{{time}}</time>
+          </div>  
         {{/if}}  
-      </div>         
+      </artcicle>  
+    </li><>       
     `
   }
 }

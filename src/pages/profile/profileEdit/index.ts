@@ -1,1 +1,1 @@
-export { ProfileEditPage } from './profileEdit'
+export { ProfileEditPage, ProfileEditPageWithState } from './profileEdit'

@@ -1,4 +1,13 @@
-export type ValidationSchemaName = 'name' | 'login' | 'email' | 'password' | 'equalPassword' | 'phone' | 'message'
+export type ValidationSchemaName =
+  | 'required'
+  | 'name'
+  | 'optionalName'
+  | 'login'
+  | 'email'
+  | 'password'
+  | 'equalPassword'
+  | 'phone'
+  | 'message'
 
 type ValidationTest = (args: { value: string; minLength?: number; maxLength?: number }) => string
 
@@ -43,7 +52,7 @@ export class InputValidationService {
   }
 
   private static isNameTest: ValidationTest = ({ value }): string => {
-    return /^[A-ZА-ЯЁ][a-zа-яё-]*$/.test(value)
+    return /^[A-ZА-ЯЁ][a-zа-яё-]*$|^$/.test(value)
       ? ''
       : 'Допустима латиница, кириллица и дефис, первая буква должна быть заглавной'
   }
@@ -69,7 +78,9 @@ export class InputValidationService {
   }
 
   private static schemas: ValidationSchemas = {
+    required: { tests: [this.requireValueTest] },
     name: { tests: [this.requireValueTest, this.isNameTest] },
+    optionalName: { tests: [this.isNameTest] },
     login: {
       minLength: 3,
       maxLength: 20,

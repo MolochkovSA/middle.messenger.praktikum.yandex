@@ -1,0 +1,14 @@
+.button {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: var(--color-chat-input);
+  color: var(--color-black);
+  font-weight: 500;
+  font-size: 12px;
+
+  &:hover {
+    filter: brightness(100%) !important;
+    background-color: var(--color-chat-sky);
+  }
+}

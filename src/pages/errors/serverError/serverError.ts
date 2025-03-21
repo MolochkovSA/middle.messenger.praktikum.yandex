@@ -22,7 +22,7 @@ export class ServerErrorPage extends Block<ServerErrorPageProps, {}, ServerError
         BackLink: new Link({
           label: 'Назад к чатам',
           className: styles.link,
-          to: '/chat',
+          to: '/',
         }),
       },
     })

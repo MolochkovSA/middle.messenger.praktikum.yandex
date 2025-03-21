@@ -7,7 +7,7 @@ export const ProfileLayout = `
     <div class=${styles.content}>
       <h1 class=${styles.title}>Profile</h1>
 
-      {{{ AvataButton }}}
+      {{{ AvatarButton }}}
 
       {{> @partial-block}}      
     </div>
