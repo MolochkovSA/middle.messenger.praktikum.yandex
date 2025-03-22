@@ -1,23 +1,13 @@
 import { InputField } from '@/components'
-import { InputFieldInitProps } from '@/components/common/inputField'
-import { Block } from '@/core'
+import { InputFieldProps } from '@/components/common/inputField'
 
 import styles from './authInputField.module.scss'
 
-type AuthInputFieldChildren = {
-  InputField: InputField
-}
-
-export class AuthInputField extends Block<InputFieldInitProps, {}, AuthInputFieldChildren> {
-  constructor({ className, ...rest }: InputFieldInitProps) {
+export class AuthInputField extends InputField {
+  constructor(props: InputFieldProps) {
     super({
-      children: {
-        InputField: new InputField({ ...rest, className: `${styles.input} ${className ?? ''}`.trim() }),
-      },
+      ...props,
+      className: `${styles.input} ${props.className ?? ''}`.trim(),
     })
-  }
-
-  render(): string {
-    return `{{{ InputField }}}`
   }
 }

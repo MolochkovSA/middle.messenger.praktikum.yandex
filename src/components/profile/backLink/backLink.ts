@@ -12,7 +12,7 @@ export class BackLink extends Block<{}, {}, BackLinkChildren> {
     super({
       children: {
         Link: new Link({
-          to: '/chat',
+          to: '/messenger',
           className: styles.link,
           label: '',
         }),

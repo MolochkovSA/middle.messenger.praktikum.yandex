@@ -1,2 +1,2 @@
 export { InputField } from './inputField'
-export type { InputFieldInitProps } from './inputField'
+export type { InputFieldProps } from './inputField'

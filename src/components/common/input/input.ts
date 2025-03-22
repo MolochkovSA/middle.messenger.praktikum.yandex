@@ -39,6 +39,7 @@ export class Input extends Block<InputProps, InputEvents> {
         class="{{className}}" 
         placeholder="{{placeholder}}" 
         value="{{value}}"
+        ${this.getProps().type === 'file' ? "accept='image/*'" : ''}
 
         {{#if validator}}
           data-validator="{{validator}}"

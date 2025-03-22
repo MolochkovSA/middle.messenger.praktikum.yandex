@@ -1,51 +1,17 @@
-import './components'
 import './layout'
-import { AppRoutes, router } from './router'
-
-type State = { currentPage: AppRoutes }
+import { Router } from './core'
+import { routeConfig } from './config/routeConfig'
+import { NotificationService } from './services/'
 
 export class App {
-  private _appElement: HTMLDivElement
-  private _state: State
+  private _appElement: HTMLElement
 
   constructor() {
-    this._appElement = document.querySelector<HTMLDivElement>('#app')!
-
-    const currentPath = window.location.pathname
-
-    this._state = {
-      currentPage: Object.values<string>(AppRoutes).includes(currentPath)
-        ? (currentPath as AppRoutes)
-        : AppRoutes.NOTFOUND,
-    }
+    this._appElement = document.getElementById('app')!
   }
 
   render() {
-    const route = router[this._state.currentPage]
-    const page = new route()
-
-    this._appElement.replaceChildren(page.getContent())
-    page.dispatchComponentDidMount()
-    this._attachEventListeners()
-  }
-
-  private _attachEventListeners() {
-    document.querySelectorAll('[data-page]').forEach((link) => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault()
-
-        const element = e.currentTarget
-
-        if (element instanceof HTMLAnchorElement) {
-          const page = element.dataset.page
-          this._changePage(page as AppRoutes)
-        }
-      })
-    })
-  }
-
-  private _changePage(page: AppRoutes) {
-    this._state.currentPage = page
-    this.render()
+    Router.init({ container: this._appElement, routeConfig })
+    NotificationService.init({ container: this._appElement })
   }
 }

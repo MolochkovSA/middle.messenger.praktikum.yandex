@@ -1,40 +1,84 @@
-import defaultAvatar from '@/assets/avatar.png'
-
 import { Block } from '@/core'
-import { Button } from '@/components'
+import { Button, Modal } from '@/components'
+import { ChangeAvatarContent } from './changeAvatarContent'
+import { getAvatarSrc } from '@/utils'
 
 import styles from './avatarButton.module.scss'
 
 type AvatarButtonProps = {
-  avatar: string
+  avatar?: string
+  disabled?: boolean
+  isShowModal?: boolean
+}
+
+type AvatarButtonEvents = {
+  click: (e: Event) => void
 }
 
 type AvatarButtonChildren = {
   Button: Button
+  Modal: Modal<ChangeAvatarContent>
 }
 
-export class AvataButton extends Block<AvatarButtonProps, {}, AvatarButtonChildren> {
-  constructor({ disabled }: { disabled?: boolean } = {}) {
+export class AvatarButton extends Block<AvatarButtonProps, AvatarButtonEvents, AvatarButtonChildren> {
+  constructor({ avatar, disabled, isShowModal }: AvatarButtonProps = {}) {
     super({
       props: {
-        avatar: defaultAvatar,
+        avatar,
+        disabled,
+        isShowModal,
+      },
+      events: {
+        click: () => {
+          this.setProps({ isShowModal: true })
+        },
       },
       children: {
         Button: new Button({
-          label: getButtonLabel(defaultAvatar, disabled),
+          label: '',
           className: styles.button,
           disabled,
+        }),
+        Modal: new Modal<ChangeAvatarContent>({
+          children: new ChangeAvatarContent({
+            onClose: () => this.closeModal(),
+          }),
+          onClose: () => this.closeModal(),
         }),
       },
     })
   }
 
+  closeModal() {
+    this.getChildren().Modal.getChildren().Content.resetState()
+    this.setProps({ isShowModal: false })
+  }
+
   render(): string {
-    return `{{{ Button }}}`
+    const { avatar, disabled } = this.getProps()
+    const { Button } = this.getChildren()
+
+    Button.setProps({
+      label: getButtonLabel(avatar, disabled),
+    })
+
+    return `
+      <div>
+        {{{ Button }}}
+
+        {{#if isShowModal}}
+          {{{ Modal }}}
+        {{/if}}
+      </div>
+    `
   }
 }
 
-const getButtonLabel = (avatarSrc: string, disabled?: boolean) => `
-  <img src=${avatarSrc} class=${styles.avatar} alt="avatar">
-  ${disabled ? '' : `<div class=${styles.mask}><span>Поменять аватар</span></div>`}
+const getButtonLabel = (avatar?: string, disabled?: boolean) => {
+  const avatarSrc = getAvatarSrc(avatar || null)
+
+  return `
+  <img src="${avatarSrc}" class="${styles.avatar}" alt="avatar">
+  ${disabled ? '' : `<div class="${styles.mask}"><span>Поменять аватар</span></div>`}
 `
+}

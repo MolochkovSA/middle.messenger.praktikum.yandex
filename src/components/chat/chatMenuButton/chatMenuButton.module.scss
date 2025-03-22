@@ -1,0 +1,57 @@
+@mixin dote-div($color) {
+  width: 3px;
+  height: 3px;
+  margin: 0 auto;
+  border-radius: 50%;
+  background-color: $color;
+}
+
+@mixin three-dote-button($color) {
+  div {
+    @include dote-div($color);
+
+    position: relative;
+
+    &::before {
+      content: '';
+
+      @include dote-div($color);
+
+      display: block;
+      position: absolute;
+      top: -6px;
+    }
+
+    &::after {
+      content: '';
+
+      @include dote-div($color);
+
+      display: block;
+      position: absolute;
+      top: 6px;
+    }
+  }
+}
+
+.container {
+  margin-left: auto;
+  position: relative;
+
+  .button {
+    padding: 0;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-color: inherit;
+
+    @include three-dote-button(var(--color-black));
+
+    &:hover {
+      filter: brightness(100%) !important;
+      background-color: var(--color-chat-gray);
+
+      @include three-dote-button(var(--color-primary));
+    }
+  }
+}

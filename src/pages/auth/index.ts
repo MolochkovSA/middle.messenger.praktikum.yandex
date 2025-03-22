@@ -1,2 +1,2 @@
-export { LoginPage } from './login'
-export { RegisterPage } from './register'
+export { LoginPage, LoginPageWithState } from './login'
+export { RegisterPage, RegisterPageWithState } from './register'

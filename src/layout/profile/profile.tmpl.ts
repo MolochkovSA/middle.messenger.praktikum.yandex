@@ -1,13 +1,13 @@
 import styles from './profile.module.scss'
 
 export const ProfileLayout = `
-  <main class=${styles.profileLayout}>
+  <main class="${styles.profileLayout}">
     {{{ BackLink }}}
 
-    <div class=${styles.content}>
-      <h1 class=${styles.title}>Profile</h1>
+    <div class="${styles.content}">
+      <h1 class="${styles.title}">Profile</h1>
 
-      {{{ AvataButton }}}
+      {{{ AvatarButton }}}
 
       {{> @partial-block}}      
     </div>

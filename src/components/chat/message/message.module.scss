@@ -1,3 +1,15 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.date {
+  text-align: center;
+  font-size: 12px;
+  color: var(--color-gray-text);
+}
+
 time {
   float: right;
   padding-top: 5px;
@@ -7,8 +19,8 @@ time {
 }
 
 .message {
+  display: block;
   max-width: 60%;
-  margin-bottom: 10px;
 }
 
 .incoming {
@@ -29,7 +41,7 @@ time {
   time {
     color: var(--color-primary);
 
-    &::before {
+    &[data-is-readed='true']::before {
       content: url('@/assets/checked.svg');
       padding-right: 4px;
     }

@@ -1,3 +1,2 @@
-export { ChatPage } from './chat'
-
-export type { ContactItem, Contact } from './types'
+export { ChatPage, ChatPageWithState } from './chat'
+export { chatLoader } from './chatLoader'
