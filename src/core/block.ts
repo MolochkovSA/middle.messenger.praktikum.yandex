@@ -1,7 +1,7 @@
 import Handlebars from 'handlebars'
 
-import { areObjectsEqual } from '@/utils'
-import { Indexed } from '@/types'
+import { areObjectsEqual } from '../utils/areObjsEqual'
+import { Indexed } from '../types'
 
 import { EventBus } from './event-bus'
 

@@ -12,7 +12,7 @@ export default [
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.es2021 },
+      globals: { ...globals.browser, ...globals.node, ...globals.es2021 },
       ecmaVersion: 'latest',
       sourceType: 'module',
     },
@@ -26,6 +26,7 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
       indent: ['error', 2, { SwitchCase: 1 }],
       'max-len': ['error', { code: 120, ignoreComments: true }],
+      'no-unused-expressions': ['error', { exclude: ['src/**/*.spec.ts'] }],
     },
   },
 ]

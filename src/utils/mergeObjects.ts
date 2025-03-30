@@ -1,4 +1,4 @@
-import { Indexed } from '@/types'
+import { Indexed } from '../types'
 import { isObject } from '.'
 
 export function mergeObjects<T extends Indexed>(lhs: T, rhs: Indexed): T {

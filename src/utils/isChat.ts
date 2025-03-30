@@ -1,4 +1,4 @@
-import { Chat } from '@/types/chat'
+import { Chat } from '../types/chat'
 import { isObject } from './isObject'
 
 export function isChat(chat: unknown): chat is Chat {
