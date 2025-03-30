@@ -1,5 +1,5 @@
 import { Indexed } from '../types'
-import { isObject } from '.'
+import { isObject } from './isObject'
 
 export function mergeObjects<T extends Indexed>(lhs: T, rhs: Indexed): T {
   const result: T = {} as T

@@ -58,8 +58,7 @@ describe('Block', () => {
     const spyRENDER = sinon.spy(page, 'render')
     page.setProps({ title: newText })
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(spyRENDER.called).to.be.false
+    expect(spyRENDER.called).to.be.equal(false)
   })
 
   it('should set events on the element', () => {
@@ -71,8 +70,7 @@ describe('Block', () => {
     const event = new MouseEvent('click')
     page.getContent()?.dispatchEvent(event)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(clickhadnlerStub.calledOnce).to.be.true
+    expect(clickhadnlerStub.calledOnce).to.be.equal(true)
   })
 
   it('should call the dispatchComponentDidMount method', () => {
@@ -84,7 +82,6 @@ describe('Block', () => {
 
     page.dispatchComponentDidMount()
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(spyCDM.calledOnce).to.be.true
+    expect(spyCDM.calledOnce).to.be.equal(true)
   })
 })

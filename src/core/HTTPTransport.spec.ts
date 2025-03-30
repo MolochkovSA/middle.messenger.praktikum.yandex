@@ -38,8 +38,7 @@ describe('HTTPTransport', () => {
 
     http.get(url, options)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(request.calledWithMatch(url, { ...options, method: 'GET' })).to.be.true
+    expect(request.calledWithMatch(url, { ...options, method: 'GET' })).to.be.equal(true)
   })
 
   it('should make a POST request', () => {
@@ -48,8 +47,7 @@ describe('HTTPTransport', () => {
 
     http.post(url, options)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(request.calledWithMatch(url, { ...options, method: 'POST' })).to.be.true
+    expect(request.calledWithMatch(url, { ...options, method: 'POST' })).to.be.equal(true)
   })
 
   it('should make a PUT request', () => {
@@ -58,8 +56,7 @@ describe('HTTPTransport', () => {
 
     http.put(url, options)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(request.calledWithMatch(url, { ...options, method: 'PUT' })).to.be.true
+    expect(request.calledWithMatch(url, { ...options, method: 'PUT' })).to.be.equal(true)
   })
 
   it('should make a DELETE request', () => {
@@ -68,7 +65,6 @@ describe('HTTPTransport', () => {
 
     http.delete(url, options)
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    expect(request.calledWithMatch(url, { ...options, method: 'DELETE' })).to.be.true
+    expect(request.calledWithMatch(url, { ...options, method: 'DELETE' })).to.be.equal(true)
   })
 })

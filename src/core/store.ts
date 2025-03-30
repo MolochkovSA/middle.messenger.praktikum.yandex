@@ -1,4 +1,4 @@
-import { mergeObjects } from '../utils'
+import { mergeObjects } from '../utils/mergeObjects'
 import { EventBus } from './event-bus'
 import { Indexed } from '../types'
 
