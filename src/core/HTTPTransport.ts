@@ -1,5 +1,5 @@
-import { APIError } from '@/models'
-import { Indexed } from '@/types'
+import { APIError } from '../models'
+import { Indexed } from '../types'
 
 enum Methods {
   GET = 'GET',
@@ -26,7 +26,7 @@ export class HTTPTransport {
 
   private _createHTTPMethod = (method: Methods): HTTPMethod => {
     return (path, options = {}) => {
-      return this._request(path, { ...options, method })
+      return this.request(path, { ...options, method })
     }
   }
 
@@ -35,7 +35,7 @@ export class HTTPTransport {
   put = this._createHTTPMethod(Methods.PUT)
   delete = this._createHTTPMethod(Methods.DELETE)
 
-  private _request = (path: string, options: RequestOptions): Promise<XMLHttpRequest> => {
+  request = (path: string, options: RequestOptions): Promise<XMLHttpRequest> => {
     const { method, data, headers, timeout = 5000 } = options
 
     return new Promise((resolve, reject) => {
@@ -84,17 +84,20 @@ export class HTTPTransport {
   }
 }
 
-function queryStringify(data: Indexed): string {
+export function queryStringify(data: Indexed): string {
   return Object.entries(data).reduce((acc, [key, value]) => {
     const encodedKey = encodeURIComponent(key)
 
     acc += acc.length ? '&' : '?'
 
-    if (value instanceof Number || value instanceof String) {
+    if (typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
       return acc + `${encodedKey}=${encodeURIComponent(value.toString())}`
     }
 
-    if (Array.isArray(value) && value.every((item) => typeof item === 'string' || typeof item === 'number')) {
+    if (
+      Array.isArray(value) &&
+      value.every((item) => typeof item === 'string' || typeof item === 'number' || typeof item === 'boolean')
+    ) {
       return acc + `${encodedKey}=${value.map((item) => encodeURIComponent(item.toString())).join(',')}`
     }
 
