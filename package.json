@@ -13,7 +13,8 @@
     "preview": "vite preview",
     "lint": "tsc --noEmit && eslint \"**/*.ts\" && stylelint \"**/*.scss\"",
     "lint:ts": "eslint \"**/*.ts\"",
-    "lint:scss": "stylelint \"**/*.scss\""
+    "lint:scss": "stylelint \"**/*.scss\"",
+    "prepare": "husky"
   },
   "devDependencies": {
     "@types/express": "5.0.0",
@@ -23,6 +24,7 @@
     "eslint": "9.21.0",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-jsx-a11y": "6.10.2",
+    "husky": "^9.1.7",
     "sass-embedded": "1.83.4",
     "stylelint": "16.14.1",
     "stylelint-config-standard-scss": "14.0.0",
