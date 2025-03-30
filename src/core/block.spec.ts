@@ -58,6 +58,7 @@ describe('Block', () => {
     const spyRENDER = sinon.spy(page, 'render')
     page.setProps({ title: newText })
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     expect(spyRENDER.called).to.be.false
   })
 
@@ -70,6 +71,7 @@ describe('Block', () => {
     const event = new MouseEvent('click')
     page.getContent()?.dispatchEvent(event)
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     expect(clickhadnlerStub.calledOnce).to.be.true
   })
 
@@ -82,6 +84,7 @@ describe('Block', () => {
 
     page.dispatchComponentDidMount()
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     expect(spyCDM.calledOnce).to.be.true
   })
 })

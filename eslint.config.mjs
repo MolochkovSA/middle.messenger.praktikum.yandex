@@ -26,7 +26,6 @@ export default [
       '@typescript-eslint/no-unused-vars': 'warn',
       indent: ['error', 2, { SwitchCase: 1 }],
       'max-len': ['error', { code: 120, ignoreComments: true }],
-      'no-unused-expressions': ['error', { exclude: ['src/**/*.spec.ts'] }],
     },
   },
 ]
