@@ -1,6 +1,6 @@
-import { arePrimitivesEqual } from '@/utils'
+import { arePrimitivesEqual } from '../utils/arePrimitivesEqual'
 import { Block } from './block'
-import { logger } from '@/services/loggerService'
+import { logger } from '../services/loggerService'
 
 type Loader = () => Promise<unknown>
 

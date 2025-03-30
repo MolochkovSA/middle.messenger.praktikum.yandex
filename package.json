@@ -30,7 +30,7 @@
     "eslint-plugin-import": "^2.31.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
     "husky": "^9.1.7",
-    "jsdom": "^26.0.0",
+    "jsdom": "^25.0.1",
     "mocha": "^11.1.0",
     "sass-embedded": "^1.83.4",
     "sinon": "^20.0.0",

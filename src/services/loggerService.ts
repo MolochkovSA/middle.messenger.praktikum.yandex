@@ -1,5 +1,5 @@
-import { LOG_LEVEL } from '@/config/constants'
-import { isObject } from '@/utils'
+import { LOG_LEVEL } from '../config/constants'
+import { isObject } from '../utils/isObject'
 
 enum LogLevel {
   NONE = 0,

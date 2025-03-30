@@ -1,8 +1,11 @@
 import { JSDOM } from 'jsdom'
 
-const jsdom = new JSDOM(`<body></body>`)
+const jsdom = new JSDOM('<body></body>', {
+  url: 'http://localhost/',
+})
 
 global.window = jsdom.window
 global.document = jsdom.window.document
+global.history = jsdom.window.history
 global.MouseEvent = jsdom.window.MouseEvent
 global.Node = jsdom.window.Node
