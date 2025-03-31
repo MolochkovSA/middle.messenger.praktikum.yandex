@@ -58,7 +58,7 @@ describe('Block', () => {
     const spyRENDER = sinon.spy(page, 'render')
     page.setProps({ title: newText })
 
-    expect(spyRENDER.called).to.be.equal(false)
+    expect(spyRENDER.called).to.be.false
   })
 
   it('should set events on the element', () => {
@@ -70,7 +70,7 @@ describe('Block', () => {
     const event = new MouseEvent('click')
     page.getContent()?.dispatchEvent(event)
 
-    expect(clickhadnlerStub.calledOnce).to.be.equal(true)
+    expect(clickhadnlerStub.calledOnce).to.be.true
   })
 
   it('should call the dispatchComponentDidMount method', () => {
@@ -82,6 +82,6 @@ describe('Block', () => {
 
     page.dispatchComponentDidMount()
 
-    expect(spyCDM.calledOnce).to.be.equal(true)
+    expect(spyCDM.calledOnce).to.be.true
   })
 })

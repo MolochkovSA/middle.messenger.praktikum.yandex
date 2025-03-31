@@ -38,7 +38,7 @@ describe('HTTPTransport', () => {
 
     http.get(url, options)
 
-    expect(request.calledWithMatch(url, { ...options, method: 'GET' })).to.be.equal(true)
+    expect(request.calledWithMatch(url, { ...options, method: 'GET' })).to.be.true
   })
 
   it('should make a POST request', () => {
@@ -47,7 +47,7 @@ describe('HTTPTransport', () => {
 
     http.post(url, options)
 
-    expect(request.calledWithMatch(url, { ...options, method: 'POST' })).to.be.equal(true)
+    expect(request.calledWithMatch(url, { ...options, method: 'POST' })).to.be.true
   })
 
   it('should make a PUT request', () => {
@@ -56,7 +56,7 @@ describe('HTTPTransport', () => {
 
     http.put(url, options)
 
-    expect(request.calledWithMatch(url, { ...options, method: 'PUT' })).to.be.equal(true)
+    expect(request.calledWithMatch(url, { ...options, method: 'PUT' })).to.be.true
   })
 
   it('should make a DELETE request', () => {
@@ -65,6 +65,6 @@ describe('HTTPTransport', () => {
 
     http.delete(url, options)
 
-    expect(request.calledWithMatch(url, { ...options, method: 'DELETE' })).to.be.equal(true)
+    expect(request.calledWithMatch(url, { ...options, method: 'DELETE' })).to.be.true
   })
 })

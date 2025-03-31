@@ -1,4 +1,5 @@
 import { defineConfig } from 'vite'
+import checker from 'vite-plugin-checker'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -18,4 +19,17 @@ export default defineConfig({
     },
     extensions: ['.js', '.json', '.jsx', '.ts', '.tsx'],
   },
+
+  plugins: [
+    checker({
+      typescript: true,
+      eslint: {
+        lintCommand: 'eslint "./src/**/*.{ts,tsx}"',
+        useFlatConfig: true,
+      },
+      stylelint: {
+        lintCommand: 'stylelint ./src/**/*.{scss,css}',
+      },
+    }),
+  ],
 })

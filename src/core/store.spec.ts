@@ -30,7 +30,7 @@ describe('Store', () => {
     const spy = sinon.spy(store, 'emit')
     store.setState({ count: 1 })
 
-    expect(spy.calledWith(StoreEvents.UPDATE)).to.be.equal(true)
+    expect(spy.calledWith(StoreEvents.UPDATE)).to.be.true
   })
 
   it('should have a subscribe method', () => {

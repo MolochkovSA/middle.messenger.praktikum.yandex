@@ -37,7 +37,7 @@ describe('Router', () => {
 
     Router.init({ container, routeConfig: [] })
 
-    expect(spyInit.calledOnce).to.be.equal(true)
+    expect(spyInit.calledOnce).to.be.true
   })
 
   describe('Navigation', () => {
@@ -71,7 +71,7 @@ describe('Router', () => {
 
       Router.back()
 
-      expect(spyBack.calledOnce).to.be.equal(true)
+      expect(spyBack.calledOnce).to.be.true
     })
 
     it('should navigate to the back page', () => {
@@ -110,7 +110,7 @@ describe('Router', () => {
 
       Router.forward()
 
-      expect(spyGo.calledOnce).to.be.equal(true)
+      expect(spyGo.calledOnce).to.be.true
     })
   })
 })
