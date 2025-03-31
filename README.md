@@ -49,6 +49,18 @@ Vanilla Chat - это сервис, предназначенный для обм
    npm run build
    ```
 
+## Проверка правил оформления кода
+
+```sh
+npm run lint
+```
+
+## Тестирование
+
+```sh
+npm run test
+```
+
 ## Страницы
 
 Страницы сервиса:
@@ -61,3 +73,20 @@ Vanilla Chat - это сервис, предназначенный для обм
 - [Страница изменения пароля](https://vanilla-chat-by-molochkov.netlify.app/reset-password)
 - [Страница ошибки 404](https://vanilla-chat-by-molochkov.netlify.app/not-found)
 - [Страница ошибки 500](https://vanilla-chat-by-molochkov.netlify.app/server-error)
+
+## Технологии
+
+- [TypeScript](https://www.typescriptlang.org/)
+- [Webpack](https://webpack.js.org/)
+- [ESLint](https://eslint.org/)
+- [Stylelint](https://stylelint.io/)
+- [HTML](https://html.spec.whatwg.org/)
+- [SCSS](https://sass-lang.com/)
+- [Handlebars](https://handlebarsjs.com/)
+- [Netlify](https://www.netlify.com/)
+- [Git](https://git-scm.com/)
+- [GitHub](https://github.com/)
+- [Node.js](https://nodejs.org/en/)
+- [Express](https://expressjs.com/)
+- [Mocha](https://mochajs.org/)
+- [husky](https://github.com/typicode/husky)
