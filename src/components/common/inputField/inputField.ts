@@ -1,3 +1,5 @@
+import { v4 } from 'uuid'
+
 import { Block } from '@/core'
 import { Input, InputProps, InputEvents } from '@/components/common/input'
 
@@ -17,7 +19,7 @@ export class InputField extends Block<
   InputFieldChildren
 > {
   constructor({ label, className, errorMessage, errorListener, ...inputProps }: InputFieldProps) {
-    const id = crypto.randomUUID()
+    const id = v4()
     super({
       props: { id, label, className, errorMessage, ...inputProps },
       children: {
