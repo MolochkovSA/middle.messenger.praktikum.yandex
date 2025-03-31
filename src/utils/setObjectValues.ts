@@ -1,4 +1,4 @@
-import { Indexed } from '@/types'
+import { Indexed } from '../types'
 import { isObject } from '.'
 
 export function setObjectValues<T extends Indexed>(lhs: T, rhs: DeepPartial<T>): T {

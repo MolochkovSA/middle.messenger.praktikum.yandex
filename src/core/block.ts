@@ -1,7 +1,8 @@
 import Handlebars from 'handlebars'
+import { v4 } from 'uuid'
 
-import { areObjectsEqual } from '@/utils'
-import { Indexed } from '@/types'
+import { areObjectsEqual } from '../utils/areObjsEqual'
+import { Indexed } from '../types'
 
 import { EventBus } from './event-bus'
 
@@ -38,7 +39,7 @@ export abstract class Block<
   private _isFirstRender: boolean = true
 
   constructor({ props = {} as P, events = {} as E, children = {} as C }: Meta<P, E, C> = {}) {
-    this._id = crypto.randomUUID()
+    this._id = v4()
     this._eventBus = new EventBus()
     this._element = null
     this._children = children

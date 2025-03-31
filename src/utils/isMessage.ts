@@ -1,4 +1,4 @@
-import { Message } from '@/types/message'
+import { Message } from '../types/message'
 import { isObject } from './isObject'
 
 export function isMessage(message: unknown): message is Message {

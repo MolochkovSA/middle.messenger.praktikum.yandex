@@ -1,5 +1,5 @@
 import { isObject } from './isObject'
-import { ChatUser } from '@/types/chat'
+import { ChatUser } from '../types/chat'
 
 export function isChatUser(user: unknown): user is ChatUser {
   if (!isObject(user)) return false

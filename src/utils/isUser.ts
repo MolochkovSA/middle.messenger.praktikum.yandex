@@ -1,4 +1,4 @@
-import { User } from '@/types/user'
+import { User } from '../types/user'
 import { isObject } from './isObject'
 
 export function isUser(user: unknown): user is User {

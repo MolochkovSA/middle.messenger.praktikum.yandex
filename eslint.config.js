@@ -1,18 +1,18 @@
+import { defineConfig, globalIgnores } from 'eslint/config'
 import globals from 'globals'
-import js from '@eslint/js'
 import tseslint from 'typescript-eslint'
+import js from '@eslint/js'
 import pluginImport from 'eslint-plugin-import'
 import pluginJsxA11y from 'eslint-plugin-jsx-a11y'
 
-/** @type {import('eslint').Linter.Config[]} */
-export default [
-  { ignores: ['node_modules', 'dist'] },
+export default defineConfig([
+  globalIgnores(['node_modules', 'dist', '**/*.spec.ts']),
   js.configs.recommended,
   ...tseslint.configs.recommended,
   {
     files: ['**/*.{js,mjs,cjs,ts}'],
     languageOptions: {
-      globals: { ...globals.browser, ...globals.es2021 },
+      globals: { ...globals.browser, ...globals.node, ...globals.es2021 },
       ecmaVersion: 'latest',
       sourceType: 'module',
     },
@@ -28,4 +28,4 @@ export default [
       'max-len': ['error', { code: 120, ignoreComments: true }],
     },
   },
-]
+])
